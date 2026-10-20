@@ -32,7 +32,7 @@ function trQuizView(){
 function trWrongView(){const ids=trPending();if(!ids.length)return `<div class="tr-empty"><span>🌿</span><h3>目前没有待复练的培训错题</h3><p>答错后自动记录，答对后自动移出待复练列表。</p><button class="btn" data-action="tr-lessons">继续学习 →</button></div>`;
  return `<div class="tr-wrong-head"><div><h3>待复练 ${ids.length} 道题</h3><p>历史错误仍保留统计，待复练列表只包含尚未重新答对的题。</p></div><button class="btn" data-action="tr-startwrong">开始复练 →</button></div><div class="tr-wrong-list">${ids.map(id=>{const q=trQuestions.get(id);return `<article><small>第 ${q.day} 天 · 答错 ${trSaved.stats[id].wrong} 次</small><h4>${trEsc(q.q)}</h4><details><summary>查看正确答案与解析</summary><p>${trEsc(q.o[q.a])}</p><p>${trEsc(q.why)}</p></details><button data-action="tr-day" data-day="${q.day}">复习第 ${q.day} 天课程 →</button></article>`;}).join('')}</div>`;
 }
-function trDay(day){if(!Number.isInteger(day)||day<1||day>16)return;trState.day=day;trState.mode='lesson';trState.ids=[];ui.tab='training';render();}
+function trDay(day){if(!Number.isInteger(day)||day<1||day>16)return;trState.day=day;trState.mode='lesson';trState.ids=[];ui.tab='training';if(typeof updateHashRoute==='function')updateHashRoute();render();}
 function trStart(type){const ids=type==='wrong'?trPending().slice(0,16):TRAINING_PLAN[trState.day-1].questions.map(x=>x.id);if(!ids.length){trState.mode='wrong';render();return;}Object.assign(trState,{mode:'quiz',type,ids,index:0,selected:null,checked:false,answers:[],finished:false});render();}
 function trRecord(q,a){const st=trSaved.stats[q.id]||{attempts:0,correct:0,wrong:0,needsReview:false};st.attempts++;if(a===q.a){st.correct++;st.needsReview=false;}else{st.wrong++;st.needsReview=true;}st.lastAttempt=Date.now();trSaved.stats[q.id]=st;trSave();}
 document.addEventListener('click',event=>{const node=event.target.closest('[data-action^="tr-"]');if(!node)return;const action=node.dataset.action,day=Number(node.dataset.day),half=Number(node.dataset.half),i=Number(node.dataset.index);
@@ -61,7 +61,7 @@ function renderTrainingInsight(day,half){
 const trTrainCurve=n=>1.05*Math.exp(-n/6)+.12;
 const trValCurve=n=>.82*Math.exp(-n/4)+.25+.0075*Math.max(0,n-7)**2;
 function trCurve(epoch){
- const path=fn=>Array.from({length:20},(_,i)=>(26+i*14.4)+','+(115-fn(i+1)*85)).join(' ');
+ const path=fn=>Array.from({length:20},(_,i)=>(26+i*14.4)+','+(115-fn(i+1)*62)).join(' ');
  return '<svg class="tr-curve" viewBox="0 0 324 132" role="img" aria-label="教学示意：训练损失持续下降，验证损失先降后升"><path d="M26 12 V115 H310" stroke="#c9cfdf" fill="none"/><polyline points="'+path(trTrainCurve)+'" stroke="#5245bb" fill="none" stroke-width="2.5"/><polyline points="'+path(trValCurve)+'" stroke="#0e9077" fill="none" stroke-width="2.5"/><line x1="'+(26+(epoch-1)*14.4)+'" x2="'+(26+(epoch-1)*14.4)+'" y1="8" y2="115" stroke="#b59a40" stroke-dasharray="3 3"/><text x="30" y="11" font-size="8">损失（越低越好）</text><text x="250" y="129" font-size="8">训练轮次→</text></svg>';
 }
 const trLabelItems=[
