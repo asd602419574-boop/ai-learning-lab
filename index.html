@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="color-scheme" content="light">
   <meta name="description" content="人工智能基础学习：六大章节、18 个专题、120 道练习题，新增主动回忆、间隔复习、互动实验和情境闯关。">
-  <title>AI 交互学习平台 V1.2 · AI 探索实验室</title>
+  <title>AI 交互学习平台 · V1.3 课程实战</title>
   <style>
     :root{--bg:#f7f8fc;--surface:#fff;--ink:#182237;--muted:#69758b;--line:#e8ebf3;--accent:#5145e5;--accent-dark:#372abb;--accent-soft:#efedff;--teal:#0b927d;--teal-soft:#e7f8f2;--amber:#c78320;--amber-soft:#fff5df;--red:#c14556;--red-soft:#fff0f1;--shadow:0 12px 35px rgba(36,47,82,.055)}
     *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;line-height:1.6}button{font:inherit;cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid #a29cff;outline-offset:3px}button:disabled{cursor:not-allowed;opacity:.5} .shell{max-width:1400px;padding:0 30px;margin:0 auto}
@@ -127,13 +127,17 @@
 @media(max-width:500px){.daily-nav{gap:5px}.daily-nav button{padding:8px 11px;font-size:11px}.rating-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.lab-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.lab-devices{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}.lab-device{padding:8px 3px}.lab-device b{font-size:13px}.lab-device small{font-size:9px}.home-lead{padding:16px}.daily-tile small{font-size:10px}}
 
 </style>
+  <link rel="stylesheet" href="./training/training.css">
 </head>
 <body>
 <header class="topbar"><div class="shell topbar-in"><a class="brand" href="#" aria-label="人工智能基础学习首页"><span class="brand-mark">✳</span><span><strong>人工智能基础学习</strong><small>AI LEARNING LAB</small></span></a><div class="top-right"><span class="save-note">◎ 学习记录仅保存在本机浏览器</span><span class="header-pill" id="headerProgress">已掌握 0 / 6 章</span></div></div></header>
 <div class="shell layout"><aside class="sidebar" aria-label="课程目录"><div class="side-panel"><div class="side-overline">LEARNING PATH · 学习路径</div><nav class="chapter-nav" id="chapterNav" aria-label="章节列表"></nav><div class="side-footer"><div class="tiny">🔒 无需注册账号 · 学习记录不上传服务器</div><button type="button" data-action="clear">重置本机学习记录</button></div></div></aside>
-<main class="content" id="mainContent"><section class="hero"><div class="hero-overline">FOUNDATIONS · AI 基础入门</div><h1>从概念到实践，<br><em>系统学会人工智能。</em></h1><p>六大知识章节 · 120 道习题 · 互动实验 · 情境闯关 · 间隔复习。先动手，再理解；先回忆，再揭晓答案。</p><div class="hero-stats"><div class="stat"><strong>06</strong><small>系统章节</small></div><div class="stat"><strong id="conceptTotal">28</strong><small>基础概念</small></div><div class="stat"><strong id="questionTotal">120</strong><small>题库练习</small></div></div></section><section class="progress-strip" aria-label="课程完成进度"><div class="progress-info"><strong>整体学习进度</strong><small id="progressText">已掌握 0 章 · 继续学习</small></div><div class="bar" role="progressbar" aria-label="掌握章节比例" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar"><span id="progressFill" style="width:0%"></span></div><div class="percent" id="progressPct">0%</div></section><nav id="dailyNav" class="daily-nav" aria-label="学习功能快捷入口"><button type="button" data-action="nav-home" class="active">⌂ 学习首页</button><button type="button" data-action="nav-review">🧠 今日复习</button><button type="button" data-action="nav-lab">🔬 互动实验</button><button type="button" data-action="nav-mission">🏅 场景闯关</button></nav><div id="dynamicArea" aria-live="polite"></div><p class="footnote">本课程用于基础知识训练，不替代官方职业资格考试大纲或专业认证教材。</p></main></div>
+<main class="content" id="mainContent"><section class="hero"><div class="hero-overline">FOUNDATIONS · AI 基础入门</div><h1>从概念到实践，<br><em>系统学会人工智能。</em></h1><p>六大知识章节 · 120 道习题 · 互动实验 · 情境闯关 · 间隔复习。先动手，再理解；先回忆，再揭晓答案。</p><div class="hero-stats"><div class="stat"><strong>06</strong><small>系统章节</small></div><div class="stat"><strong id="conceptTotal">28</strong><small>基础概念</small></div><div class="stat"><strong id="questionTotal">120</strong><small>题库练习</small></div></div></section><section class="progress-strip" aria-label="课程完成进度"><div class="progress-info"><strong>整体学习进度</strong><small id="progressText">已掌握 0 章 · 继续学习</small></div><div class="bar" role="progressbar" aria-label="掌握章节比例" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar"><span id="progressFill" style="width:0%"></span></div><div class="percent" id="progressPct">0%</div></section><nav id="dailyNav" class="daily-nav" aria-label="学习功能快捷入口"><button type="button" data-action="nav-home" class="active">⌂ 学习首页</button><button type="button" data-action="nav-review">🧠 今日复习</button><button type="button" data-action="nav-lab">🔬 互动实验</button><button type="button" data-action="nav-mission">🏅 场景闯关</button><button type="button" data-action="nav-training">🗓️ 16 天培训实战</button></nav><div id="dynamicArea" aria-live="polite"></div><p class="footnote">本课程用于基础知识训练，不替代官方职业资格考试大纲或专业认证教材。</p></main></div>
+<script src="./training/training-data.js"></script>
+<script src="./training/training-ui.js"></script>
 <script>
 'use strict';
+/* Training module loads before the existing app. */
 const COURSES=[
   {title:'人工智能概述',subtitle:'定义、主要学派与基本分类',goal:'理解什么是人工智能，以及不同技术路径怎样实现智能。',example:'一个根据维修知识规则判断故障的专家系统，也属于人工智能，但不一定使用神经网络。',concepts:[
     ['人工智能（AI）','人工智能是研究与构建能够执行通常需要人类智能的任务的系统的领域，包括感知、学习、推理、规划和语言处理。'],
@@ -997,7 +1001,8 @@ const EXTRA_QUESTIONS=[
       "why": "切块有助于索引和检索可引用内容，需要兼顾上下文完整性。"
     },
     {
-      "q": "Embedding 在向量检索中通常用于？",      "o": [
+      "q": "Embedding 在向量检索中通常用于？",
+      "o": [
         "审批退款",
         "压缩图片不保留特征",
         "替代数据库账户",
@@ -1657,12 +1662,12 @@ function render(){
   $('progressPct').textContent=`${pct}%`;$('progressFill').style.width=`${pct}%`;
   $('progressBar').setAttribute('aria-valuenow',pct);
   $('chapterNav').innerHTML=COURSES.map((c,i)=>`<button type="button" class="chapter-button ${i===ui.chapter&&!['home','review','wrong'].includes(ui.tab)?'active':''} ${saved.mastered[i]?'passed':''}" data-action="chapter" data-index="${i}"><span class="chapter-no">${saved.mastered[i]?'✓':String(i+1).padStart(2,'0')}</span><span class="chapter-meta"><strong>${esc(c.title)}</strong><small>${esc(c.subtitle)}</small></span></button>`).join('');
-  document.querySelectorAll('#dailyNav [data-action]').forEach(b=>b.classList.toggle('active',({'nav-home':'home','nav-review':'review','nav-lab':'lab','nav-mission':'mission'})[b.dataset.action]===ui.tab));
+  document.querySelectorAll('#dailyNav [data-action]').forEach(b=>b.classList.toggle('active',({'nav-home':'home','nav-review':'review','nav-lab':'lab','nav-mission':'mission','nav-training':'training'})[b.dataset.action]===ui.tab));
   const c=COURSES[ui.chapter],globalTabs=['home','review','wrong'],global=globalTabs.includes(ui.tab);
-  const tabs=[['home','⌂ 学习首页'],['learn','① 章节课程'],['flash','② 主动回忆'],['lab','③ 互动实验'],['mission','④ 场景闯关'],['quiz','⑤ 章节测验'],['wrong',`⑥ 错题本 (${wrong})`],['review',`⑦ 今日复习 (${due})`]];
-  const currentTitle=ui.tab==='home'?'今日学习计划':ui.tab==='review'?'间隔复习':ui.tab==='wrong'?'错题复习':esc(c.title);
-  const currentDesc=ui.tab==='home'?'选择下一步学习任务。你可以阅读、尝试互动实验，再完成短挑战。':ui.tab==='review'?'先在脑中回忆，再揭示解释；根据记忆难度安排下一次复习。':ui.tab==='wrong'?'自动收集答错的题目，复习正确后移出列表。':esc(c.goal);
-  $('dynamicArea').innerHTML=`<div class="section-header"><div><div class="eyebrow">${global?'LEARNING HUB · PERSONAL PRACTICE':`CHAPTER ${String(ui.chapter+1).padStart(2,'0')} / 06`}</div><h2>${currentTitle}</h2><p>${currentDesc}</p></div><span class="status-pill ${!global&&saved.mastered[ui.chapter]?'complete':''}">${ui.tab==='review'?`${due} 张到期`:ui.tab==='wrong'?`${wrong} 道待复习`:ui.tab==='home'?'V1.2 · 探索实验室':saved.mastered[ui.chapter]?'✓ 本章练习达标':'◷ 课程进行中'}</span></div><div class="tabs" role="tablist" aria-label="学习方式">${tabs.map(([key,label])=>`<button type="button" role="tab" aria-selected="${ui.tab===key}" class="tab ${ui.tab===key?'active':''}" data-action="tab" data-tab="${key}">${label}</button>`).join('')}</div><section class="panel" role="tabpanel">${ui.tab==='home'?renderHome():ui.tab==='learn'?renderLearn(c):ui.tab==='flash'?renderFlash(c):ui.tab==='review'?renderReview():ui.tab==='wrong'?renderWrong():ui.tab==='lab'?renderLab():ui.tab==='mission'?renderMission():renderQuiz(c)}</section>`;
+  const tabs=[['home','⌂ 学习首页'],['learn','① 章节课程'],['flash','② 主动回忆'],['lab','③ 互动实验'],['mission','④ 场景闯关'],['quiz','⑤ 章节测验'],['wrong',`⑥ 错题本 (${wrong})`],['review',`⑦ 今日复习 (${due})`],['training','⑧ 16 天培训实战']];
+  const currentTitle=ui.tab==='home'?'今日学习计划':ui.tab==='review'?'间隔复习':ui.tab==='wrong'?'错题复习':ui.tab==='training'?'16 天培训实战':esc(c.title);
+  const currentDesc=ui.tab==='home'?'选择下一步学习任务。你可以阅读、尝试互动实验，再完成短挑战。':ui.tab==='review'?'先在脑中回忆，再揭示解释；根据记忆难度安排下一次复习。':ui.tab==='wrong'?'自动收集答错的题目，复习正确后移出列表。':ui.tab==='training'?'按参加培训的真实大纲：32 个半天学习任务、实操成果与 64 道配套练习。':esc(c.goal);
+  $('dynamicArea').innerHTML=`<div class="section-header"><div><div class="eyebrow">${global?'LEARNING HUB · PERSONAL PRACTICE':`CHAPTER ${String(ui.chapter+1).padStart(2,'0')} / 06`}</div><h2>${currentTitle}</h2><p>${currentDesc}</p></div><span class="status-pill ${!global&&saved.mastered[ui.chapter]?'complete':''}">${ui.tab==='review'?`${due} 张到期`:ui.tab==='wrong'?`${wrong} 道待复习`:ui.tab==='home'?'V1.3 · 培训课程':ui.tab==='training'?'16 天 · 32 时段':saved.mastered[ui.chapter]?'✓ 本章练习达标':'◷ 课程进行中'}</span></div><div class="tabs" role="tablist" aria-label="学习方式">${tabs.map(([key,label])=>`<button type="button" role="tab" aria-selected="${ui.tab===key}" class="tab ${ui.tab===key?'active':''}" data-action="tab" data-tab="${key}">${label}</button>`).join('')}</div><section class="panel" role="tabpanel">${ui.tab==='home'?renderHome():ui.tab==='learn'?renderLearn(c):ui.tab==='flash'?renderFlash(c):ui.tab==='review'?renderReview():ui.tab==='wrong'?renderWrong():ui.tab==='lab'?renderLab():ui.tab==='mission'?renderMission():ui.tab==='training'?renderTraining():renderQuiz(c)}</section>`;
   if(ui.tab==='lab')updateLabLive();
 }
 
@@ -1709,6 +1714,7 @@ document.addEventListener('click',event=>{
     case 'nav-review':case 'home-review':initReview();break;
     case 'nav-lab':case 'home-lab':changeTab('lab');break;
     case 'nav-mission':case 'home-mission':changeTab('mission');break;
+    case 'nav-training':changeTab('training');break;
     case 'home-continue':resetChapter(i,'learn');break;
     case 'home-chapter':resetChapter(i,'learn');break;
     case 'concept':ui.opened=ui.opened===i?-1:i;render();break;
