@@ -400,6 +400,7 @@ const part1 = `<!DOCTYPE html>
   <link rel="stylesheet" href="./projects/projects.css">
   <link rel="stylesheet" href="./training/training.css">
   <link rel="stylesheet" href="./feedback/feedback.css">
+  <link rel="stylesheet" href="./desktop.css">
 </head>
 <body>
 <header class="topbar">
