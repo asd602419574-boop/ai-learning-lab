@@ -1,0 +1,21 @@
+[Unit]
+Description=AI Learning Lab feedback inbox
+After=network.target
+
+[Service]
+User=learn-feedback
+Group=learn-feedback
+WorkingDirectory=/opt/learn-feedback/current/server
+EnvironmentFile=/etc/learn-feedback.env
+StateDirectory=learn-feedback
+StateDirectoryMode=0700
+ExecStart=/opt/learn-feedback/venv/bin/gunicorn --workers 1 --threads 2 --bind 127.0.0.1:8766 --timeout 30 'app:create_app()'
+Restart=on-failure
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

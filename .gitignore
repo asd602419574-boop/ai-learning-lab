@@ -9,3 +9,6 @@ test-results/
 *.log
 .env
 .env.*
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
