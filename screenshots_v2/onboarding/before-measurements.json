@@ -1,0 +1,88 @@
+{
+  "measurements": [
+    {
+      "profile": "mobile",
+      "text": "开始第一份实作 →",
+      "href": "#lesson?id=ai-basics",
+      "x": 43,
+      "y": 620.484375,
+      "width": 304,
+      "height": 47.09375,
+      "viewportHeight": 844,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    },
+    {
+      "profile": "1k",
+      "text": "开始第一份实作 →",
+      "href": "#lesson?id=ai-basics",
+      "x": 336.03125,
+      "y": 599.734375,
+      "width": 172,
+      "height": 47.09375,
+      "viewportHeight": 1080,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    },
+    {
+      "profile": "2k",
+      "text": "开始第一份实作 →",
+      "href": "#lesson?id=ai-basics",
+      "x": 362.90625,
+      "y": 630.140625,
+      "width": 172,
+      "height": 47.09375,
+      "viewportHeight": 1440,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    },
+    {
+      "profile": "4k",
+      "text": "开始第一份实作 →",
+      "href": "#lesson?id=ai-basics",
+      "x": 385,
+      "y": 630.140625,
+      "width": 172,
+      "height": 47.09375,
+      "viewportHeight": 2160,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    },
+    {
+      "profile": "returning-1k",
+      "text": "继续本节实作 →",
+      "href": "#lesson?id=clear-task",
+      "x": 336.03125,
+      "y": 599.734375,
+      "width": 158,
+      "height": 47.09375,
+      "viewportHeight": 1080,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    }
+  ],
+  "failures": [
+    "mobile: explicit first-visit guide",
+    "mobile: plain beginner wording and first lesson CTA",
+    "mobile: explains four lesson introduction then six chapter foundations",
+    "mobile: newcomers do not see three zero metrics",
+    "1k: explicit first-visit guide",
+    "1k: plain beginner wording and first lesson CTA",
+    "1k: explains four lesson introduction then six chapter foundations",
+    "1k: newcomers do not see three zero metrics",
+    "2k: explicit first-visit guide",
+    "2k: plain beginner wording and first lesson CTA",
+    "2k: explains four lesson introduction then six chapter foundations",
+    "2k: newcomers do not see three zero metrics",
+    "4k: explicit first-visit guide",
+    "4k: plain beginner wording and first lesson CTA",
+    "4k: explains four lesson introduction then six chapter foundations",
+    "4k: newcomers do not see three zero metrics"
+  ],
+  "errors": []
+}

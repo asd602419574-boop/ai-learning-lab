@@ -1,0 +1,213 @@
+{
+  "measurements": [
+    {
+      "profile": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "deviceScaleFactor": 1,
+      "simulation": "browser viewport and DPR; not physical Windows scaling",
+      "text": "了解课程安排，开始基础学习 →",
+      "href": "#pathways",
+      "x": 43,
+      "y": 530.734375,
+      "width": 304,
+      "height": 47.09375,
+      "viewportHeight": 844,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    },
+    {
+      "profile": "1k",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "deviceScaleFactor": 1,
+      "simulation": "browser viewport and DPR; not physical Windows scaling",
+      "text": "了解课程安排，开始基础学习 →",
+      "href": "#pathways",
+      "x": 336.03125,
+      "y": 536.734375,
+      "width": 256,
+      "height": 47.09375,
+      "viewportHeight": 1080,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    },
+    {
+      "profile": "2k",
+      "viewport": {
+        "width": 2560,
+        "height": 1440
+      },
+      "deviceScaleFactor": 1,
+      "simulation": "browser viewport and DPR; not physical Windows scaling",
+      "text": "了解课程安排，开始基础学习 →",
+      "href": "#pathways",
+      "x": 362.90625,
+      "y": 567.140625,
+      "width": 256,
+      "height": 47.09375,
+      "viewportHeight": 1440,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    },
+    {
+      "profile": "4k",
+      "viewport": {
+        "width": 3840,
+        "height": 2160
+      },
+      "deviceScaleFactor": 1,
+      "simulation": "browser viewport and DPR; not physical Windows scaling",
+      "text": "了解课程安排，开始基础学习 →",
+      "href": "#pathways",
+      "x": 385,
+      "y": 567.140625,
+      "width": 256,
+      "height": 47.09375,
+      "viewportHeight": 2160,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    },
+    {
+      "profile": "1k-125",
+      "viewport": {
+        "width": 1536,
+        "height": 864
+      },
+      "deviceScaleFactor": 1.25,
+      "simulation": "browser viewport and DPR; not physical Windows scaling",
+      "text": "了解课程安排，开始基础学习 →",
+      "href": "#pathways",
+      "x": 312.21875,
+      "y": 504.21875,
+      "width": 256,
+      "height": 47.09375,
+      "viewportHeight": 864,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    },
+    {
+      "profile": "2k-150",
+      "viewport": {
+        "width": 1707,
+        "height": 960
+      },
+      "deviceScaleFactor": 1.5,
+      "simulation": "browser viewport and DPR; not physical Windows scaling",
+      "text": "了解课程安排，开始基础学习 →",
+      "href": "#pathways",
+      "x": 322.8125,
+      "y": 518.9375,
+      "width": 256,
+      "height": 47.09375,
+      "viewportHeight": 960,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    },
+    {
+      "profile": "4k-150",
+      "viewport": {
+        "width": 2560,
+        "height": 1440
+      },
+      "deviceScaleFactor": 1.5,
+      "simulation": "browser viewport and DPR; not physical Windows scaling",
+      "text": "了解课程安排，开始基础学习 →",
+      "href": "#pathways",
+      "x": 362.90625,
+      "y": 567.140625,
+      "width": 256,
+      "height": 47.09375,
+      "viewportHeight": 1440,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    },
+    {
+      "profile": "4k-200",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "deviceScaleFactor": 2,
+      "simulation": "browser viewport and DPR; not physical Windows scaling",
+      "text": "了解课程安排，开始基础学习 →",
+      "href": "#pathways",
+      "x": 336.03125,
+      "y": 536.734375,
+      "width": 256,
+      "height": 47.09375,
+      "viewportHeight": 1080,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    },
+    {
+      "profile": "transition",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "deviceScaleFactor": 1,
+      "simulation": "browser viewport and DPR; not physical Windows scaling",
+      "text": "了解课程安排，开始基础学习 →",
+      "href": "#pathways",
+      "x": 277.765625,
+      "y": 471.296875,
+      "width": 256,
+      "height": 47.09375,
+      "viewportHeight": 768,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    },
+    {
+      "profile": "returning-1k",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "deviceScaleFactor": 1,
+      "text": "继续本节练习 →",
+      "href": "#lesson?id=clear-task&view=practice",
+      "x": 336.03125,
+      "y": 599.734375,
+      "width": 158,
+      "height": 47.09375,
+      "viewportHeight": 1080,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    },
+    {
+      "profile": "legacy-1k",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "deviceScaleFactor": 1,
+      "text": "了解课程安排，开始基础学习 →",
+      "href": "#pathways",
+      "x": 336.03125,
+      "y": 541.234375,
+      "width": 256,
+      "height": 47.09375,
+      "viewportHeight": 1080,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    }
+  ],
+  "failures": [],
+  "errors": []
+}

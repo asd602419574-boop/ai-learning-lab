@@ -1,0 +1,98 @@
+{
+  "checks": 23,
+  "results": [
+    {
+      "name": "Default lesson is teaching material before prediction",
+      "pass": true
+    },
+    {
+      "name": "ai-basics starts with full reading",
+      "pass": true
+    },
+    {
+      "name": "clear-task starts with full reading",
+      "pass": true
+    },
+    {
+      "name": "reliable-ai starts with full reading",
+      "pass": true
+    },
+    {
+      "name": "evaluate-results starts with full reading",
+      "pass": true
+    },
+    {
+      "name": "Practice is explicit and retains old answers and step",
+      "pass": true
+    },
+    {
+      "name": "Overview footer opens reading at the top",
+      "pass": true
+    },
+    {
+      "name": "Reading bottom opens practice at the top",
+      "pass": true
+    },
+    {
+      "name": "Practice return opens material at the top",
+      "pass": true
+    },
+    {
+      "name": "In-page material contents still jump to the selected section",
+      "pass": true
+    },
+    {
+      "name": "Program anchor still jumps to the training outline",
+      "pass": true
+    },
+    {
+      "name": "Sidebar foundation button returns overview to the top",
+      "pass": true
+    },
+    {
+      "name": "Overview explains course structure, exposes actual 16 day plan and foundations",
+      "pass": true
+    },
+    {
+      "name": "1k overview fits native viewport",
+      "pass": true
+    },
+    {
+      "name": "1k reading fits native viewport",
+      "pass": true
+    },
+    {
+      "name": "2k overview fits native viewport",
+      "pass": true
+    },
+    {
+      "name": "2k reading fits native viewport",
+      "pass": true
+    },
+    {
+      "name": "4k overview fits native viewport",
+      "pass": true
+    },
+    {
+      "name": "4k reading fits native viewport",
+      "pass": true
+    },
+    {
+      "name": "tablet overview fits native viewport",
+      "pass": true
+    },
+    {
+      "name": "tablet reading fits native viewport",
+      "pass": true
+    },
+    {
+      "name": "mobile overview fits native viewport",
+      "pass": true
+    },
+    {
+      "name": "mobile reading fits native viewport",
+      "pass": true
+    }
+  ],
+  "failures": []
+}

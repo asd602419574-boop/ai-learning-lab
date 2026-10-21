@@ -25,7 +25,7 @@ const server = http.createServer((req,res)=>{
     assert.equal(await page.locator('.editorial-courses article').count(),3);
     assert.equal(await page.locator('.editorial-resources article').count(),4);
     assert.equal(await page.locator('.editorial-tabs [role="tab"]').count(),4);
-    assert.equal(await page.locator('.editorial-steps li').count(),6);
+    assert.equal(await page.locator('.editorial-study-steps li').count(),4);
     for(const tab of ['foundation','application','building','advanced']) {
       await page.locator(`[data-learning-path="${tab}"]`).click();
       assert.equal(await page.locator('.editorial-courses article').count(),3);

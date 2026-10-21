@@ -1,0 +1,601 @@
+{
+  "checks": 9,
+  "results": [
+    {
+      "name": "1k",
+      "pass": true,
+      "measures": {
+        "viewport": 1920,
+        "scroll": 1920,
+        "header": {
+          "x": 469,
+          "y": 77,
+          "width": 878,
+          "right": 1347,
+          "bottom": 259.34375
+        },
+        "intro": {
+          "x": 469,
+          "y": 283.34375,
+          "width": 878,
+          "right": 1347,
+          "bottom": 331.140625
+        },
+        "layout": {
+          "x": 428,
+          "y": 40,
+          "width": 1280,
+          "right": 1708,
+          "bottom": 4107.96875
+        },
+        "article": {
+          "x": 428,
+          "y": 40,
+          "width": 960,
+          "right": 1388,
+          "bottom": 4107.96875
+        },
+        "first": {
+          "x": 469,
+          "y": 359.140625,
+          "width": 878,
+          "right": 1347,
+          "bottom": 700.890625
+        },
+        "paragraph": {
+          "x": 469,
+          "y": 413.390625,
+          "width": 878,
+          "right": 1347,
+          "bottom": 507.703125
+        },
+        "arrangement": {
+          "x": 1245.375,
+          "y": 77.84375,
+          "width": 101.625,
+          "right": 1347,
+          "bottom": 98.234375
+        },
+        "toc": {
+          "x": 1428,
+          "y": 40,
+          "width": 280,
+          "right": 1708,
+          "bottom": 423.53125
+        },
+        "tocPosition": "sticky",
+        "sectionWidths": [
+          878,
+          878,
+          878,
+          878,
+          878,
+          878,
+          878
+        ]
+      }
+    },
+    {
+      "name": "2k",
+      "pass": true,
+      "measures": {
+        "viewport": 2560,
+        "scroll": 2560,
+        "header": {
+          "x": 789,
+          "y": 93,
+          "width": 878,
+          "right": 1667,
+          "bottom": 282.578125
+        },
+        "intro": {
+          "x": 789,
+          "y": 306.578125,
+          "width": 878,
+          "right": 1667,
+          "bottom": 354.375
+        },
+        "layout": {
+          "x": 748,
+          "y": 56,
+          "width": 1280,
+          "right": 2028,
+          "bottom": 4131.203125
+        },
+        "article": {
+          "x": 748,
+          "y": 56,
+          "width": 960,
+          "right": 1708,
+          "bottom": 4131.203125
+        },
+        "first": {
+          "x": 789,
+          "y": 382.375,
+          "width": 878,
+          "right": 1667,
+          "bottom": 724.125
+        },
+        "paragraph": {
+          "x": 789,
+          "y": 436.625,
+          "width": 878,
+          "right": 1667,
+          "bottom": 530.9375
+        },
+        "arrangement": {
+          "x": 1565.375,
+          "y": 93.84375,
+          "width": 101.625,
+          "right": 1667,
+          "bottom": 114.234375
+        },
+        "toc": {
+          "x": 1748,
+          "y": 56,
+          "width": 280,
+          "right": 2028,
+          "bottom": 439.53125
+        },
+        "tocPosition": "sticky",
+        "sectionWidths": [
+          878,
+          878,
+          878,
+          878,
+          878,
+          878,
+          878
+        ]
+      }
+    },
+    {
+      "name": "4k",
+      "pass": true,
+      "measures": {
+        "viewport": 3840,
+        "scroll": 3840,
+        "header": {
+          "x": 1429,
+          "y": 93,
+          "width": 878,
+          "right": 2307,
+          "bottom": 282.578125
+        },
+        "intro": {
+          "x": 1429,
+          "y": 306.578125,
+          "width": 878,
+          "right": 2307,
+          "bottom": 354.375
+        },
+        "layout": {
+          "x": 1388,
+          "y": 56,
+          "width": 1280,
+          "right": 2668,
+          "bottom": 4131.203125
+        },
+        "article": {
+          "x": 1388,
+          "y": 56,
+          "width": 960,
+          "right": 2348,
+          "bottom": 4131.203125
+        },
+        "first": {
+          "x": 1429,
+          "y": 382.375,
+          "width": 878,
+          "right": 2307,
+          "bottom": 724.125
+        },
+        "paragraph": {
+          "x": 1429,
+          "y": 436.625,
+          "width": 878,
+          "right": 2307,
+          "bottom": 530.9375
+        },
+        "arrangement": {
+          "x": 2205.375,
+          "y": 93.84375,
+          "width": 101.625,
+          "right": 2307,
+          "bottom": 114.234375
+        },
+        "toc": {
+          "x": 2388,
+          "y": 56,
+          "width": 280,
+          "right": 2668,
+          "bottom": 439.53125
+        },
+        "tocPosition": "sticky",
+        "sectionWidths": [
+          878,
+          878,
+          878,
+          878,
+          878,
+          878,
+          878
+        ]
+      }
+    },
+    {
+      "name": "user",
+      "pass": true,
+      "measures": {
+        "viewport": 3567,
+        "scroll": 3567,
+        "header": {
+          "x": 1292.5,
+          "y": 93,
+          "width": 878,
+          "right": 2170.5,
+          "bottom": 282.578125
+        },
+        "intro": {
+          "x": 1292.5,
+          "y": 306.578125,
+          "width": 878,
+          "right": 2170.5,
+          "bottom": 354.375
+        },
+        "layout": {
+          "x": 1251.5,
+          "y": 56,
+          "width": 1280,
+          "right": 2531.5,
+          "bottom": 4131.203125
+        },
+        "article": {
+          "x": 1251.5,
+          "y": 56,
+          "width": 960,
+          "right": 2211.5,
+          "bottom": 4131.203125
+        },
+        "first": {
+          "x": 1292.5,
+          "y": 382.375,
+          "width": 878,
+          "right": 2170.5,
+          "bottom": 724.125
+        },
+        "paragraph": {
+          "x": 1292.5,
+          "y": 436.625,
+          "width": 878,
+          "right": 2170.5,
+          "bottom": 530.9375
+        },
+        "arrangement": {
+          "x": 2068.875,
+          "y": 93.84375,
+          "width": 101.625,
+          "right": 2170.5,
+          "bottom": 114.234375
+        },
+        "toc": {
+          "x": 2251.5,
+          "y": 56,
+          "width": 280,
+          "right": 2531.5,
+          "bottom": 439.53125
+        },
+        "tocPosition": "sticky",
+        "sectionWidths": [
+          878,
+          878,
+          878,
+          878,
+          878,
+          878,
+          878
+        ]
+      }
+    },
+    {
+      "name": "tablet",
+      "pass": true,
+      "measures": {
+        "viewport": 1024,
+        "scroll": 1024,
+        "header": {
+          "x": 279.765625,
+          "y": 136.796875,
+          "width": 680.46875,
+          "right": 960.234375,
+          "bottom": 312.875
+        },
+        "intro": {
+          "x": 279.765625,
+          "y": 336.875,
+          "width": 680.46875,
+          "right": 960.234375,
+          "bottom": 384.671875
+        },
+        "layout": {
+          "x": 248.765625,
+          "y": 40,
+          "width": 742.46875,
+          "right": 991.234375,
+          "bottom": 4478.4375
+        },
+        "article": {
+          "x": 248.765625,
+          "y": 107.796875,
+          "width": 742.46875,
+          "right": 991.234375,
+          "bottom": 4478.4375
+        },
+        "first": {
+          "x": 279.765625,
+          "y": 412.671875,
+          "width": 680.46875,
+          "right": 960.234375,
+          "bottom": 780.046875
+        },
+        "paragraph": {
+          "x": 279.765625,
+          "y": 461.109375,
+          "width": 680.46875,
+          "right": 960.234375,
+          "bottom": 555.421875
+        },
+        "arrangement": {
+          "x": 858.609375,
+          "y": 137.640625,
+          "width": 101.625,
+          "right": 960.234375,
+          "bottom": 158.03125
+        },
+        "toc": {
+          "x": 248.765625,
+          "y": 40,
+          "width": 742.46875,
+          "right": 991.234375,
+          "bottom": 89.796875
+        },
+        "tocPosition": "static",
+        "sectionWidths": [
+          680.46875,
+          680.46875,
+          680.46875,
+          680.46875,
+          680.46875,
+          680.46875,
+          680.46875
+        ]
+      }
+    },
+    {
+      "name": "mobile",
+      "pass": true,
+      "measures": {
+        "viewport": 390,
+        "scroll": 390,
+        "header": {
+          "x": 41,
+          "y": 215.59375,
+          "width": 308,
+          "right": 349,
+          "bottom": 440.25
+        },
+        "intro": {
+          "x": 41,
+          "y": 458.25,
+          "width": 308,
+          "right": 349,
+          "bottom": 506.046875
+        },
+        "layout": {
+          "x": 20,
+          "y": 122.796875,
+          "width": 350,
+          "right": 370,
+          "bottom": 7365.5625
+        },
+        "article": {
+          "x": 20,
+          "y": 190.59375,
+          "width": 350,
+          "right": 370,
+          "bottom": 7365.5625
+        },
+        "first": {
+          "x": 41,
+          "y": 530.046875,
+          "width": 308,
+          "right": 349,
+          "bottom": 1180.359375
+        },
+        "paragraph": {
+          "x": 41,
+          "y": 578.484375,
+          "width": 308,
+          "right": 349,
+          "bottom": 767.109375
+        },
+        "arrangement": {
+          "x": 247.375,
+          "y": 215.59375,
+          "width": 101.625,
+          "right": 349,
+          "bottom": 235.984375
+        },
+        "toc": {
+          "x": 20,
+          "y": 122.796875,
+          "width": 350,
+          "right": 370,
+          "bottom": 172.59375
+        },
+        "tocPosition": "static",
+        "sectionWidths": [
+          308,
+          308,
+          308,
+          308,
+          308,
+          308,
+          308
+        ]
+      }
+    },
+    {
+      "name": "windows125",
+      "pass": true,
+      "measures": {
+        "viewport": 1536,
+        "scroll": 1536,
+        "header": {
+          "x": 306.140625,
+          "y": 77,
+          "width": 819.71875,
+          "right": 1125.859375,
+          "bottom": 253.078125
+        },
+        "intro": {
+          "x": 306.140625,
+          "y": 277.078125,
+          "width": 819.71875,
+          "right": 1125.859375,
+          "bottom": 324.875
+        },
+        "layout": {
+          "x": 265.140625,
+          "y": 40,
+          "width": 1221.71875,
+          "right": 1486.859375,
+          "bottom": 4112.265625
+        },
+        "article": {
+          "x": 265.140625,
+          "y": 40,
+          "width": 901.71875,
+          "right": 1166.859375,
+          "bottom": 4112.265625
+        },
+        "first": {
+          "x": 306.140625,
+          "y": 352.875,
+          "width": 819.71875,
+          "right": 1125.859375,
+          "bottom": 720.25
+        },
+        "paragraph": {
+          "x": 306.140625,
+          "y": 401.3125,
+          "width": 819.71875,
+          "right": 1125.859375,
+          "bottom": 495.625
+        },
+        "arrangement": {
+          "x": 1024.234375,
+          "y": 77.84375,
+          "width": 101.625,
+          "right": 1125.859375,
+          "bottom": 98.234375
+        },
+        "toc": {
+          "x": 1206.859375,
+          "y": 40,
+          "width": 280,
+          "right": 1486.859375,
+          "bottom": 423.53125
+        },
+        "tocPosition": "sticky",
+        "sectionWidths": [
+          819.71875,
+          819.71875,
+          819.71875,
+          819.71875,
+          819.71875,
+          819.71875,
+          819.71875
+        ]
+      }
+    },
+    {
+      "name": "windows200",
+      "pass": true,
+      "measures": {
+        "viewport": 1920,
+        "scroll": 1920,
+        "header": {
+          "x": 469,
+          "y": 77,
+          "width": 878,
+          "right": 1347,
+          "bottom": 259.34375
+        },
+        "intro": {
+          "x": 469,
+          "y": 283.34375,
+          "width": 878,
+          "right": 1347,
+          "bottom": 331.140625
+        },
+        "layout": {
+          "x": 428,
+          "y": 40,
+          "width": 1280,
+          "right": 1708,
+          "bottom": 4107.96875
+        },
+        "article": {
+          "x": 428,
+          "y": 40,
+          "width": 960,
+          "right": 1388,
+          "bottom": 4107.96875
+        },
+        "first": {
+          "x": 469,
+          "y": 359.140625,
+          "width": 878,
+          "right": 1347,
+          "bottom": 700.890625
+        },
+        "paragraph": {
+          "x": 469,
+          "y": 413.390625,
+          "width": 878,
+          "right": 1347,
+          "bottom": 507.703125
+        },
+        "arrangement": {
+          "x": 1245.375,
+          "y": 77.84375,
+          "width": 101.625,
+          "right": 1347,
+          "bottom": 98.234375
+        },
+        "toc": {
+          "x": 1428,
+          "y": 40,
+          "width": 280,
+          "right": 1708,
+          "bottom": 423.53125
+        },
+        "tocPosition": "sticky",
+        "sectionWidths": [
+          878,
+          878,
+          878,
+          878,
+          878,
+          878,
+          878
+        ]
+      }
+    },
+    {
+      "name": "Four readings preserve seven keys and existing practice",
+      "pass": true
+    }
+  ]
+}

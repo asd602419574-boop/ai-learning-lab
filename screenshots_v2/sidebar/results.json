@@ -1,0 +1,24 @@
+{
+  "checks": 19,
+  "results": [
+    "Overview has grouped shared navigation and no duplicate portfolio",
+    "Unique current row #pathways",
+    "Unique current row #pathways?anchor=training-overview",
+    "Unique current row #lesson?id=ai-basics",
+    "Unique current row #lesson?id=ai-basics&view=practice",
+    "Unique current row #lesson?id=clear-task",
+    "Unique current row #lesson?id=clear-task&view=practice",
+    "Unique current row #lesson?id=reliable-ai",
+    "Unique current row #lesson?id=reliable-ai&view=practice",
+    "Unique current row #lesson?id=evaluate-results",
+    "Unique current row #lesson?id=evaluate-results&view=practice",
+    "First home sidebar uses the same rows",
+    "Visible scrollable sidebar 1k",
+    "Visible scrollable sidebar 2k",
+    "Visible scrollable sidebar 4k",
+    "Visible scrollable sidebar tablet",
+    "Visible scrollable sidebar mobile",
+    "Directory reaches #courses?mode=foundations&ch=0&tab=learn",
+    "Directory reaches #courses?mode=textbook"
+  ]
+}

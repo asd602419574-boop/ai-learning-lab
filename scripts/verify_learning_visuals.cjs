@@ -14,13 +14,13 @@ const cases = [
   ['transition',1024,768,1], ['mobile',390,844,1]
 ];
 const routes = [
-  ['home','#home','[data-learning-home]'], ['lesson-workspace','#lesson?id=reliable-ai','[data-workshop]',1],
-  ['lesson-reading','#lesson?id=reliable-ai','[data-workshop]',3],
+  ['home','#home','[data-learning-home]'], ['lesson-workspace','#lesson?id=reliable-ai&view=practice','[data-workshop]',1],
+  ['lesson-reading','#lesson?id=reliable-ai&view=practice','[data-workshop]',3],
   ['portfolio','#my-learning','[data-workshop]'],
   ['textbook','#courses?mode=textbook&lesson=transformers','.book-article'],
   ['rag-project','#projects?id=rag','.studio-work']
 ];
-if(stage==='p2') routes.push(['ai-basics-workspace','#lesson?id=ai-basics','[data-workshop]',1],['clear-task-workspace','#lesson?id=clear-task','[data-workshop]',1],['evaluate-results-workspace','#lesson?id=evaluate-results','[data-workshop]',1]);
+if(stage==='p2') routes.push(['ai-basics-workspace','#lesson?id=ai-basics&view=practice','[data-workshop]',1],['clear-task-workspace','#lesson?id=clear-task&view=practice','[data-workshop]',1],['evaluate-results-workspace','#lesson?id=evaluate-results&view=practice','[data-workshop]',1]);
 const report = {stage,portfolioFixture:stage==='p2'?'Four explicitly fictional task-complete artifacts, created only in isolated browser contexts for layout measurement. No user records touched.':'none',kind:'controlled-browser-simulation',physicalWindowsDisplayVerified:false,browserZoom:'100% controlled default; no physical zoom observation',systemScale:'Unobserved; DPR and CSS viewports simulated independently',generatedAt:new Date().toISOString(),measurements:[],failures:[]};
 const server = http.createServer((req,res) => {
   try {

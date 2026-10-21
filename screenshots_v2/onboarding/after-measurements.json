@@ -1,0 +1,213 @@
+{
+  "measurements": [
+    {
+      "profile": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "deviceScaleFactor": 1,
+      "simulation": "browser viewport and DPR; not physical Windows scaling",
+      "text": "从第1课开始：认识 AI →",
+      "href": "#lesson?id=ai-basics",
+      "x": 43,
+      "y": 494.90625,
+      "width": 304,
+      "height": 47.09375,
+      "viewportHeight": 844,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    },
+    {
+      "profile": "1k",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "deviceScaleFactor": 1,
+      "simulation": "browser viewport and DPR; not physical Windows scaling",
+      "text": "从第1课开始：认识 AI →",
+      "href": "#lesson?id=ai-basics",
+      "x": 336.03125,
+      "y": 482.984375,
+      "width": 214.03125,
+      "height": 47.09375,
+      "viewportHeight": 1080,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    },
+    {
+      "profile": "2k",
+      "viewport": {
+        "width": 2560,
+        "height": 1440
+      },
+      "deviceScaleFactor": 1,
+      "simulation": "browser viewport and DPR; not physical Windows scaling",
+      "text": "从第1课开始：认识 AI →",
+      "href": "#lesson?id=ai-basics",
+      "x": 362.90625,
+      "y": 513.390625,
+      "width": 214.03125,
+      "height": 47.09375,
+      "viewportHeight": 1440,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    },
+    {
+      "profile": "4k",
+      "viewport": {
+        "width": 3840,
+        "height": 2160
+      },
+      "deviceScaleFactor": 1,
+      "simulation": "browser viewport and DPR; not physical Windows scaling",
+      "text": "从第1课开始：认识 AI →",
+      "href": "#lesson?id=ai-basics",
+      "x": 385,
+      "y": 513.390625,
+      "width": 214.03125,
+      "height": 47.09375,
+      "viewportHeight": 2160,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    },
+    {
+      "profile": "1k-125",
+      "viewport": {
+        "width": 1536,
+        "height": 864
+      },
+      "deviceScaleFactor": 1.25,
+      "simulation": "browser viewport and DPR; not physical Windows scaling",
+      "text": "从第1课开始：认识 AI →",
+      "href": "#lesson?id=ai-basics",
+      "x": 312.21875,
+      "y": 460.96875,
+      "width": 214.03125,
+      "height": 47.09375,
+      "viewportHeight": 864,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    },
+    {
+      "profile": "2k-150",
+      "viewport": {
+        "width": 1707,
+        "height": 960
+      },
+      "deviceScaleFactor": 1.5,
+      "simulation": "browser viewport and DPR; not physical Windows scaling",
+      "text": "从第1课开始：认识 AI →",
+      "href": "#lesson?id=ai-basics",
+      "x": 322.8125,
+      "y": 470.890625,
+      "width": 214.03125,
+      "height": 47.09375,
+      "viewportHeight": 960,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    },
+    {
+      "profile": "4k-150",
+      "viewport": {
+        "width": 2560,
+        "height": 1440
+      },
+      "deviceScaleFactor": 1.5,
+      "simulation": "browser viewport and DPR; not physical Windows scaling",
+      "text": "从第1课开始：认识 AI →",
+      "href": "#lesson?id=ai-basics",
+      "x": 362.90625,
+      "y": 513.390625,
+      "width": 214.03125,
+      "height": 47.09375,
+      "viewportHeight": 1440,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    },
+    {
+      "profile": "4k-200",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "deviceScaleFactor": 2,
+      "simulation": "browser viewport and DPR; not physical Windows scaling",
+      "text": "从第1课开始：认识 AI →",
+      "href": "#lesson?id=ai-basics",
+      "x": 336.03125,
+      "y": 482.984375,
+      "width": 214.03125,
+      "height": 47.09375,
+      "viewportHeight": 1080,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    },
+    {
+      "profile": "transition",
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "deviceScaleFactor": 1,
+      "simulation": "browser viewport and DPR; not physical Windows scaling",
+      "text": "从第1课开始：认识 AI →",
+      "href": "#lesson?id=ai-basics",
+      "x": 277.765625,
+      "y": 435.46875,
+      "width": 214.03125,
+      "height": 47.09375,
+      "viewportHeight": 768,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    },
+    {
+      "profile": "returning-1k",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "deviceScaleFactor": 1,
+      "text": "继续本节实作 →",
+      "href": "#lesson?id=clear-task",
+      "x": 336.03125,
+      "y": 599.734375,
+      "width": 158,
+      "height": 47.09375,
+      "viewportHeight": 1080,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    },
+    {
+      "profile": "legacy-1k",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "deviceScaleFactor": 1,
+      "text": "开始入门第1课 →",
+      "href": "#lesson?id=ai-basics",
+      "x": 336.03125,
+      "y": 599.734375,
+      "width": 166.640625,
+      "height": 47.09375,
+      "viewportHeight": 1080,
+      "inFirstScreen": true,
+      "unobstructed": true,
+      "overflow": false
+    }
+  ],
+  "failures": [],
+  "errors": []
+}
