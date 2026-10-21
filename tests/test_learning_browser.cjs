@@ -43,7 +43,8 @@ const server = http.createServer((req, res) => {
     assert.equal(await page.locator('[data-learning-path="application"]').getAttribute('aria-selected'),'true');
     await page.locator('[data-learning-start]').click();
     await page.waitForSelector('[data-workshop]');
-    assert.match(page.url(), /#lesson\?id=reliable-ai/);
+    assert.match(page.url(), /#lesson\?id=ai-basics/);
+    await page.goto(base+'#lesson?id=reliable-ai');
     await page.locator('[data-prediction]').first().check();
     await page.reload();
     assert.equal(await page.locator('[data-prediction]').first().isChecked(),true,'Prediction survives reload');

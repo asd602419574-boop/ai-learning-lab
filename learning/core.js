@@ -6,8 +6,10 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
   const KEY = 'ai_lab_learning_v2';
+  const PATHWAY_KEY = 'ai_lab_pathway_v1';
+  const LESSON_IDS = Object.freeze(['ai-basics','clear-task','reliable-ai','evaluate-results']);
   // Source-proven keys: index.html, content/reader.js, training/training-ui.js, projects/app.js.
-  const KEYS = ['ai_foundations_learning_v1', 'ai_lab_textbook_v1', 'ai_training_16day_v1', 'ai_lab_projects_v1', 'ai_training_practice_v1', KEY];
+  const KEYS = ['ai_foundations_learning_v1', 'ai_lab_textbook_v1', 'ai_training_16day_v1', 'ai_lab_projects_v1', 'ai_training_practice_v1', KEY, PATHWAY_KEY];
   const MAX = 2000000;
   const own = (o,k) => Object.prototype.hasOwnProperty.call(o,k);
   const object = x => x !== null && typeof x === 'object' && !Array.isArray(x) && (Object.getPrototypeOf(x) === Object.prototype || Object.getPrototypeOf(x) === null);
@@ -54,6 +56,27 @@
     return s;
   }
   function normalize(x) { return typeof x==='string'?x.normalize('NFKC').replace(/\s+/gu,'').toLowerCase():''; }
+  function lessonIdCheck(id) {
+    if(!LESSON_IDS.includes(id))throw Error('不支持的课程标识');
+  }
+  function pathwayCheck(value) {
+    safe(value);
+    if(!object(value)||Object.keys(value).length!==2||value.schemaVersion!==1||!object(value.lessons))throw Error('课程记录结构或版本不支持，原始数据已保留');
+    for(const id of Object.keys(value.lessons)) {
+      lessonIdCheck(id);
+      if(id==='reliable-ai')throw Error('可靠使用AI课程应保留在原有记录中');
+      const state=stateCheck(value.lessons[id]);
+      if(state.artifacts.some(a=>a.lessonId!==id))throw Error('作品不属于当前课程');
+    }
+    if(JSON.stringify(value).length>MAX)throw Error('课程记录尺寸过大');
+    return value;
+  }
+  function readPathway(storage) {
+    const raw=storage.getItem(PATHWAY_KEY);
+    if(raw===null)return {schemaVersion:1,lessons:{}};
+    if(typeof raw!=='string'||raw.length>MAX)throw Error('课程记录尺寸过大');
+    return pathwayCheck(JSON.parse(raw));
+  }
   function checkFields(scenario, answers) {
     if(!scenario || !Array.isArray(scenario.fields)||!scenario.fields.length)throw Error('题目缺少字段规则');
     const input=object(answers)?answers:{};
@@ -81,13 +104,36 @@
     if(!object(value))throw Error('备份学习记录必须是对象');
     safe(value);
     if(key===KEY)stateCheck(value);
+    if(key===PATHWAY_KEY)pathwayCheck(value);
     // These legacy records predate this module; preserve their actual JSON shape.
     if(key==='ai_lab_projects_v1' && own(value,'version') && value.version!==1)throw Error('项目记录版本不支持');
   }
-  function exportBackup(storage,currentState) {
+  function createLessonStore(storage,lessonId) {
+    lessonIdCheck(lessonId);
+    if(lessonId==='reliable-ai')return createStore(storage);
+    let current=emptyState(),error='',protectedRaw=false;
+    try{const all=readPathway(storage);if(own(all.lessons,lessonId))current=clone(all.lessons[lessonId]);}
+    catch(e){protectedRaw=true;error='读取课程记录失败，原始数据已保留；请保留原始值并显式恢复可信备份。'+e.message;}
+    return {read:()=>clone(current),getError:()=>error,write(s){
+      if(protectedRaw)return {ok:false,error};
+      try{
+        // Read again before each write so stores opened on different lessons preserve siblings.
+        const all=readPathway(storage),next=clone(stateCheck(s));
+        all.lessons[lessonId]=next;pathwayCheck(all);
+        storage.setItem(PATHWAY_KEY,JSON.stringify(all));current=next;error='';return {ok:true,error:''};
+      }catch(e){error='保存失败：'+e.message;return {ok:false,error};}
+    }};
+  }
+  function exportBackup(storage,currentState,lessonId='reliable-ai') {
     try {
-      stateCheck(currentState);const records={};
-      for(const key of KEYS){if(key===KEY){records[key]=clone(currentState);continue;}const raw=storage.getItem(key);if(raw!==null){if(raw.length>MAX)throw Error('记录尺寸过大');const value=JSON.parse(raw);recordCheck(key,value);records[key]=value;}}
+      lessonIdCheck(lessonId);stateCheck(currentState);const records={};
+      for(const key of KEYS){
+        if(key===KEY&&lessonId==='reliable-ai'){records[key]=clone(currentState);continue;}
+        if(key===PATHWAY_KEY&&lessonId!=='reliable-ai'){
+          const value=readPathway(storage);value.lessons[lessonId]=clone(currentState);pathwayCheck(value);records[key]=value;continue;
+        }
+        const raw=storage.getItem(key);if(raw!==null){if(raw.length>MAX)throw Error('记录尺寸过大');const value=JSON.parse(raw);recordCheck(key,value);records[key]=value;}
+      }
       const raw=JSON.stringify({format:'ai-learning-backup',version:1,exportedAt:new Date().toISOString(),records});if(raw.length>MAX)throw Error('备份尺寸超过上限');return raw;
     } catch(e){throw Error('备份导出失败，未修改任何记录：'+e.message);}
   }
@@ -100,6 +146,7 @@
       if(Object.keys(data).some(k=>!['format','version','exportedAt','records'].includes(k))||typeof data.exportedAt!=='string'||!Number.isFinite(Date.parse(data.exportedAt))||!object(data.records)||!Object.keys(data.records).length)throw Error('备份结构无效');
       for(const key of Object.keys(data.records)){recordCheck(key,data.records[key]);summary.keys++;}
       if(own(data.records,KEY)){summary.artifacts=data.records[KEY].artifacts.length;summary.attempts=data.records[KEY].attempts.length;}
+      if(own(data.records,PATHWAY_KEY))for(const state of Object.values(data.records[PATHWAY_KEY].lessons)){summary.artifacts+=state.artifacts.length;summary.attempts+=state.attempts.length;}
       return {ok:true,error:'',summary,data:clone(data)};
     }catch(e){return {ok:false,error:'无法导入：'+e.message,summary:{keys:0,artifacts:0,attempts:0}};}
   }
@@ -116,5 +163,5 @@
       return {ok:false,error:'导入失败：'+e.message+(failures.length?'；恢复失败：'+failures.join('、')+'。部分记录可能已经改变，请保留备份并检查。':'；已恢复本次涉及的旧值。')};
     }
   }
-  return {KEY,emptyState,checkFields,createStore,exportBackup,previewImport,importBackup};
+  return {KEY,PATHWAY_KEY,LESSON_IDS,emptyState,checkFields,createStore,createLessonStore,exportBackup,previewImport,importBackup};
 });
