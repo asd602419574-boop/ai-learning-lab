@@ -1,0 +1,2548 @@
+{
+  "kind": "controlled-browser-simulation",
+  "physicalWindowsDisplayVerified": false,
+  "browserZoom": "100% controlled default; no physical zoom observation",
+  "systemScale": "Unobserved; DPR and CSS viewports simulated independently",
+  "generatedAt": "2026-10-21T13:25:45.449Z",
+  "measurements": [
+    {
+      "case": "1k",
+      "route": "home",
+      "innerWidth": 1920,
+      "innerHeight": 1080,
+      "dpr": 1,
+      "scrollWidth": 1920,
+      "main": {
+        "left": 216,
+        "right": 1920,
+        "width": 1704,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "1k",
+      "route": "lesson-workspace",
+      "innerWidth": 1920,
+      "innerHeight": 1080,
+      "dpr": 1,
+      "scrollWidth": 1920,
+      "main": {
+        "left": 216,
+        "right": 1920,
+        "width": 1704,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 277.4375,
+        "right": 1858.5625,
+        "width": 1581.125,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "1k",
+      "route": "lesson-reading",
+      "innerWidth": 1920,
+      "innerHeight": 1080,
+      "dpr": 1,
+      "scrollWidth": 1920,
+      "main": {
+        "left": 216,
+        "right": 1920,
+        "width": 1704,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 277.4375,
+        "right": 1858.5625,
+        "width": 1581.125,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": {
+        "left": 628,
+        "right": 1508,
+        "width": 880,
+        "fontSize": "17px",
+        "display": "block"
+      },
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "1k",
+      "route": "portfolio",
+      "innerWidth": 1920,
+      "innerHeight": 1080,
+      "dpr": 1,
+      "scrollWidth": 1920,
+      "main": {
+        "left": 216,
+        "right": 1920,
+        "width": 1704,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 277.4375,
+        "right": 1858.5625,
+        "width": 1581.125,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "1k",
+      "route": "textbook",
+      "innerWidth": 1920,
+      "innerHeight": 1080,
+      "dpr": 1,
+      "scrollWidth": 1920,
+      "main": {
+        "left": 216,
+        "right": 1920,
+        "width": 1704,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": {
+        "left": 493,
+        "right": 1353,
+        "width": 860,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "1k",
+      "route": "rag-project",
+      "innerWidth": 1920,
+      "innerHeight": 1080,
+      "dpr": 1,
+      "scrollWidth": 1920,
+      "main": {
+        "left": 216,
+        "right": 1920,
+        "width": 1704,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "2k",
+      "route": "home",
+      "innerWidth": 2560,
+      "innerHeight": 1440,
+      "dpr": 1,
+      "scrollWidth": 2560,
+      "main": {
+        "left": 216,
+        "right": 2560,
+        "width": 2344,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "2k",
+      "route": "lesson-workspace",
+      "innerWidth": 2560,
+      "innerHeight": 1440,
+      "dpr": 1,
+      "scrollWidth": 2560,
+      "main": {
+        "left": 216,
+        "right": 2560,
+        "width": 2344,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 297.90625,
+        "right": 2478.09375,
+        "width": 2180.1875,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "2k",
+      "route": "lesson-reading",
+      "innerWidth": 2560,
+      "innerHeight": 1440,
+      "dpr": 1,
+      "scrollWidth": 2560,
+      "main": {
+        "left": 216,
+        "right": 2560,
+        "width": 2344,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 297.90625,
+        "right": 2478.09375,
+        "width": 2180.1875,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": {
+        "left": 948,
+        "right": 1828,
+        "width": 880,
+        "fontSize": "17px",
+        "display": "block"
+      },
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "2k",
+      "route": "portfolio",
+      "innerWidth": 2560,
+      "innerHeight": 1440,
+      "dpr": 1,
+      "scrollWidth": 2560,
+      "main": {
+        "left": 216,
+        "right": 2560,
+        "width": 2344,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 297.90625,
+        "right": 2478.09375,
+        "width": 2180.1875,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "2k",
+      "route": "textbook",
+      "innerWidth": 2560,
+      "innerHeight": 1440,
+      "dpr": 1,
+      "scrollWidth": 2560,
+      "main": {
+        "left": 216,
+        "right": 2560,
+        "width": 2344,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": {
+        "left": 796,
+        "right": 1676,
+        "width": 880,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "2k",
+      "route": "rag-project",
+      "innerWidth": 2560,
+      "innerHeight": 1440,
+      "dpr": 1,
+      "scrollWidth": 2560,
+      "main": {
+        "left": 216,
+        "right": 2560,
+        "width": 2344,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "4k",
+      "route": "home",
+      "innerWidth": 3840,
+      "innerHeight": 2160,
+      "dpr": 1,
+      "scrollWidth": 3840,
+      "main": {
+        "left": 216,
+        "right": 3840,
+        "width": 3624,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "4k",
+      "route": "lesson-workspace",
+      "innerWidth": 3840,
+      "innerHeight": 2160,
+      "dpr": 1,
+      "scrollWidth": 3840,
+      "main": {
+        "left": 216,
+        "right": 3840,
+        "width": 3624,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 320,
+        "right": 3736,
+        "width": 3416,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "4k",
+      "route": "lesson-reading",
+      "innerWidth": 3840,
+      "innerHeight": 2160,
+      "dpr": 1,
+      "scrollWidth": 3840,
+      "main": {
+        "left": 216,
+        "right": 3840,
+        "width": 3624,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 320,
+        "right": 3736,
+        "width": 3416,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": {
+        "left": 1588,
+        "right": 2468,
+        "width": 880,
+        "fontSize": "17px",
+        "display": "block"
+      },
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "4k",
+      "route": "portfolio",
+      "innerWidth": 3840,
+      "innerHeight": 2160,
+      "dpr": 1,
+      "scrollWidth": 3840,
+      "main": {
+        "left": 216,
+        "right": 3840,
+        "width": 3624,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 320,
+        "right": 3736,
+        "width": 3416,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "4k",
+      "route": "textbook",
+      "innerWidth": 3840,
+      "innerHeight": 2160,
+      "dpr": 1,
+      "scrollWidth": 3840,
+      "main": {
+        "left": 216,
+        "right": 3840,
+        "width": 3624,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": {
+        "left": 1436,
+        "right": 2316,
+        "width": 880,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "4k",
+      "route": "rag-project",
+      "innerWidth": 3840,
+      "innerHeight": 2160,
+      "dpr": 1,
+      "scrollWidth": 3840,
+      "main": {
+        "left": 216,
+        "right": 3840,
+        "width": 3624,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "sim-1k-125",
+      "route": "home",
+      "innerWidth": 1536,
+      "innerHeight": 864,
+      "dpr": 1.25,
+      "scrollWidth": 1536,
+      "main": {
+        "left": 216,
+        "right": 1536,
+        "width": 1320,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "sim-1k-125",
+      "route": "lesson-workspace",
+      "innerWidth": 1536,
+      "innerHeight": 864,
+      "dpr": 1.25,
+      "scrollWidth": 1536,
+      "main": {
+        "left": 216,
+        "right": 1536,
+        "width": 1320,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 265.140625,
+        "right": 1486.859375,
+        "width": 1221.71875,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "sim-1k-125",
+      "route": "lesson-reading",
+      "innerWidth": 1536,
+      "innerHeight": 864,
+      "dpr": 1.25,
+      "scrollWidth": 1536,
+      "main": {
+        "left": 216,
+        "right": 1536,
+        "width": 1320,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 265.140625,
+        "right": 1486.859375,
+        "width": 1221.71875,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": {
+        "left": 436,
+        "right": 1316,
+        "width": 880,
+        "fontSize": "17px",
+        "display": "block"
+      },
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "sim-1k-125",
+      "route": "portfolio",
+      "innerWidth": 1536,
+      "innerHeight": 864,
+      "dpr": 1.25,
+      "scrollWidth": 1536,
+      "main": {
+        "left": 216,
+        "right": 1536,
+        "width": 1320,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 265.140625,
+        "right": 1486.859375,
+        "width": 1221.71875,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "sim-1k-125",
+      "route": "textbook",
+      "innerWidth": 1536,
+      "innerHeight": 864,
+      "dpr": 1.25,
+      "scrollWidth": 1536,
+      "main": {
+        "left": 216,
+        "right": 1536,
+        "width": 1320,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": {
+        "left": 318,
+        "right": 1158,
+        "width": 840,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "sim-1k-125",
+      "route": "rag-project",
+      "innerWidth": 1536,
+      "innerHeight": 864,
+      "dpr": 1.25,
+      "scrollWidth": 1536,
+      "main": {
+        "left": 216,
+        "right": 1536,
+        "width": 1320,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "sim-2k-150",
+      "route": "home",
+      "innerWidth": 1707,
+      "innerHeight": 960,
+      "dpr": 1.5,
+      "scrollWidth": 1707,
+      "main": {
+        "left": 216,
+        "right": 1707,
+        "width": 1491,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "sim-2k-150",
+      "route": "lesson-workspace",
+      "innerWidth": 1707,
+      "innerHeight": 960,
+      "dpr": 1.5,
+      "scrollWidth": 1707,
+      "main": {
+        "left": 216,
+        "right": 1707,
+        "width": 1491,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 270.609375,
+        "right": 1652.390625,
+        "width": 1381.78125,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "sim-2k-150",
+      "route": "lesson-reading",
+      "innerWidth": 1707,
+      "innerHeight": 960,
+      "dpr": 1.5,
+      "scrollWidth": 1707,
+      "main": {
+        "left": 216,
+        "right": 1707,
+        "width": 1491,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 270.609375,
+        "right": 1652.390625,
+        "width": 1381.78125,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": {
+        "left": 521.5,
+        "right": 1401.5,
+        "width": 880,
+        "fontSize": "17px",
+        "display": "block"
+      },
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "sim-2k-150",
+      "route": "portfolio",
+      "innerWidth": 1707,
+      "innerHeight": 960,
+      "dpr": 1.5,
+      "scrollWidth": 1707,
+      "main": {
+        "left": 216,
+        "right": 1707,
+        "width": 1491,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 270.609375,
+        "right": 1652.390625,
+        "width": 1381.78125,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "sim-2k-150",
+      "route": "textbook",
+      "innerWidth": 1707,
+      "innerHeight": 960,
+      "dpr": 1.5,
+      "scrollWidth": 1707,
+      "main": {
+        "left": 216,
+        "right": 1707,
+        "width": 1491,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": {
+        "left": 403.5,
+        "right": 1243.5,
+        "width": 840,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "sim-2k-150",
+      "route": "rag-project",
+      "innerWidth": 1707,
+      "innerHeight": 960,
+      "dpr": 1.5,
+      "scrollWidth": 1707,
+      "main": {
+        "left": 216,
+        "right": 1707,
+        "width": 1491,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "sim-4k-150",
+      "route": "home",
+      "innerWidth": 2560,
+      "innerHeight": 1440,
+      "dpr": 1.5,
+      "scrollWidth": 2560,
+      "main": {
+        "left": 216,
+        "right": 2560,
+        "width": 2344,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "sim-4k-150",
+      "route": "lesson-workspace",
+      "innerWidth": 2560,
+      "innerHeight": 1440,
+      "dpr": 1.5,
+      "scrollWidth": 2560,
+      "main": {
+        "left": 216,
+        "right": 2560,
+        "width": 2344,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 297.90625,
+        "right": 2478.09375,
+        "width": 2180.1875,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "sim-4k-150",
+      "route": "lesson-reading",
+      "innerWidth": 2560,
+      "innerHeight": 1440,
+      "dpr": 1.5,
+      "scrollWidth": 2560,
+      "main": {
+        "left": 216,
+        "right": 2560,
+        "width": 2344,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 297.90625,
+        "right": 2478.09375,
+        "width": 2180.1875,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": {
+        "left": 948,
+        "right": 1828,
+        "width": 880,
+        "fontSize": "17px",
+        "display": "block"
+      },
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "sim-4k-150",
+      "route": "portfolio",
+      "innerWidth": 2560,
+      "innerHeight": 1440,
+      "dpr": 1.5,
+      "scrollWidth": 2560,
+      "main": {
+        "left": 216,
+        "right": 2560,
+        "width": 2344,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 297.90625,
+        "right": 2478.09375,
+        "width": 2180.1875,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "sim-4k-150",
+      "route": "textbook",
+      "innerWidth": 2560,
+      "innerHeight": 1440,
+      "dpr": 1.5,
+      "scrollWidth": 2560,
+      "main": {
+        "left": 216,
+        "right": 2560,
+        "width": 2344,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": {
+        "left": 796,
+        "right": 1676,
+        "width": 880,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "sim-4k-150",
+      "route": "rag-project",
+      "innerWidth": 2560,
+      "innerHeight": 1440,
+      "dpr": 1.5,
+      "scrollWidth": 2560,
+      "main": {
+        "left": 216,
+        "right": 2560,
+        "width": 2344,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "sim-4k-200",
+      "route": "home",
+      "innerWidth": 1920,
+      "innerHeight": 1080,
+      "dpr": 2,
+      "scrollWidth": 1920,
+      "main": {
+        "left": 216,
+        "right": 1920,
+        "width": 1704,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "sim-4k-200",
+      "route": "lesson-workspace",
+      "innerWidth": 1920,
+      "innerHeight": 1080,
+      "dpr": 2,
+      "scrollWidth": 1920,
+      "main": {
+        "left": 216,
+        "right": 1920,
+        "width": 1704,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 277.4375,
+        "right": 1858.5625,
+        "width": 1581.125,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "sim-4k-200",
+      "route": "lesson-reading",
+      "innerWidth": 1920,
+      "innerHeight": 1080,
+      "dpr": 2,
+      "scrollWidth": 1920,
+      "main": {
+        "left": 216,
+        "right": 1920,
+        "width": 1704,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 277.4375,
+        "right": 1858.5625,
+        "width": 1581.125,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": {
+        "left": 628,
+        "right": 1508,
+        "width": 880,
+        "fontSize": "17px",
+        "display": "block"
+      },
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "sim-4k-200",
+      "route": "portfolio",
+      "innerWidth": 1920,
+      "innerHeight": 1080,
+      "dpr": 2,
+      "scrollWidth": 1920,
+      "main": {
+        "left": 216,
+        "right": 1920,
+        "width": 1704,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 277.4375,
+        "right": 1858.5625,
+        "width": 1581.125,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "sim-4k-200",
+      "route": "textbook",
+      "innerWidth": 1920,
+      "innerHeight": 1080,
+      "dpr": 2,
+      "scrollWidth": 1920,
+      "main": {
+        "left": 216,
+        "right": 1920,
+        "width": 1704,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": {
+        "left": 493,
+        "right": 1353,
+        "width": 860,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "sim-4k-200",
+      "route": "rag-project",
+      "innerWidth": 1920,
+      "innerHeight": 1080,
+      "dpr": 2,
+      "scrollWidth": 1920,
+      "main": {
+        "left": 216,
+        "right": 1920,
+        "width": 1704,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "transition",
+      "route": "home",
+      "innerWidth": 1024,
+      "innerHeight": 768,
+      "dpr": 1,
+      "scrollWidth": 1024,
+      "main": {
+        "left": 216,
+        "right": 1024,
+        "width": 808,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "transition",
+      "route": "lesson-workspace",
+      "innerWidth": 1024,
+      "innerHeight": 768,
+      "dpr": 1,
+      "scrollWidth": 1024,
+      "main": {
+        "left": 216,
+        "right": 1024,
+        "width": 808,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 248.765625,
+        "right": 991.234375,
+        "width": 742.46875,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "transition",
+      "route": "lesson-reading",
+      "innerWidth": 1024,
+      "innerHeight": 768,
+      "dpr": 1,
+      "scrollWidth": 1024,
+      "main": {
+        "left": 216,
+        "right": 1024,
+        "width": 808,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 248.765625,
+        "right": 991.234375,
+        "width": 742.46875,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": {
+        "left": 279.484375,
+        "right": 960.515625,
+        "width": 681.03125,
+        "fontSize": "17px",
+        "display": "block"
+      },
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "transition",
+      "route": "portfolio",
+      "innerWidth": 1024,
+      "innerHeight": 768,
+      "dpr": 1,
+      "scrollWidth": 1024,
+      "main": {
+        "left": 216,
+        "right": 1024,
+        "width": 808,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 248.765625,
+        "right": 991.234375,
+        "width": 742.46875,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "transition",
+      "route": "textbook",
+      "innerWidth": 1024,
+      "innerHeight": 768,
+      "dpr": 1,
+      "scrollWidth": 1024,
+      "main": {
+        "left": 216,
+        "right": 1024,
+        "width": 808,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": {
+        "left": 248.765625,
+        "right": 991.234375,
+        "width": 742.46875,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "transition",
+      "route": "rag-project",
+      "innerWidth": 1024,
+      "innerHeight": 768,
+      "dpr": 1,
+      "scrollWidth": 1024,
+      "main": {
+        "left": 216,
+        "right": 1024,
+        "width": 808,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "mobile",
+      "route": "home",
+      "innerWidth": 390,
+      "innerHeight": 844,
+      "dpr": 1,
+      "scrollWidth": 390,
+      "main": {
+        "left": 0,
+        "right": 390,
+        "width": 390,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "mobile",
+      "route": "lesson-workspace",
+      "innerWidth": 390,
+      "innerHeight": 844,
+      "dpr": 1,
+      "scrollWidth": 390,
+      "main": {
+        "left": 0,
+        "right": 390,
+        "width": 390,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 20,
+        "right": 370,
+        "width": 350,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "mobile",
+      "route": "lesson-reading",
+      "innerWidth": 390,
+      "innerHeight": 844,
+      "dpr": 1,
+      "scrollWidth": 390,
+      "main": {
+        "left": 0,
+        "right": 390,
+        "width": 390,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 20,
+        "right": 370,
+        "width": 350,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": {
+        "left": 34,
+        "right": 356,
+        "width": 322,
+        "fontSize": "17px",
+        "display": "block"
+      },
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "mobile",
+      "route": "portfolio",
+      "innerWidth": 390,
+      "innerHeight": 844,
+      "dpr": 1,
+      "scrollWidth": 390,
+      "main": {
+        "left": 0,
+        "right": 390,
+        "width": 390,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": {
+        "left": 20,
+        "right": 370,
+        "width": 350,
+        "fontSize": "16px",
+        "display": "block"
+      },
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "mobile",
+      "route": "textbook",
+      "innerWidth": 390,
+      "innerHeight": 844,
+      "dpr": 1,
+      "scrollWidth": 390,
+      "main": {
+        "left": 0,
+        "right": 390,
+        "width": 390,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": {
+        "left": 20,
+        "right": 370,
+        "width": 350,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "case": "mobile",
+      "route": "rag-project",
+      "innerWidth": 390,
+      "innerHeight": 844,
+      "dpr": 1,
+      "scrollWidth": 390,
+      "main": {
+        "left": 0,
+        "right": 390,
+        "width": 390,
+        "fontSize": "15px",
+        "display": "block"
+      },
+      "workspace": null,
+      "reading": null,
+      "book": null,
+      "navFont": "13.5px",
+      "scaling": [
+        {
+          "selector": "html",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "body",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#mainContent",
+          "zoom": "1",
+          "transform": "none"
+        },
+        {
+          "selector": "#dynamicArea",
+          "zoom": "1",
+          "transform": "none"
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "failures": []
+}

@@ -29,16 +29,17 @@ LESSONS=[
     dict(q='两个标注员一致率高，是否就能证明标签一定正确？',options=['是','否，可能一致地标错','只要样本超过 100 就能','只要使用 Kappa 就能'],answer=1,why='一致性描述标注员是否相同，而不是答案本身是否正确。'),
     dict(q='应用能在开发者电脑运行，就代表可交付吗？',options=['可以，无需其他信息','还应验证依赖、配置、输入异常、回滚等','只需要漂亮界面','只需要更多模型参数'],answer=1,why='可交付要求他人可以复现运行、验证输出并安全处理失败。')]),
 ]
+LESSONS.extend(json.loads((ROOT/'content/extra-lessons.json').read_text('utf-8')))
 md=mistune.create_markdown(escape=True, plugins=['table','strikethrough'])
 out=ROOT/'content/rendered';out.mkdir(parents=True,exist_ok=True)
-for index,item in enumerate(LESSONS,1):
-    article=(ROOT/'content/lessons'/f'{item["file"]}.md').read_text('utf-8')
+for item in LESSONS:
+    stem=item['file']
+    article=(ROOT/'content/lessons'/f'{stem}.md').read_text('utf-8')
     assert article.startswith('# ')
-    item['file']=f'content/rendered/{item["file"]}.html'
-    item['source']=f'content/lessons/{index:02d}-{item["id"]}.md' if False else f'content/lessons/{["01-ai-systems","02-ml-evaluation","03-neural-training","04-transformers","05-prompt-llm","06-rag","07-agents","08-data-and-delivery"][index-1]}.md'
+    item['file']=f'content/rendered/{stem}.html'
+    item['source']=f'content/lessons/{stem}.md'
     item['chars']=len(article)
-    rendered=md(article)
-    (out/f'{["01-ai-systems","02-ml-evaluation","03-neural-training","04-transformers","05-prompt-llm","06-rag","07-agents","08-data-and-delivery"][index-1]}.html').write_text(rendered,'utf-8')
+    (out/f'{stem}.html').write_text(md(article),'utf-8')
 manifest={'version':'1.0','storageKey':'ai_lab_textbook_v1','lessons':LESSONS}
 (ROOT/'content/manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 print('Rendered',len(LESSONS),'lessons',sum(i['chars'] for i in LESSONS),'source chars')

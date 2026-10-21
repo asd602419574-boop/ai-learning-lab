@@ -5,7 +5,7 @@ const path=require('node:path');
 const vm=require('node:vm');
 const root=path.resolve(__dirname,'..');
 const manifest=JSON.parse(fs.readFileSync(path.join(root,'content/manifest.json'),'utf8'));
-assert.equal(manifest.lessons.length,8);
+assert.equal(manifest.lessons.length,12);
 const ids=new Set();
 for(const lesson of manifest.lessons){
   assert(!ids.has(lesson.id),`duplicate id ${lesson.id}`);ids.add(lesson.id);
@@ -32,4 +32,4 @@ const stats=lab.gradientStats();assert(Math.abs(stats.loss-56/3)<1e-9);
 assert(Math.abs(stats.gradient+56/3)<1e-9);
 const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
 for(const required of ['content/reader.js','content/reader.css','nav-textbook','training/training-ui.js','feedback/feedback.js'])assert(index.includes(required),required);
-console.log('TEXTBOOK STATIC TEST PASS — eight articles, sixteen checks, content files, source links, gradient, lexical search');
+console.log('TEXTBOOK STATIC TEST PASS — twelve articles, twenty-four checks, content files, source links, gradient, lexical search');

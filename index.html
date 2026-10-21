@@ -4,355 +4,376 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="color-scheme" content="light">
-  <meta name="description" content="人工智能基础学习：六大章节、30 个专题、144 道练习题，新增主动回忆、间隔复习、互动实验、情境闯关、深度教材与实战项目。">
-  <title>AI 交互学习平台 · AI 探索实验室</title>
+  <meta name="description" content="面向 AI 初学者的自主学习工作台：完整教学、六步实践、证据核对、即时反馈与个人成果；保留系统教材、基础练习及浏览器项目。">
+  <title>AI 学习工作台 · 从理解到实践</title>
   <style>
     :root{
-      --bg:#f8fafc;
+      --bg:#faf9f6;
+      --bg-sunk:#f2f2ee;
       --surface:#ffffff;
-      --ink:#0f172a;
-      --ink-secondary:#334155;
-      --muted:#64748b;
-      --line:#e2e8f0;
-      --accent:#5145e5;
-      --accent-dark:#372abb;
-      --accent-soft:#f0edff;
-      --teal:#0d9488;
-      --teal-soft:#f0fdfa;
-      --amber:#d97706;
+      --ink:#1f272c;
+      --ink-secondary:#48535a;
+      --muted:#738089;
+      --line:#e3e6e3;
+      --line-subtle:#edf0ed;
+      --accent:#176b75;
+      --accent-dark:#13555d;
+      --accent-soft:#edf5f5;
+      --accent-border:#c8dede;
+      --teal:#176b75;
+      --teal-soft:#edf5f5;
+      --amber:#b45309;
       --amber-soft:#fffbeb;
-      --red:#e11d48;
-      --red-soft:#fff1f2;
-      --shadow:0 4px 14px rgba(15,23,42,0.035);
-      --shadow-hover:0 10px 25px rgba(81,69,229,0.08);
-      --radius:16px;
+      --red:#c2410c;
+      --red-soft:#fff7ed;
+      --shadow-sm:0 1px 2px rgba(0,0,0,0.03);
+      --shadow:0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02);
+      --shadow-hover:0 2px 6px rgba(0,0,0,0.06), 0 8px 20px rgba(0,0,0,0.03);
+      --radius-sm:6px;
+      --radius:8px;
+      --radius-lg:12px;
+      --sidebar-w:210px;
     }
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
-    body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
     button{font:inherit;cursor:pointer}
     button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     button:disabled{cursor:not-allowed;opacity:.5}
-    .shell{max-width:1380px;padding:0 24px;margin:0 auto}
+    .shell{max-width:1440px;padding:0 24px;margin:0 auto}
 
-    /* Topbar & Primary Nav */
-    .topbar{position:sticky;top:0;z-index:100;height:68px;background:rgba(255,255,255,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-    .topbar-in{height:100%;display:flex;align-items:center;justify-content:space-between;gap:16px}
-    .brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:inherit}
-    .brand-mark{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#6366f1);color:white;display:grid;place-items:center;font-size:20px;font-weight:700;box-shadow:0 4px 14px rgba(81,69,229,0.25)}
-    .brand strong{display:block;font-size:15px;letter-spacing:-.2px;font-weight:800}
-    .brand small{display:block;font-size:10px;letter-spacing:1.5px;color:var(--muted);font-weight:800}
+    /* Topbar on Mobile */
+    .topbar{position:sticky;top:0;z-index:100;height:52px;background:rgba(255,255,255,0.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+    .topbar-in{height:100%;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .topbar-left{display:flex;align-items:center;gap:10px}
+    .mobile-menu-toggle{width:36px;height:36px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--surface);color:var(--ink);display:grid;place-items:center;font-size:16px}
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+    .brand-mark{width:30px;height:30px;border-radius:7px;background:var(--accent);color:#ffffff;display:grid;place-items:center;font-size:16px;font-weight:700;flex-shrink:0}
+    .brand strong{display:block;font-size:14px;font-weight:700;color:var(--ink);line-height:1.25}
+    .brand small{display:block;font-size:9.5px;letter-spacing:1.2px;color:var(--muted);font-weight:700;margin-top:2px}
 
-    .main-nav{display:flex;align-items:center;gap:6px}
-    .nav-item{background:transparent;border:1px solid transparent;border-radius:10px;padding:8px 14px;color:var(--ink-secondary);font-size:13px;font-weight:700;transition:all .15s ease}
-    .nav-item:hover{background:#f1f5f9;color:var(--ink)}
-    .nav-item.active{background:var(--accent-soft);color:var(--accent);border-color:#ddd8ff}
-
-    .top-right{display:flex;align-items:center;gap:12px}
-    .save-note{font-size:12px;color:var(--muted)}
-    .header-pill{border:1px solid #deddfd;background:var(--accent-soft);color:#4338bf;border-radius:100px;font-size:12px;font-weight:750;padding:6px 12px;white-space:nowrap}
-    .header-feedback-btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#ffffff;color:var(--ink-secondary);border-radius:999px;padding:6px 12px;font-size:12px;font-weight:700;transition:all .15s ease}
+    .top-right{display:flex;align-items:center;gap:10px}
+    .header-pill{border:1px solid var(--accent-border);background:var(--accent-soft);color:var(--accent);border-radius:999px;font-size:11.5px;font-weight:600;padding:4px 10px;white-space:nowrap}
+    .header-feedback-btn{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:var(--surface);color:var(--ink-secondary);border-radius:999px;padding:5px 11px;font-size:12px;font-weight:600;white-space:nowrap;transition:all .15s ease}
     .header-feedback-btn:hover,.header-feedback-btn.active{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
-    .mobile-menu-toggle{display:none;width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:#ffffff;color:var(--ink);place-items:center;font-size:18px}
-
-    /* Sub Navigation Bar */
-    .subnav-container{background:#ffffff;border-bottom:1px solid var(--line);padding:9px 0;position:sticky;top:68px;z-index:90}
-    .subnav-in{display:flex;align-items:center;gap:8px;overflow-x:auto;scrollbar-width:none}
-    .subnav-in::-webkit-scrollbar{display:none}
-    .subnav-label{font-size:12px;font-weight:800;color:var(--muted);white-space:nowrap;margin-right:4px}
-    .subnav-pill{padding:6px 14px;border-radius:999px;font-size:12.5px;font-weight:700;border:1px solid var(--line);background:#ffffff;color:var(--ink-secondary);white-space:nowrap;transition:all .15s ease}
-    .subnav-pill:hover{border-color:#c7d2fe;background:#f8fafc;color:var(--ink)}
-    .subnav-pill.active{background:var(--accent);color:#ffffff;border-color:var(--accent);box-shadow:0 3px 10px rgba(81,69,229,0.2)}
 
     /* Mobile Subbar */
-    .mobile-subbar{display:none;position:sticky;top:68px;z-index:85;background:#ffffff;border-bottom:1px solid var(--line);padding:8px 16px;align-items:center;justify-content:space-between;gap:10px}
-    .drawer-toggle-btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:#f8fafc;border-radius:8px;padding:6px 12px;font-size:12.5px;font-weight:700;color:var(--ink);max-width:80%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .mobile-subbar{display:none;position:sticky;top:52px;z-index:85;background:var(--surface);border-bottom:1px solid var(--line);padding:8px 16px;align-items:center;justify-content:space-between;gap:10px}
+    .drawer-toggle-btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--bg-sunk);border-radius:var(--radius-sm);padding:6px 12px;font-size:12px;font-weight:600;color:var(--ink);max-width:80%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
-    /* Main Layout */
-    .layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:28px;padding-top:24px;padding-bottom:60px}
-    .sidebar{align-self:start;position:sticky;top:84px;max-height:calc(100vh - 100px);overflow-y:auto}
-    .side-panel{background:#fff;border-radius:18px;padding:18px 14px;border:1px solid var(--line);box-shadow:var(--shadow)}
-    .side-overline{font-size:10px;color:var(--muted);letter-spacing:1.4px;font-weight:850;padding:0 8px;margin-bottom:12px}
-    .side-group-title{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.5px;padding:12px 8px 6px}
-    .chapter-nav{display:flex;flex-direction:column;gap:5px}
-    .chapter-button{display:flex;align-items:center;gap:10px;text-align:left;background:transparent;border:1px solid transparent;border-radius:12px;padding:9px 10px;width:100%;color:var(--ink);transition:background .15s,border .15s}
-    .chapter-button:hover{background:#f8fafc}
-    .chapter-button.active{background:var(--accent-soft);border-color:#dcd7ff;color:var(--accent)}
-    .chapter-no{width:30px;height:30px;flex:0 0 auto;display:grid;place-items:center;border-radius:9px;background:#f1f5f9;color:#64748b;font-weight:800;font-size:11.5px}
+    /* Main Full-Bleed Desktop Workspace Layout */
+    .layout{display:grid;grid-template-columns:var(--sidebar-w) minmax(0,1fr);min-height:100vh;width:100%;margin:0;padding:0}
+    .sidebar{position:sticky;top:0;left:0;height:100vh;max-height:100vh;width:var(--sidebar-w);min-width:var(--sidebar-w);max-width:var(--sidebar-w);display:flex;flex-direction:column;background:var(--surface);border-right:1px solid var(--line);padding:16px 12px 14px 14px;box-sizing:border-box;overflow:hidden;z-index:50}
+
+    .sidebar-header{flex-shrink:0;display:flex;flex-direction:column;gap:12px;margin-bottom:8px}
+    .sidebar-brand{padding:0 2px 10px;border-bottom:1px solid var(--line)}
+
+    .main-nav{display:flex;flex-direction:column;gap:3px;padding:0}
+    .nav-item{display:flex;align-items:center;gap:9px;width:100%;text-align:left;background:transparent;border:1px solid transparent;border-radius:var(--radius-sm);padding:7px 10px;color:var(--ink-secondary);font-size:13.5px;font-weight:600;transition:all .15s ease}
+    .nav-item:hover{background:var(--bg-sunk);color:var(--ink)}
+    .nav-item.active{background:var(--surface);color:var(--accent);border-color:var(--line);font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,0.03)}
+
+    /* Zone 2: Independently scrollable catalog */
+    .side-panel{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:#cbd5e1 transparent;display:flex;flex-direction:column;gap:8px;padding:4px 4px 12px 0}
+    .side-overline{font-size:10.5px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;padding:0 4px;margin-bottom:2px}
+    .side-track-switcher{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;background:var(--bg-sunk);padding:3px;border-radius:var(--radius-sm);margin-bottom:8px}
+    .side-track-pill{border:0;background:transparent;padding:5px 2px;font-size:11px;font-weight:600;color:var(--muted);border-radius:4px;text-align:center;cursor:pointer;transition:all .15s ease}
+    .side-track-pill:hover{color:var(--ink)}
+    .side-track-pill.active{background:var(--surface);color:var(--accent);font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,0.04)}
+
+    .side-group-title{font-size:10.5px;font-weight:700;color:var(--muted);letter-spacing:.5px;padding:8px 4px 4px}
+    .chapter-nav{display:flex;flex-direction:column;gap:3px}
+    .chapter-button{display:flex;align-items:center;gap:8px;text-align:left;background:transparent;border:1px solid transparent;border-radius:var(--radius-sm);padding:6px 8px;width:100%;color:var(--ink);transition:background .15s,border-color .15s;cursor:pointer}
+    .chapter-button:hover{background:var(--bg-sunk)}
+    .chapter-button.active{background:var(--surface);border-color:var(--accent-border);color:var(--accent);font-weight:600}
+    .chapter-no{width:22px;height:22px;flex:0 0 auto;display:grid;place-items:center;border-radius:5px;background:var(--bg-sunk);color:var(--muted);font-weight:700;font-size:11px}
     .chapter-button.active .chapter-no{background:var(--accent);color:#fff}
-    .chapter-button.passed:not(.active) .chapter-no{background:var(--teal-soft);color:var(--teal)}
+    .chapter-button.passed:not(.active) .chapter-no{background:var(--teal-soft);color:var(--accent)}
     .chapter-meta{min-width:0;flex:1}
-    .chapter-meta strong{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .chapter-meta small{display:block;color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .side-footer{border-top:1px solid var(--line);margin-top:14px;padding:12px 6px 0;display:flex;flex-direction:column;gap:6px}
-    .side-footer button{background:transparent;border:0;color:var(--muted);font-size:11px;padding:4px 0;text-align:left;cursor:pointer}
-    .side-footer button:hover{color:var(--red)}
-    .side-footer .side-link-btn{color:var(--accent);font-weight:600}
-    .side-home-stats{display:grid;gap:8px;padding:4px 8px 10px}
+    .chapter-meta strong{display:block;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+    .chapter-meta small{display:block;color:var(--muted);font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+
+    .side-home-stats{display:grid;gap:6px;padding:4px 6px 8px}
     .side-home-stats>div{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
-    .side-home-stats strong{color:var(--ink);font-weight:700}
-    .book-sidebar-progress{background:#f1f5f9;height:6px;border-radius:999px;overflow:hidden;margin:6px 8px 12px}
-    .book-sidebar-progress span{display:block;height:100%;background:var(--accent);border-radius:inherit;transition:width .25s}
+    .side-home-stats strong{color:var(--ink);font-weight:600}
+    .book-sidebar-progress{background:var(--bg-sunk);height:4px;border-radius:999px;overflow:hidden;margin:4px 6px 8px}
+    .book-sidebar-progress span{display:block;height:100%;background:var(--accent);border-radius:inherit;transition:width .25s ease}
+
+    .side-sub-footer{border-top:1px solid var(--line-subtle);margin-top:10px;padding-top:10px;display:flex;flex-direction:column;gap:4px}
+    .side-sub-footer button{background:transparent;border:0;color:var(--muted);font-size:11.5px;padding:4px 6px;text-align:left;cursor:pointer;border-radius:4px;transition:all .15s ease}
+    .side-sub-footer button:hover{color:var(--ink);background:var(--bg-sunk)}
+    .side-sub-footer .side-link-btn{color:var(--accent);font-weight:600}
+
+    /* Zone 3: Bottom fixed footer */
+    .side-global-footer{flex-shrink:0;margin-top:auto;padding-top:10px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:6px;background:var(--surface)}
+    .side-global-footer .header-feedback-btn{width:100%;justify-content:center;border-radius:var(--radius-sm)}
+    .side-storage-note{font-size:11px;color:var(--muted);text-align:center}
 
     /* Content Area */
-    .content{min-width:0}
+    .content{min-width:0;width:100%;padding:24px 36px 60px;box-sizing:border-box}
 
-    /* Hero Banner (Shown only on Home) */
-    .hero{background:linear-gradient(135deg,#1e1b4b 0%,#2e287a 50%,#4338ca 100%);color:white;border-radius:22px;padding:34px 38px 28px;position:relative;overflow:hidden;margin-bottom:20px;box-shadow:0 12px 30px rgba(30,27,75,0.08)}
-    .hero::before{content:"";position:absolute;right:-60px;top:-80px;width:300px;height:300px;border:1px solid rgba(255,255,255,0.12);border-radius:50%;box-shadow:0 0 0 36px rgba(255,255,255,0.03),0 0 0 72px rgba(255,255,255,0.03)}
-    .hero-overline{color:#c7d2fe;font-size:10.5px;font-weight:850;letter-spacing:2px}
-    .hero h1{font-size:clamp(25px,3.4vw,38px);letter-spacing:-.8px;line-height:1.3;margin:12px 0 8px;max-width:650px;position:relative}
-    .hero h1 em{font-style:normal;color:#a7f3d0}
-    .hero p{position:relative;font-size:14px;color:#e0e7ff;max-width:620px;margin:0 0 22px;line-height:1.8}
-    .hero-stats{display:flex;gap:26px;position:relative;flex-wrap:wrap}
-    .stat{display:flex;align-items:baseline;gap:6px}
-    .stat strong{font-size:22px;letter-spacing:-.5px}
-    .stat small{color:#c7d2fe;font-size:12px}
+    /* Home Area: Header, Progress & Hub */
+    .home-head{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px 24px;margin-bottom:20px;box-shadow:var(--shadow-sm)}
+    .home-title-row{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+    .home-heading{font-size:20px;font-weight:700;color:var(--ink);margin:0 0 4px;letter-spacing:-0.3px}
+    .home-subheading{font-size:13px;color:var(--muted);margin:0}
+    .home-stats-chips{display:flex;gap:8px;flex-wrap:wrap}
+    .home-chip{font-size:11.5px;font-weight:600;color:var(--ink-secondary);background:var(--bg-sunk);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
 
-    .progress-strip{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 20px;display:flex;align-items:center;gap:18px;margin-bottom:24px;box-shadow:var(--shadow)}
-    .progress-info{min-width:180px}
-    .progress-info strong{display:block;font-size:13px}
-    .progress-info small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
-    .bar{height:8px;background:#f1f5f9;border-radius:100px;overflow:hidden;flex:1}
-    .bar >span{display:block;height:100%;border-radius:100px;background:linear-gradient(90deg,var(--accent),#0d9488);transition:width .4s}
-    .percent{font-size:15px;font-weight:900;color:var(--accent);white-space:nowrap}
+    .home-progress-compact{display:flex;align-items:center;gap:16px;padding-top:14px;border-top:1px solid var(--line-subtle)}
+    .home-prog-info{min-width:140px;display:flex;align-items:baseline;gap:8px}
+    .home-prog-label{font-size:12px;color:var(--muted)}
+    .home-prog-info strong{font-size:13px;color:var(--ink)}
+    .home-prog-bar{flex:1;height:6px;background:var(--bg-sunk);border-radius:999px;overflow:hidden}
+    .home-prog-bar>span{display:block;height:100%;border-radius:999px;background:var(--accent);transition:width .3s ease}
+    .home-prog-pct{font-size:13px;font-weight:700;color:var(--accent);min-width:36px;text-align:right}
 
-    /* Home Hub: Smart Resume & Tracks */
-    .home-resume{background:linear-gradient(135deg,#f5f3ff 0%,#ffffff 100%);border:1px solid #ddd6fe;border-radius:18px;padding:22px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:24px}
+    /* Home Hub: Smart Resume */
+    .home-resume{background:var(--surface);border:1px solid var(--accent-border);border-left:4px solid var(--accent);border-radius:var(--radius-lg);padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:22px;box-shadow:var(--shadow-sm)}
     .home-resume-main{min-width:0}
-    .home-resume-main .eyebrow{margin-bottom:4px}
-    .home-resume-main h3{margin:4px 0 6px;font-size:20px;color:var(--ink)}
-    .home-resume-main p{margin:0;color:var(--ink-secondary);font-size:13.5px}
+    .resume-badge{display:inline-block;font-size:10.5px;font-weight:750;letter-spacing:1px;color:var(--accent);text-transform:uppercase;margin-bottom:4px}
+    .home-resume-main h3{margin:0 0 4px;font-size:16.5px;font-weight:700;color:var(--ink)}
+    .home-resume-main p{margin:0;font-size:13px;color:var(--ink-secondary);line-height:1.5}
     .home-resume-action{flex-shrink:0}
-    .home-tracks-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:24px}
-    .home-track-card{background:#ffffff;border:1px solid var(--line);border-radius:16px;padding:22px;display:flex;flex-direction:column;align-items:flex-start;text-align:left;cursor:pointer;transition:all .2s ease;box-shadow:var(--shadow)}
-    .home-track-card:hover{border-color:#a5b4fc;box-shadow:var(--shadow-hover);transform:translateY(-2px)}
-    .home-track-top{width:100%;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-    .home-track-icon{width:42px;height:42px;border-radius:12px;background:var(--accent-soft);display:grid;place-items:center;font-size:22px}
-    .home-track-badge{font-size:11.5px;font-weight:750;color:var(--accent);background:var(--accent-soft);padding:4px 10px;border-radius:999px}
-    .home-track-card h4{margin:0 0 6px;font-size:17px;color:var(--ink)}
-    .home-track-card p{margin:0 0 16px;font-size:13px;color:var(--muted);line-height:1.7;flex:1}
-    .home-track-cta{font-size:12.5px;font-weight:750;color:var(--accent);display:inline-flex;align-items:center;gap:4px}
-    .home-quick-practice{background:#ffffff;border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin-bottom:24px}
-    .home-quick-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-    .home-quick-head h4{margin:0;font-size:15px;color:var(--ink)}
+
+    /* Section Headings */
+    .home-section-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 12px;padding:0 2px}
+    .home-section-title{font-size:15px;font-weight:700;color:var(--ink);margin:0}
+    .home-section-subtitle{font-size:12px;color:var(--muted)}
+
+    /* Tracks Grid */
+    .home-tracks-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:22px}
+    .home-track-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:18px;display:flex;flex-direction:column;align-items:flex-start;text-align:left;cursor:pointer;transition:all .15s ease;box-shadow:var(--shadow-sm)}
+    .home-track-card:hover{border-color:var(--accent-border);box-shadow:var(--shadow);transform:translateY(-1px)}
+    .home-track-top{width:100%;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .home-track-icon{font-size:18px;line-height:1}
+    .home-track-badge{font-size:11px;font-weight:600;color:var(--accent);background:var(--accent-soft);padding:2px 8px;border-radius:999px}
+    .home-track-card h4{margin:0 0 6px;font-size:15px;font-weight:700;color:var(--ink)}
+    .home-track-card p{margin:0 0 14px;font-size:12.5px;color:var(--muted);line-height:1.6;flex:1}
+    .home-track-cta{font-size:12px;font-weight:600;color:var(--accent);display:inline-flex;align-items:center;gap:4px}
+
+    /* Quick Practice Row */
+    .home-quick-practice{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:18px 20px;margin-bottom:20px;box-shadow:var(--shadow-sm)}
     .home-quick-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-    .home-quick-btn{display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#f8fafc;text-align:left;cursor:pointer;transition:all .15s ease}
-    .home-quick-btn:hover{border-color:#cbd5e1;background:#ffffff;box-shadow:0 3px 8px rgba(0,0,0,0.04)}
-    .home-quick-btn span{font-size:20px}
-    .home-quick-btn div strong{display:block;font-size:13px;color:var(--ink)}
-    .home-quick-btn div small{display:block;font-size:11px;color:var(--muted)}
+    .home-quick-btn{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg-sunk);text-align:left;cursor:pointer;transition:all .15s ease}
+    .home-quick-btn:hover{border-color:var(--accent-border);background:var(--surface);box-shadow:0 2px 6px rgba(0,0,0,0.03)}
+    .home-quick-btn .quick-icon{font-size:18px;flex-shrink:0}
+    .home-quick-btn div strong{display:block;font-size:12.5px;font-weight:600;color:var(--ink)}
+    .home-quick-btn div small{display:block;font-size:11px;color:var(--muted);margin-top:1px}
+    .home-footnote{font-size:11.5px;color:var(--muted);text-align:center;margin:18px 0 0}
 
     /* Section Header & Subnav in Content */
     .section-header{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:18px}
-    .eyebrow{color:var(--accent);font-size:11px;font-weight:850;letter-spacing:1.5px}
-    .section-header h2{font-size:26px;margin:5px 0 5px;letter-spacing:-.5px;line-height:1.35}
-    .section-header p{font-size:13.5px;color:var(--muted);margin:0;line-height:1.8;max-width:650px}
-    .status-pill{background:var(--accent-soft);border:1px solid #e1defe;color:var(--accent);white-space:nowrap;border-radius:100px;padding:5px 12px;font-size:12px;font-weight:750;margin-top:14px}
-    .status-pill.complete{background:var(--teal-soft);border-color:#ceebdf;color:var(--teal)}
+    .eyebrow{color:var(--accent);font-size:11px;font-weight:750;letter-spacing:1.5px}
+    .section-header h2{font-size:24px;margin:4px 0 4px;letter-spacing:-.4px;line-height:1.35;color:var(--ink)}
+    .section-header p{font-size:13.5px;color:var(--ink-secondary);margin:0;line-height:1.7;max-width:650px}
+    .status-pill{background:var(--accent-soft);border:1px solid var(--accent-border);color:var(--accent);white-space:nowrap;border-radius:999px;padding:4px 11px;font-size:12px;font-weight:600;margin-top:14px}
+    .status-pill.complete{background:var(--teal-soft);border-color:#a7f3d0;color:#065f46}
 
-    .tabs{display:flex;gap:6px;margin-bottom:18px;border-bottom:1px solid var(--line);overflow-x:auto}
-    .tab{color:var(--muted);background:transparent;border:0;border-bottom:3px solid transparent;font-weight:700;font-size:13px;padding:11px 16px;white-space:nowrap;transition:color .15s}
-    .tab:hover{color:var(--accent)}
-    .tab.active{color:var(--accent);border-color:var(--accent)}
+    .tabs{display:flex;gap:4px;margin-bottom:18px;border-bottom:1px solid var(--line);overflow-x:auto}
+    .tab{color:var(--muted);background:transparent;border:0;border-bottom:2px solid transparent;font-weight:600;font-size:13px;padding:10px 14px;white-space:nowrap;transition:color .15s}
+    .tab:hover{color:var(--ink)}
+    .tab.active{color:var(--accent);border-color:var(--accent);font-weight:700}
 
-    .panel{border:1px solid var(--line);border-radius:18px;background:white;box-shadow:var(--shadow);padding:26px}
-    .panel-title{font-weight:850;font-size:16px;margin:0 0 5px;color:var(--ink)}
+    .panel{border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--surface);box-shadow:var(--shadow-sm);padding:24px}
+    .panel-title{font-weight:750;font-size:16px;margin:0 0 4px;color:var(--ink)}
     .panel-sub{font-size:12.5px;color:var(--muted);margin:0}
 
     /* Common Components: Deep dive, concepts, flashcards, quizzes */
-    .concept-list{display:grid;gap:9px;margin-top:20px}
-    .concept{border:1px solid var(--line);border-radius:13px;overflow:hidden}
-    .concept-head{width:100%;background:#fff;text-align:left;border:0;padding:14px 16px;display:flex;align-items:center;gap:12px}
-    .concept-head:hover{background:#fafaff}
-    .concept-index{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px;border-radius:9px;background:#f1f0ff;color:var(--accent);font-size:12px;font-weight:850}
-    .concept-name{font-weight:750;font-size:14px;flex:1}
-    .chevron{color:#8790a4;font-size:16px}
-    .concept-body{background:#fbfbff;border-top:1px solid #efeff9;padding:16px 18px 18px 58px;font-size:13px;color:#4c5870;line-height:1.9}
+    .concept-list{display:grid;gap:8px;margin-top:18px}
+    .concept{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+    .concept-head{width:100%;background:var(--surface);text-align:left;border:0;padding:12px 14px;display:flex;align-items:center;gap:11px}
+    .concept-head:hover{background:var(--bg-sunk)}
+    .concept-index{display:grid;place-items:center;flex:0 0 26px;width:26px;height:26px;border-radius:6px;background:var(--accent-soft);color:var(--accent);font-size:11.5px;font-weight:750}
+    .concept-name{font-weight:600;font-size:13.5px;flex:1;color:var(--ink)}
+    .chevron{color:var(--muted);font-size:14px}
+    .concept-body{background:var(--bg);border-top:1px solid var(--line-subtle);padding:14px 16px 16px 51px;font-size:13px;color:var(--ink-secondary);line-height:1.8}
     .concept-body p{margin:0}
-    .insight{border-radius:13px;margin-top:18px;background:#eff8f6;display:flex;gap:11px;padding:16px 18px;border:1px solid #d9ede8}
-    .insight i{font-style:normal;font-size:20px}
-    .insight strong{color:#117b69;font-size:13px}
-    .insight p{font-size:13px;margin:4px 0 0;color:#476f68;line-height:1.85}
-    .footer-actions{display:flex;justify-content:space-between;align-items:center;margin-top:23px;gap:10px;flex-wrap:wrap}
+    .insight{border-radius:var(--radius);margin-top:16px;background:#f0fdfa;display:flex;gap:11px;padding:14px 16px;border:1px solid #ccfbf1}
+    .insight i{font-style:normal;font-size:18px}
+    .insight strong{color:#0f766e;font-size:13px}
+    .insight p{font-size:13px;margin:3px 0 0;color:#134e4a;line-height:1.8}
+    .footer-actions{display:flex;justify-content:space-between;align-items:center;margin-top:20px;gap:10px;flex-wrap:wrap}
 
-    .btn{background:var(--accent);border:1px solid var(--accent);border-radius:10px;color:white;font-weight:750;font-size:13px;padding:10px 18px;transition:background .15s,transform .15s;white-space:nowrap}
-    .btn:hover:not(:disabled){background:var(--accent-dark);transform:translateY(-1px)}
-    .btn-secondary{background:#fff;color:#566179;border-color:#dde2ef}
-    .btn-secondary:hover:not(:disabled){background:#f5f6fb}
-    .btn-success{background:var(--teal);border-color:var(--teal)}
-    .btn-success:hover:not(:disabled){background:#087663}
+    .btn{background:var(--accent);border:1px solid var(--accent);border-radius:var(--radius-sm);color:white;font-weight:600;font-size:13px;padding:8px 16px;transition:background .15s ease;white-space:nowrap}
+    .btn:hover:not(:disabled){background:var(--accent-dark);border-color:var(--accent-dark)}
+    .btn-secondary{background:var(--surface);color:var(--ink-secondary);border-color:var(--line)}
+    .btn-secondary:hover:not(:disabled){background:var(--bg-sunk);color:var(--ink)}
+    .btn-success{background:var(--accent);border-color:var(--accent)}
+    .btn-success:hover:not(:disabled){background:var(--accent-dark)}
     .micro{font-size:12px;color:var(--muted)}
 
     .flash-layout{max-width:650px;margin:0 auto}
-    .flash-top{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:0 0 15px}
+    .flash-top{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:0 0 14px}
     .flash-top span{font-size:12px;color:var(--muted)}
-    .flash-card{background:linear-gradient(135deg,#f5f3ff,#ffffff);border:1px solid #ddd6fe;border-radius:20px;width:100%;min-height:250px;padding:28px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:14px;color:var(--ink);box-shadow:0 8px 24px rgba(81,69,229,0.06);transition:background .2s}
-    .flash-card:hover{background:#ede9fe}
-    .flash-card.is-back{background:linear-gradient(130deg,#e8f8f4,#f5fcfa);border-color:#bde5d8}
-    .flash-small{font-size:11px;color:var(--accent);font-weight:800;letter-spacing:1.5px}
-    .flash-card.is-back .flash-small{color:var(--teal)}
-    .flash-primary{font-size:clamp(20px,2.8vw,26px);font-weight:850;line-height:1.5}
-    .flash-card.is-back .flash-primary{font-weight:600;font-size:16px}
-    .flash-help{font-size:12px;color:#8992a5}
-    .flash-controls{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:17px}
-    .flash-controls .btn{min-width:100px}
-    .known-count{text-align:center;margin-top:15px;color:var(--muted);font-size:12px}
+    .flash-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);width:100%;min-height:240px;padding:26px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:12px;color:var(--ink);box-shadow:var(--shadow-sm);transition:all .15s ease}
+    .flash-card:hover{border-color:var(--accent-border);background:var(--bg-sunk)}
+    .flash-card.is-back{background:var(--surface);border-color:#a7f3d0}
+    .flash-small{font-size:11px;color:var(--accent);font-weight:750;letter-spacing:1px}
+    .flash-card.is-back .flash-small{color:#059669}
+    .flash-primary{font-size:clamp(19px,2.5vw,24px);font-weight:750;line-height:1.5}
+    .flash-card.is-back .flash-primary{font-weight:600;font-size:15.5px}
+    .flash-help{font-size:12px;color:var(--muted)}
+    .flash-controls{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:16px}
+    .flash-controls .btn{min-width:96px}
+    .known-count{text-align:center;margin-top:14px;color:var(--muted);font-size:12px}
 
-    .quiz-step{color:var(--muted);font-weight:700;font-size:12px;display:flex;justify-content:space-between;align-items:center}
-    .quiz-question{font-weight:800;font-size:19px;line-height:1.6;margin:16px 0 20px}
-    .choice-list{display:grid;gap:10px}
-    .choice{border:1px solid var(--line);background:#fff;border-radius:11px;display:flex;align-items:center;gap:12px;text-align:left;color:var(--ink);padding:13px 15px;line-height:1.6;font-size:13.5px}
-    .choice:hover:not(:disabled){border-color:#a5b4fc;background:#faf5ff}
-    .choice.selected{border-color:var(--accent);background:#f5f3ff}
+    .quiz-step{color:var(--muted);font-weight:600;font-size:12px;display:flex;justify-content:space-between;align-items:center}
+    .quiz-question{font-weight:750;font-size:18px;line-height:1.6;margin:14px 0 18px;color:var(--ink)}
+    .choice-list{display:grid;gap:9px}
+    .choice{border:1px solid var(--line);background:var(--surface);border-radius:var(--radius-sm);display:flex;align-items:center;gap:11px;text-align:left;color:var(--ink);padding:11px 13px;line-height:1.6;font-size:13.5px}
+    .choice:hover:not(:disabled){border-color:var(--accent-border);background:var(--bg-sunk)}
+    .choice.selected{border-color:var(--accent);background:var(--accent-soft)}
     .choice.correct{border-color:#a7f3d0;background:#ecfdf5}
     .choice.wrong{border-color:#fecdd3;background:#fff1f2}
-    .choice-letter{width:26px;height:26px;display:grid;place-items:center;border-radius:8px;background:#f1f5f9;font-size:12px;font-weight:850;flex:0 0 auto}
-    .choice.selected .choice-letter{background:#ddd6fe;color:var(--accent)}
-    .feedback{padding:16px 18px;border-radius:12px;background:var(--teal-soft);color:#137963;font-size:13px;margin-top:18px;border:1px solid #cbefe3}
-    .feedback.incorrect{color:#97504d;background:var(--red-soft);border-color:#f6d7dc}
-    .feedback strong{display:block;margin-bottom:5px}
-    .feedback p{margin:0;line-height:1.8}
-    .quiz-result{text-align:center;padding:15px 0}
-    .score-ring{height:114px;width:114px;border:8px solid #dff5ee;border-radius:100px;display:grid;place-items:center;margin:0 auto 16px;font-size:30px;font-weight:900;color:var(--teal)}
-    .quiz-result h3{font-size:22px;margin:0 0 8px}
+    .choice-letter{width:24px;height:24px;display:grid;place-items:center;border-radius:5px;background:var(--bg-sunk);font-size:11.5px;font-weight:750;flex:0 0 auto}
+    .choice.selected .choice-letter{background:var(--accent);color:#fff}
+    .feedback{padding:14px 16px;border-radius:var(--radius-sm);background:#ecfdf5;color:#065f46;font-size:13px;margin-top:16px;border:1px solid #a7f3d0}
+    .feedback.incorrect{color:#991b1b;background:#fef2f2;border-color:#fecaca}
+    .feedback strong{display:block;margin-bottom:4px}
+    .feedback p{margin:0;line-height:1.7}
+    .quiz-result{text-align:center;padding:12px 0}
+    .score-ring{height:108px;width:108px;border:6px solid #d1fae5;border-radius:100px;display:grid;place-items:center;margin:0 auto 14px;font-size:28px;font-weight:800;color:var(--accent)}
+    .quiz-result h3{font-size:20px;margin:0 0 6px}
     .quiz-result p{color:var(--muted);font-size:13px}
-    .review{display:grid;gap:9px;text-align:left;margin:22px 0}
-    .review-item{border:1px solid var(--line);border-radius:12px;padding:14px;font-size:12px}
-    .review-item strong{display:block;font-size:13px;margin-bottom:5px}
-    .review-item p{margin:5px 0;color:var(--muted);line-height:1.8}
-    .review-item .answer{color:var(--teal);font-weight:750}
-    .result-actions{display:flex;justify-content:center;gap:9px;flex-wrap:wrap}
+    .review{display:grid;gap:8px;text-align:left;margin:20px 0}
+    .review-item{border:1px solid var(--line);border-radius:var(--radius-sm);padding:13px;font-size:12px;background:var(--surface)}
+    .review-item strong{display:block;font-size:13px;margin-bottom:4px}
+    .review-item p{margin:4px 0;color:var(--muted);line-height:1.7}
+    .review-item .answer{color:var(--accent);font-weight:600}
+    .result-actions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
 
-    .deep-list{display:grid;gap:12px;margin:20px 0 26px}
-    .deep-card{border:1px solid #e2e8f0;border-radius:14px;overflow:hidden;background:#fff}
-    .deep-card[open]{border-color:#c7d2fe;background:#fbfbff}
-    .deep-card summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:16px;font-size:14px}
+    .deep-list{display:grid;gap:10px;margin:18px 0 22px}
+    .deep-card{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--surface)}
+    .deep-card[open]{border-color:var(--accent-border);background:var(--surface)}
+    .deep-card summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:11px;padding:14px 16px;font-size:13.5px}
     .deep-card summary::-webkit-details-marker{display:none}
     .deep-card summary strong{flex:1;color:var(--ink)}
-    .deep-card summary:hover{background:#f8fafc}
-    .deep-num{background:var(--accent-soft);color:var(--accent);width:28px;height:28px;flex:0 0 28px;border-radius:8px;display:grid;place-items:center;font-weight:800;font-size:12px}
+    .deep-card summary:hover{background:var(--bg-sunk)}
+    .deep-num{background:var(--bg-sunk);color:var(--ink-secondary);width:26px;height:26px;flex:0 0 26px;border-radius:6px;display:grid;place-items:center;font-weight:750;font-size:11.5px}
     .deep-toggle{font-size:11px;color:var(--muted)}
-    .deep-detail{border-top:1px solid #eaebf9;padding:15px 19px 19px;font-size:13px;line-height:1.95;color:#42506b}
-    .deep-detail>p{margin:0 0 12px}
-    .scenario,.pitfall{border-radius:10px;padding:12px 15px;margin-top:10px}
-    .scenario{background:#eaf7f2}
-    .pitfall{background:#fff6e8}
-    .scenario strong{color:#167960}
-    .pitfall strong{color:#a16a21}
-    .scenario p,.pitfall p{margin:4px 0 0}
-    .section-divider{margin-top:28px;border-top:1px solid var(--line);padding-top:20px;display:flex;justify-content:space-between;align-items:center;gap:12px}
-    .section-divider strong{font-size:15.5px}
+    .deep-detail{border-top:1px solid var(--line-subtle);padding:14px 18px 16px;font-size:13px;line-height:1.9;color:var(--ink-secondary)}
+    .deep-detail>p{margin:0 0 10px}
+    .scenario,.pitfall{border-radius:var(--radius-sm);padding:11px 14px;margin-top:9px}
+    .scenario{background:#f0fdf4;border:1px solid #dcfce7}
+    .pitfall{background:#fffbeb;border:1px solid #fef3c7}
+    .scenario strong{color:#15803d}
+    .pitfall strong{color:#b45309}
+    .scenario p,.pitfall p{margin:3px 0 0}
+    .section-divider{margin-top:24px;border-top:1px solid var(--line);padding-top:18px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .section-divider strong{font-size:15px;color:var(--ink)}
     .section-divider span{font-size:12px;color:var(--muted)}
-    .mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:20px 0}
-    .mode-card{border:1px solid var(--line);background:#f8fafc;padding:20px;border-radius:14px;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
-    .mode-card h3{margin:0;font-size:16.5px}
-    .mode-card p{font-size:12px;color:var(--muted);margin:0;min-height:38px}
+    .mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0}
+    .mode-card{border:1px solid var(--line);background:var(--bg-sunk);padding:18px;border-radius:var(--radius);display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+    .mode-card h3{margin:0;font-size:15.5px;color:var(--ink)}
+    .mode-card p{font-size:12px;color:var(--muted);margin:0;min-height:36px}
     .mode-card button{margin-top:auto}
     .practice-stats{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:12px}
 
     /* Wrong questions */
     .wrong-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap}
-    .wrong-chip-list{display:flex;gap:7px;flex-wrap:wrap;margin:16px 0}
-    .wrong-chip{background:var(--accent-soft);color:var(--accent);border:1px solid #ddd6fe;border-radius:30px;padding:4px 12px;font-size:11px;font-weight:700}
-    .wrong-list{display:grid;gap:12px;margin-top:15px}
-    .wrong-item{border:1px solid var(--line);background:#fff;border-radius:14px;padding:18px}
-    .wrong-item h4{font-size:14px;line-height:1.7;margin:7px 0 9px}
-    .wrong-category{font-size:11px;color:var(--accent);font-weight:800}
-    .wrong-item details{font-size:12px;color:#4d5d75;line-height:1.8}
-    .wrong-item details summary{cursor:pointer;color:var(--teal);font-weight:800}
-    .wrong-item details p{margin:7px 0}
-    .wrong-item-actions{display:flex;gap:15px;margin-top:12px}
-    .wrong-item-actions button{color:var(--accent);font-size:12px;font-weight:750;background:none;border:0;padding:0}
+    .wrong-chip-list{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0}
+    .wrong-chip{background:var(--bg-sunk);color:var(--ink-secondary);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:11px;font-weight:600}
+    .wrong-list{display:grid;gap:10px;margin-top:14px}
+    .wrong-item{border:1px solid var(--line);background:var(--surface);border-radius:var(--radius);padding:16px}
+    .wrong-item h4{font-size:13.5px;line-height:1.65;margin:6px 0 8px}
+    .wrong-category{font-size:11px;color:var(--accent);font-weight:750}
+    .wrong-item details{font-size:12px;color:var(--ink-secondary);line-height:1.75}
+    .wrong-item details summary{cursor:pointer;color:var(--accent);font-weight:750}
+    .wrong-item details p{margin:6px 0}
+    .wrong-item-actions{display:flex;gap:14px;margin-top:10px}
+    .wrong-item-actions button{color:var(--accent);font-size:12px;font-weight:600;background:none;border:0;padding:0;cursor:pointer}
     .wrong-item-actions button:hover{text-decoration:underline}
-    .empty-state{text-align:center;padding:40px 10px}
-    .empty-icon{font-size:40px}
-    .empty-state h3{font-size:19px;margin:10px 0}
-    .empty-state p{color:var(--muted);font-size:13px;line-height:1.8;max-width:480px;margin:0 auto 18px}
+    .empty-state{text-align:center;padding:36px 10px}
+    .empty-icon{font-size:36px}
+    .empty-state h3{font-size:18px;margin:8px 0}
+    .empty-state p{color:var(--muted);font-size:13px;line-height:1.75;max-width:460px;margin:0 auto 16px}
 
     /* Active recall & Review */
-    .recall-card{background:linear-gradient(135deg,#f5f3ff,#ffffff);border:1px solid #ddd6fe;border-radius:20px;min-height:230px;padding:26px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;width:100%}
-    .recall-card.revealed{background:linear-gradient(130deg,#ecfdf5,#ffffff);border-color:#a7f3d0}
-    .recall-eyebrow{font-size:11px;font-weight:850;letter-spacing:1.5px;color:var(--accent)}
-    .recall-text{font-size:clamp(19px,2.5vw,26px);font-weight:850;line-height:1.6;max-width:590px}
-    .recall-card.revealed .recall-text{font-size:16px;font-weight:600}
-    .recall-reminder{font-size:12px;color:var(--muted)}
-    .rating-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:16px}
-    .rating{border:1px solid #e2e8f0;border-radius:11px;background:#fff;padding:12px 6px;font-size:12px;font-weight:800;color:var(--ink)}
-    .rating:hover{background:var(--accent-soft);border-color:#a5b4fc}
-    .rating small{display:block;font-size:10px;font-weight:500;color:var(--muted)}
-    .recall-note{font-size:12px;color:var(--muted);padding:12px 0;line-height:1.8}
-    .empty-memory{text-align:center;padding:32px 18px}
+    .recall-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);min-height:220px;padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px;width:100%;box-shadow:var(--shadow-sm);transition:all .15s ease}
+    .recall-card.revealed{border-color:#a7f3d0}
+    .recall-eyebrow{font-size:10.5px;font-weight:750;letter-spacing:1px;color:var(--accent);text-transform:uppercase}
+    .recall-text{font-size:clamp(18px,2.4vw,24px);font-weight:750;line-height:1.6;max-width:580px}
+    .recall-card.revealed .recall-text{font-size:15.5px;font-weight:550}
+    .recall-reminder{font-size:11.5px;color:var(--muted)}
+    .rating-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:14px}
+    .rating{border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--surface);padding:10px 4px;font-size:12px;font-weight:700;color:var(--ink);cursor:pointer;transition:all .15s ease}
+    .rating:hover{background:var(--bg-sunk);border-color:var(--accent-border)}
+    .rating small{display:block;font-size:10px;font-weight:500;color:var(--muted);margin-top:1px}
+    .recall-note{font-size:12px;color:var(--muted);padding:10px 0;line-height:1.7}
+    .empty-memory{text-align:center;padding:28px 16px}
     .empty-memory h3{margin:8px 0}
     .empty-memory p{font-size:13px;color:var(--muted)}
 
     /* Labs & Missions */
-    .lab-selector{display:flex;gap:8px;margin:0 0 20px;flex-wrap:wrap}
-    .lab-selector button{border:1px solid #e2e8f0;color:#475569;background:#fff;border-radius:10px;padding:9px 14px;font-size:12px;font-weight:800}
+    .lab-selector{display:flex;gap:7px;margin:0 0 18px;flex-wrap:wrap}
+    .lab-selector button{border:1px solid var(--line);color:var(--ink-secondary);background:var(--surface);border-radius:var(--radius-sm);padding:8px 12px;font-size:12px;font-weight:600;cursor:pointer}
     .lab-selector button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-    .lab-console{background:#f8fafc;border-radius:16px;padding:22px;border:1px solid #e2e8f0}
-    .lab-top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:14px}
-    .lab-top h3{margin:0;font-size:18px}
-    .lab-top p{font-size:12px;color:var(--muted);margin:4px 0 0}
-    .lab-setting{border:1px solid #e2e8f0;border-radius:12px;padding:14px;background:#fff;margin-bottom:14px}
-    .lab-setting label{display:flex;justify-content:space-between;font-size:13px;font-weight:800;gap:15px;margin-bottom:10px}
+    .lab-console{background:var(--bg-sunk);border-radius:var(--radius-lg);padding:20px;border:1px solid var(--line)}
+    .lab-top{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:12px}
+    .lab-top h3{margin:0;font-size:17px;color:var(--ink)}
+    .lab-top p{font-size:12px;color:var(--muted);margin:3px 0 0}
+    .lab-setting{border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;background:var(--surface);margin-bottom:12px}
+    .lab-setting label{display:flex;justify-content:space-between;font-size:12.5px;font-weight:600;gap:14px;margin-bottom:8px}
     .lab-setting input[type=range]{width:100%;accent-color:var(--accent);cursor:pointer}
-    .lab-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:15px 0}
-    .lab-metric{background:#fff;border:1px solid #e2e8f0;border-radius:11px;padding:12px 8px;text-align:center}
-    .lab-metric strong{display:block;font-size:20px;color:var(--accent);line-height:1.25}
-    .lab-metric span{display:block;margin-top:4px;font-size:11px;color:var(--muted)}
-    .lab-devices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
-    .lab-device{border:1px solid #e2e8f0;padding:10px 7px;background:#fff;border-radius:11px;text-align:center}
-    .lab-device b{display:block;font-size:15px}
-    .lab-device small{display:block;color:#64748b;font-size:10px;margin-top:2px}
+    .lab-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:14px 0}
+    .lab-metric{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 6px;text-align:center}
+    .lab-metric strong{display:block;font-size:18px;color:var(--accent);line-height:1.25}
+    .lab-metric span{display:block;margin-top:3px;font-size:11px;color:var(--muted)}
+    .lab-devices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+    .lab-device{border:1px solid var(--line);padding:8px 6px;background:var(--surface);border-radius:var(--radius-sm);text-align:center}
+    .lab-device b{display:block;font-size:14px}
+    .lab-device small{display:block;color:var(--muted);font-size:10px;margin-top:1px}
     .lab-device.positive{background:#ecfdf5;border-color:#a7f3d0}
     .lab-device.false-positive{background:#fffbeb;border-color:#fde68a}
     .lab-device.false-negative{background:#fff1f2;border-color:#fecdd3}
-    .lab-notice{border-left:4px solid var(--accent);background:#f5f3ff;color:#3730a3;border-radius:8px;padding:12px 14px;font-size:12px;margin-top:16px;line-height:1.8}
-    .train-segments{height:30px;display:flex;overflow:hidden;border-radius:8px;margin:12px 0 8px}
-    .train-segments span{height:100%;display:flex;align-items:center;justify-content:center;min-width:0;font-size:10px;font-weight:800;color:white;white-space:nowrap}
-    .split-train{background:#5145e5}
+    .lab-notice{border-left:3px solid var(--accent);background:var(--surface);color:var(--ink);border-radius:var(--radius-sm);padding:11px 13px;font-size:12px;margin-top:14px;line-height:1.75;border:1px solid var(--line);border-left:3px solid var(--accent)}
+    .train-segments{height:28px;display:flex;overflow:hidden;border-radius:var(--radius-sm);margin:10px 0 7px}
+    .train-segments span{height:100%;display:flex;align-items:center;justify-content:center;min-width:0;font-size:10px;font-weight:700;color:white;white-space:nowrap}
+    .split-train{background:var(--accent)}
     .split-valid{background:#0d9488}
     .split-test{background:#d97706}
-    .lab-toggle{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:700;margin-top:16px;cursor:pointer}
-    .lab-toggle input{accent-color:var(--accent);width:16px;height:16px}
+    .lab-toggle{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;margin-top:14px;cursor:pointer}
+    .lab-toggle input{accent-color:var(--accent);width:15px;height:15px}
 
-    .quest-step{border:1px solid #e2e8f0;background:#f8fafc;padding:22px;border-radius:16px}
-    .quest-step h3{margin:8px 0 9px;font-size:20px;line-height:1.5}
-    .quest-step p{color:#475569;font-size:13px;line-height:1.85}
-    .quest-choices{display:grid;gap:10px;margin:16px 0}
-    .quest-choice{background:white;border:1px solid #e2e8f0;border-radius:12px;padding:13px 16px;text-align:left;font-size:13px;font-weight:700;line-height:1.6}
-    .quest-choice:hover{background:#faf5ff;border-color:#a5b4fc}
-    .quest-choice.selected{border-color:var(--accent);background:#f5f3ff}
-    .quest-feedback{padding:14px;border-radius:12px;font-size:13px;margin-top:12px;line-height:1.8}
+    .quest-step{border:1px solid var(--line);background:var(--bg-sunk);padding:20px;border-radius:var(--radius-lg)}
+    .quest-step h3{margin:7px 0 8px;font-size:18px;line-height:1.5;color:var(--ink)}
+    .quest-step p{color:var(--ink-secondary);font-size:13px;line-height:1.8}
+    .quest-choices{display:grid;gap:9px;margin:14px 0}
+    .quest-choice{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);padding:11px 14px;text-align:left;font-size:13px;font-weight:600;line-height:1.6;cursor:pointer}
+    .quest-choice:hover{border-color:var(--accent-border);background:var(--bg-sunk)}
+    .quest-choice.selected{border-color:var(--accent);background:var(--accent-soft)}
+    .quest-feedback{padding:12px 14px;border-radius:var(--radius-sm);font-size:12.5px;margin-top:10px;line-height:1.75}
     .quest-feedback.good{background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46}
     .quest-feedback.bad{background:#fffbeb;border:1px solid #fde68a;color:#92400e}
-    .quest-end{text-align:center;padding:32px 15px}
-    .quest-end .quest-icon{font-size:44px}
-    .quest-end h3{font-size:21px}
-    .quest-dots{display:flex;gap:7px;margin:0 0 15px}
-    .quest-dot{width:36px;height:6px;border-radius:20px;background:#e2e8f0}
-    .quest-dot.done{background:var(--teal)}
-    .quest-dot.active{background:var(--accent)}
+    .quest-end{text-align:center;padding:28px 14px}
+    .quest-end .quest-icon{font-size:40px}
+    .quest-end h3{font-size:20px}
+    .quest-dots{display:flex;gap:6px;margin:0 0 14px}
+    .quest-dot{width:32px;height:5px;border-radius:20px;background:var(--line)}
+    .quest-dot.done{background:var(--accent)}
+    .quest-dot.active{background:var(--ink)}
 
-    .footnote{text-align:center;margin-top:32px;color:#94a3b8;font-size:11.5px}
+    .footnote{text-align:center;margin-top:28px;color:var(--muted);font-size:11.5px}
     .hidden{display:none!important}
 
     /* Sidebar Drawer Backdrop */
-    .sidebar-backdrop{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,0.45);z-index:998;opacity:0;pointer-events:none;transition:opacity .25s ease}
+    .sidebar-backdrop{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,0.35);z-index:998;opacity:0;pointer-events:none;transition:opacity .25s ease}
     .sidebar-backdrop.open{opacity:1;pointer-events:auto}
 
     /* Responsive queries */
-    @media(max-width:1080px){
-      .layout{grid-template-columns:230px minmax(0,1fr);gap:20px}
-      .shell{padding-left:18px;padding-right:18px}
+    @media(min-width:881px){
+      .topbar{display:none!important}
+      .mobile-subbar{display:none!important}
+      .mobile-menu-toggle{display:none!important}
     }
     @media(max-width:880px){
-      .main-nav{display:none}
+      .main-nav{display:flex}
       .mobile-menu-toggle{display:grid}
       .mobile-subbar{display:flex}
-      .layout{display:block;padding-top:16px}
-      .sidebar{position:fixed;top:0;left:0;bottom:0;width:310px;max-width:85vw;z-index:999;transform:translateX(-100%);transition:transform .25s ease;background:#ffffff;box-shadow:0 10px 40px rgba(0,0,0,0.25);border-radius:0;padding:16px;max-height:none;overflow-y:auto}
+      .layout{display:block;padding-top:0}
+      .sidebar{position:fixed;top:0;left:0;bottom:0;width:280px;max-width:85vw;height:100vh;z-index:999;transform:translateX(-100%);transition:transform .25s ease;background:var(--surface);box-shadow:0 10px 40px rgba(0,0,0,0.2);border-radius:0;padding:16px 14px;overflow:hidden}
+      .content{padding:16px 16px 40px}
       .sidebar.drawer-open{transform:translateX(0)}
       .sidebar-backdrop{display:block}
       .home-tracks-grid{grid-template-columns:1fr}
@@ -362,53 +383,45 @@
       .home-resume-action .btn{width:100%}
     }
     @media(max-width:540px){
-      .topbar{height:54px}
-      .mobile-subbar{padding:7px 14px}
-      .subnav-container{padding:6px 0}
-      .layout{padding-top:10px}
-      .top-right .header-pill,.save-note{display:none}
-      .hero{padding:26px 20px;border-radius:18px}
-      .hero h1{font-size:24px}
-      .hero p{font-size:13px}
-      .hero-stats{gap:14px}
-      .progress-strip{padding:14px;gap:12px;flex-wrap:wrap}
-      .progress-info{min-width:100%}
+      .topbar{height:48px}
+      .top-right .header-pill{display:none}
+      .header-feedback-btn{padding:4px 8px;font-size:11.5px}
+      .home-head{padding:14px 16px}
+      .home-progress-compact{flex-wrap:wrap;gap:8px}
+      .home-prog-info{width:100%;justify-content:space-between}
+      .home-prog-bar{width:calc(100% - 46px)}
       .home-quick-row{grid-template-columns:1fr}
-      .rating-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-      .lab-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
-      .mode-grid{grid-template-columns:1fr}
-      .section-header{flex-direction:column}
-      .status-pill{margin-top:6px}
-      .panel{padding:18px 15px}
+      .home-title-row{margin-bottom:10px}
+      .home-stats-chips{display:none}
+      .home-prog-info{white-space:nowrap}
+      .panel{padding:16px 14px}
     }
   </style>
   <link rel="stylesheet" href="./content/reader.css">
   <link rel="stylesheet" href="./projects/projects.css">
   <link rel="stylesheet" href="./training/training.css">
   <link rel="stylesheet" href="./feedback/feedback.css">
+  <link rel="stylesheet" href="./content/home.css">
   <link rel="stylesheet" href="./desktop.css">
+  <link rel="stylesheet" href="./learning/editorial.css">
+  <link rel="stylesheet" href="./learning/workspace.css">
 </head>
 <body>
 <header class="topbar">
   <div class="shell topbar-in">
-    <a class="brand" href="#home" data-action="nav-home" aria-label="AI 交互学习平台首页">
-      <span class="brand-mark">✳</span>
-      <span><strong>AI 交互学习平台</strong><small>AI LEARNING LAB</small></span>
-    </a>
-    <nav class="main-nav" aria-label="全站主要模块">
-      <button type="button" class="nav-item active" data-action="nav-home" data-main-nav="home">⌂ 学习首页</button>
-      <button type="button" class="nav-item" data-action="nav-courses" data-main-nav="courses">📚 课程学习</button>
-      <button type="button" class="nav-item" data-action="nav-projects" data-main-nav="projects">🛠️ 实战项目</button>
-      <button type="button" class="nav-item" data-action="nav-practice" data-main-nav="practice">✍️ 练习复习</button>
-    </nav>
+    <div class="topbar-left">
+      <button type="button" class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="切换目录导航">
+        <span>☰</span>
+      </button>
+      <a class="brand mobile-brand" href="#home" data-action="nav-home" aria-label="AI 交互学习平台首页">
+        <span class="brand-mark">✳</span>
+        <span><strong>AI 学习工作台</strong></span>
+      </a>
+    </div>
     <div class="top-right">
-      <span class="save-note">◎ 学习记录仅保存在本机</span>
       <span class="header-pill" id="headerProgress">练习达标 0 / 6 章</span>
       <button type="button" class="header-feedback-btn" data-action="nav-feedback" title="意见与反馈">
         <span>✉ 反馈</span>
-      </button>
-      <button type="button" class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="切换目录导航">
-        <span>☰</span>
       </button>
     </div>
   </div>
@@ -427,35 +440,64 @@
 
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
-<div class="shell layout">
+<div class="layout">
   <aside class="sidebar" id="mainSidebar" aria-label="学习导航与目录">
+    <div class="sidebar-header">
+      <div class="sidebar-brand">
+        <a class="brand" href="#home" data-action="nav-home" aria-label="AI 交互学习平台首页">
+          <span class="brand-mark">✳</span>
+          <div class="brand-text">
+            <strong>AI 学习工作台</strong>
+            <small>AI LEARNING LAB</small>
+          </div>
+        </a>
+      </div>
+
+      <nav class="main-nav" aria-label="全站主要模块">
+        <button type="button" class="nav-item active" data-action="nav-home" data-main-nav="home">⌂ 学习首页</button>
+        <button type="button" class="nav-item" data-action="nav-pathways" data-main-nav="pathways">▤ 学习路线</button>
+        <button type="button" class="nav-item" data-action="nav-projects" data-main-nav="projects">◇ 实战项目</button>
+        <button type="button" class="nav-item" data-action="nav-practice" data-main-nav="practice">↻ 练习复习</button>
+        <button type="button" class="nav-item" data-action="nav-portfolio" data-main-nav="portfolio">▧ 我的成果</button>
+      </nav>
+    </div>
+
     <div class="side-panel" id="sidePanelContent"></div>
+
+    <div class="side-global-footer">
+      <button type="button" class="header-feedback-btn" data-action="nav-feedback" title="意见与反馈">
+        <span>✉ 意见反馈</span>
+      </button>
+      <div class="side-storage-note">◎ 记录仅保存在本机</div>
+    </div>
   </aside>
 
   <main class="content" id="mainContent">
     <div id="homeHeroArea">
-      <section class="hero">
-        <div class="hero-overline">FOUNDATIONS · AI 基础与进阶</div>
-        <h1>从概念到实践，<br><em>系统学会人工智能。</em></h1>
-        <p>六大基础章节 · 8 篇原创深度教材 · 4 项可验证实战项目 · 16 天实战集训 · 间隔复习与错题巩固。</p>
-        <div class="hero-stats">
-          <div class="stat"><strong>06</strong><small>系统章节</small></div>
-          <div class="stat"><strong id="conceptTotal">28</strong><small>基础概念</small></div>
-          <div class="stat"><strong id="questionTotal">144</strong><small>题库练习</small></div>
-          <div class="stat"><strong>08</strong><small>深度教材</small></div>
-          <div class="stat"><strong>04</strong><small>实战项目</small></div>
+      <div class="home-head">
+        <div class="home-title-row">
+          <div>
+            <h1 class="home-heading">AI 交互学习工作台</h1>
+            <p class="home-subheading">系统掌握人工智能原理与工程实践 · 概念、教材、项目与间隔复习</p>
+          </div>
+          <div class="home-stats-chips">
+            <span class="home-chip"><strong id="conceptTotal">30</strong> 基础概念</span>
+            <span class="home-chip"><strong id="questionTotal">144</strong> 练习题</span>
+            <span class="home-chip">12 篇深度教材</span>
+            <span class="home-chip">4 个实战项目</span>
+          </div>
         </div>
-      </section>
-      <section class="progress-strip" aria-label="课程完成进度">
-        <div class="progress-info">
-          <strong>整体学习进度</strong>
-          <small id="progressText">已掌握 0 章 · 继续学习</small>
+        <div class="home-progress-compact" aria-label="课程完成进度">
+          <div class="home-prog-info">
+            <span class="home-prog-label">基础达标</span>
+            <strong id="progressText">练习达标 0 / 6 章</strong>
+          </div>
+          <div class="home-prog-bar" role="progressbar" aria-label="掌握章节比例" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar">
+            <span id="progressFill" style="width:0%"></span>
+          </div>
+          <div class="home-prog-pct" id="progressPct">0%</div>
         </div>
-        <div class="bar" role="progressbar" aria-label="掌握章节比例" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar">
-          <span id="progressFill" style="width:0%"></span>
-        </div>
-        <div class="percent" id="progressPct">0%</div>
-      </section>
+      </div>
     </div>
 
     <!-- Legacy compat nav: sr-only hidden, functional via JS delegation -->
@@ -477,14 +519,20 @@
 
 <script src="./feedback/feedback.js"></script>
 <script src="./content/reader.js"></script>
+<script src="./content/home.js"></script>
 <script src="./projects/logic.js"></script>
 <script src="./projects/guides.js"></script>
 <script src="./projects/app.js"></script>
 <script src="./training/training-data.js"></script>
 <script src="./training/training-ui.js"></script>
+<script src="./learning/content.js"></script>
+<script src="./learning/core.js"></script>
+<script src="./learning/workspace.js"></script>
+<script src="./learning/home.js"></script>
 <script>
 'use strict';
 /* Training module loads before the existing app. */
+const HOME_LESSONS = [{"id":"ai-systems","title":"从业务问题到 AI 系统","group":"AI 基础","mins":18,"prereq":"无"},{"id":"ml-evaluation","title":"机器学习与正确评估","group":"AI 基础","mins":20,"prereq":"从业务问题到 AI 系统"},{"id":"neural-training","title":"神经网络与梯度下降","group":"模型原理","mins":23,"prereq":"机器学习与正确评估","lab":"gradient"},{"id":"transformers","title":"Transformer 与语言模型","group":"模型原理","mins":21,"prereq":"神经网络与梯度下降"},{"id":"prompt-llm","title":"Prompt 与可靠输出","group":"生成式应用","mins":19,"prereq":"Transformer 与语言模型"},{"id":"rag","title":"RAG：从检索到可信引用","group":"生成式应用","mins":24,"prereq":"Prompt 与可靠输出","lab":"retrieval"},{"id":"agents","title":"Agent：工具、权限与状态","group":"系统实践","mins":22,"prereq":"RAG：从检索到可信引用"},{"id":"data-delivery","title":"数据标注与 AI 项目交付","group":"系统实践","mins":23,"prereq":"机器学习与正确评估"},{"id":"data-quality","title":"数据清洗与泄漏防范","group":"工程进阶","mins":22,"prereq":"机器学习与正确评估"},{"id":"vector-retrieval","title":"向量检索与重排","group":"工程进阶","mins":24,"prereq":"RAG：从检索到可信引用"},{"id":"ai-release","title":"AI 应用上线与评估","group":"工程进阶","mins":20,"prereq":"数据标注与 AI 项目交付"},{"id":"prompt-injection","title":"提示注入与工具安全","group":"工程进阶","mins":22,"prereq":"Agent：工具、权限与状态"}];
 const COURSES=[
   {title:'人工智能概述',subtitle:'定义、主要学派与基本分类',goal:'理解什么是人工智能，以及不同技术路径怎样实现智能。',example:'一个根据交通规则判断路口通行条件的专家系统，也属于人工智能，但不一定使用神经网络。',concepts:[
     ['人工智能（AI）','人工智能是研究与构建能够执行通常需要人类智能的任务的系统的领域，包括感知、学习、推理、规划和语言处理。'],
@@ -1889,144 +1937,8 @@ function gradeReviewCard(id,grade){
 function whenDue(time){const diff=Number(time)-Date.now();if(diff<=0)return '现在到期';if(diff<3600000)return `${Math.ceil(diff/60000)} 分钟后`;if(diff<86400000)return `${Math.ceil(diff/3600000)} 小时后`;return `${Math.ceil(diff/86400000)} 天后`}
 function initReview(){ui.reviewItems=dueIds();ui.reviewIndex=0;ui.reviewRevealed=false;ui.tab='review';updateHashRoute();render()}
 
-function renderHome(){
-  const mastered=score(),due=dueIds().length,doneMissions=Object.values(saved.missions||{}).filter(Boolean).length;
-  const tbProgress=(typeof Textbook!=='undefined'&&Textbook.getProgress)?Textbook.getProgress():{completed:0,total:8};
-  const tbDone=tbProgress?tbProgress.completed:0;
-  const projProgress=(typeof ProjectLab!=='undefined'&&ProjectLab.getProgress)?ProjectLab.getProgress():{};
-  const projDone=Object.values(projProgress).filter(Boolean).length;
-  const wrongCount=activeWrongIds().length;
-
-  // Smart Resume Target determination
-  let resumeTitle='',resumeDesc='',resumeBtnText='',resumeAction='',resumeParam='';
-  if(due>0){
-    resumeTitle=`今日有 ${due} 张记忆卡到期复习`;
-    resumeDesc='通过主动回忆检验概念掌握，依据回忆熟练度安排间隔周期。';
-    resumeBtnText='立即开始复习 →';
-    resumeAction='home-review';
-  }else{
-    const nextCh=COURSES.findIndex((_,i)=>!saved.mastered[i]);
-    if(nextCh!==-1){
-      resumeTitle=`继续基础学习：第 ${nextCh+1} 章《${esc(COURSES[nextCh].title)}》`;
-      resumeDesc='深入系统专题剖析、概念卡片主动回忆与章节习题检验。';
-      resumeBtnText='继续本章学习 →';
-      resumeAction='home-continue';
-      resumeParam=`data-index="${nextCh}"`;
-    }else if(tbDone<8){
-      resumeTitle='继续阅读系统教材';
-      resumeDesc='探索前沿原理推导、RAG 检索、Agent 架构与本地真实计算实验。';
-      resumeBtnText='进入系统教材 →';
-      resumeAction='home-textbook';
-    }else if(projDone<4){
-      resumeTitle='推进实战项目研发';
-      resumeDesc='在沙箱中完成标注一致性评估、朴素贝叶斯模型或 Agent 授权调度。';
-      resumeBtnText='进入实战项目 →';
-      resumeAction='home-projects';
-    }else{
-      resumeTitle='六章基础全部达标！';
-      resumeDesc='你可以继续探索实战项目、完成延伸挑战或复习错题。';
-      resumeBtnText='查看错题本 →';
-      resumeAction='show-wrong';
-    }
-  }
-
-  return `
-  <div class="home-resume">
-    <div class="home-resume-main">
-      <div class="eyebrow">CONTINUE · 继续学习</div>
-      <h3>${resumeTitle}</h3>
-      <p>${resumeDesc}</p>
-    </div>
-    <div class="home-resume-action">
-      <button type="button" class="btn" data-action="${resumeAction}" ${resumeParam}>${resumeBtnText}</button>
-    </div>
-  </div>
-
-  <div class="section-divider" style="margin-top:0;border:0;padding:0 0 14px">
-    <strong>核心学习通道</strong>
-    <span>四个递进体系，支持自由切换</span>
-  </div>
-
-  <div class="home-tracks-grid">
-    <div class="home-track-card" data-action="nav-foundations">
-      <div class="home-track-top">
-        <span class="home-track-icon">📖</span>
-        <span class="home-track-badge">达标 ${mastered} / 6 章</span>
-      </div>
-      <h4>基础六章与题库</h4>
-      <p>30 个深入专题全面梳理 AI 概念；144 道题库即时答题反馈，支持错题智能归纳与重练。</p>
-      <span class="home-track-cta">开始基础学习 →</span>
-    </div>
-
-    <div class="home-track-card" data-action="nav-textbook">
-      <div class="home-track-top">
-        <span class="home-track-icon">📚</span>
-        <span class="home-track-badge">已读 ${tbDone} / 8 篇</span>
-      </div>
-      <h4>系统教材与实验</h4>
-      <p>从 Transformer、RAG 到数据工程的 8 篇深度原创教材；配备梯度下降与检索真实计算实验。</p>
-      <span class="home-track-cta">进入深度教材 →</span>
-    </div>
-
-    <div class="home-track-card" data-action="nav-projects">
-      <div class="home-track-top">
-        <span class="home-track-icon">🛠️</span>
-        <span class="home-track-badge">已达标 ${projDone} / 4 项目</span>
-      </div>
-      <h4>可验证实战项目</h4>
-      <p>标注一致性分析、朴素贝叶斯邮件分类、TF-IDF 检索评测与受控日历 Agent，导出真实交付物。</p>
-      <span class="home-track-cta">开启实战项目 →</span>
-    </div>
-
-    <div class="home-track-card" data-action="nav-training">
-      <div class="home-track-top">
-        <span class="home-track-icon">🗓️</span>
-        <span class="home-track-badge">32 单元实战</span>
-      </div>
-      <h4>16 天培训大纲</h4>
-      <p>完整对照培训师实训大纲：32 个半天任务、64 道专项题、32 张机制误区卡与 4 项微实验。</p>
-      <span class="home-track-cta">查看培训集训 →</span>
-    </div>
-  </div>
-
-  <div class="home-quick-practice">
-    <div class="home-quick-head">
-      <h4>练习强化与巩固</h4>
-      <span class="micro">碎片化复习 · 边练边学</span>
-    </div>
-    <div class="home-quick-row">
-      <button type="button" class="home-quick-btn" data-action="nav-review">
-        <span>🧠</span>
-        <div>
-          <strong>今日复习</strong>
-          <small>${due} 张卡片到期</small>
-        </div>
-      </button>
-      <button type="button" class="home-quick-btn" data-action="nav-lab">
-        <span>🔬</span>
-        <div>
-          <strong>互动实验</strong>
-          <small>阈值设定与划分</small>
-        </div>
-      </button>
-      <button type="button" class="home-quick-btn" data-action="nav-mission">
-        <span>🏅</span>
-        <div>
-          <strong>场景闯关</strong>
-          <small>${doneMissions} / 6 关完成</small>
-        </div>
-      </button>
-      <button type="button" class="home-quick-btn" data-action="show-wrong">
-        <span>📝</span>
-        <div>
-          <strong>错题本</strong>
-          <small>${wrongCount} 道待巩固</small>
-        </div>
-      </button>
-    </div>
-  </div>
-  <p class="recall-note">学习说明：基础章节练习、深度教材阅读、实战项目与间隔复习记录独立保存在本地，换设备或清理存储不会自动同步。</p>`;
-}
+function homeMeta(){return {lessons:HOME_LESSONS.length,questions:ALL_QUESTIONS.size,projects:4,sessions:32}}
+function renderHome(){return LearningHome.render(homeMeta())}
 
 function renderActiveRecall(ch,i,isReview){
   const c=COURSES[ch],item=c.concepts[i],revealed=isReview?ui.reviewRevealed:ui.flipped;
@@ -2169,7 +2081,8 @@ function finishQuiz(){
 /* Primary Section / Nav mapping */
 function currentMainNav(){
   if(ui.tab==='home')return 'home';
-  if(['learn','flash','quiz','textbook','training'].includes(ui.tab))return 'courses';
+  if(['pathways','lesson','learn','flash','quiz','textbook','training'].includes(ui.tab))return 'pathways';
+  if(ui.tab==='portfolio')return 'portfolio';
   if(ui.tab==='projects')return 'projects';
   if(['review','lab','mission','wrong'].includes(ui.tab))return 'practice';
   if(ui.tab==='feedback')return 'feedback';
@@ -2180,6 +2093,9 @@ function currentMainNav(){
 function updateHashRoute(){
   let hash='#home';
   if(ui.tab==='home')hash='#home';
+  else if(ui.tab==='pathways')hash='#pathways';
+  else if(ui.tab==='lesson')hash='#lesson?id=reliable-ai';
+  else if(ui.tab==='portfolio')hash='#my-learning';
   else if(ui.tab==='textbook'){
     const active=(typeof Textbook!=='undefined'&&Textbook.getActive)?Textbook.getActive():null;
     hash=active?`#courses?mode=textbook&lesson=${active}`:'#courses?mode=textbook';
@@ -2217,7 +2133,10 @@ function syncRouteFromHash(){
   const [route,queryStr]=hash.split('?');
   const params=new URLSearchParams(queryStr||'');
 
-  if(route==='courses'||route==='foundations'){
+  if(route==='pathways'||route==='lesson'||route==='my-learning'){
+    ui.tab=route==='my-learning'?'portfolio':route;
+    render();
+  }else if(route==='courses'||route==='foundations'){
     const mode=params.get('mode')||(route==='foundations'?'foundations':'foundations');
     if(mode==='textbook'){
       ui.tab='textbook';
@@ -2276,43 +2195,11 @@ function restoreRouteAnchor(){
   if(id)requestAnimationFrame(()=>document.getElementById(id)?.scrollIntoView({block:'start'}));
 }
 
-/* Dynamic Subnav Bar update */
+/* Dynamic Subnav Bar update (hidden on quiet layout, but kept functional) */
 function updateSubNav(){
   const nav=currentMainNav(),box=$('subNavBar'),inner=$('subNavBarInner');
   if(!box||!inner)return;
-  if(nav==='courses'){
-    box.style.display='block';
-    const isFoundations=['learn','flash','quiz'].includes(ui.tab);
-    inner.innerHTML=`
-      <span class="subnav-label">课程通道：</span>
-      <button type="button" class="subnav-pill ${isFoundations?'active':''}" data-action="nav-foundations">📖 基础六章（144题）</button>
-      <button type="button" class="subnav-pill ${ui.tab==='textbook'?'active':''}" data-action="nav-textbook">📚 系统教材（8篇）</button>
-      <button type="button" class="subnav-pill ${ui.tab==='training'?'active':''}" data-action="nav-training">🗓️ 16 天培训（32单元）</button>
-    `;
-  }else if(nav==='practice'){
-    box.style.display='block';
-    const due=dueIds().length,wrong=activeWrongIds().length;
-    inner.innerHTML=`
-      <span class="subnav-label">复习强化：</span>
-      <button type="button" class="subnav-pill ${ui.tab==='review'?'active':''}" data-action="nav-review">🧠 今日复习${due?` (${due})`:''}</button>
-      <button type="button" class="subnav-pill ${ui.tab==='lab'?'active':''}" data-action="nav-lab">🔬 互动实验</button>
-      <button type="button" class="subnav-pill ${ui.tab==='mission'?'active':''}" data-action="nav-mission">🏅 场景闯关</button>
-      <button type="button" class="subnav-pill ${ui.tab==='wrong'?'active':''}" data-action="nav-wrong">📝 错题本${wrong?` (${wrong})`:''}</button>
-    `;
-  }else if(nav==='projects'){
-    box.style.display='block';
-    const sel=(typeof ProjectLab!=='undefined'&&ProjectLab.getSelected)?ProjectLab.getSelected():null;
-    inner.innerHTML=`
-      <span class="subnav-label">实战项目：</span>
-      <button type="button" class="subnav-pill ${sel===null?'active':''}" data-project="back">概览</button>
-      <button type="button" class="subnav-pill ${sel==='label'?'active':''}" data-project="open" data-id="label">01 标注评估</button>
-      <button type="button" class="subnav-pill ${sel==='ml'?'active':''}" data-project="open" data-id="ml">02 贝叶斯分类</button>
-      <button type="button" class="subnav-pill ${sel==='rag'?'active':''}" data-project="open" data-id="rag">03 检索问答</button>
-      <button type="button" class="subnav-pill ${sel==='agent'?'active':''}" data-project="open" data-id="agent">04 智能体工具</button>
-    `;
-  }else{
-    box.style.display='none';
-  }
+  box.style.display='none';
 }
 
 /* Context-Aware Main Sidebar */
@@ -2321,21 +2208,29 @@ function updateMainSidebar(){
   if(!panel)return;
   const mastered=score(),wrong=activeWrongIds().length,due=dueIds().length;
 
-  if(['learn','flash','quiz'].includes(ui.tab)){
+  if(['lesson','portfolio','pathways'].includes(ui.tab)){
+    panel.innerHTML='<div class="side-overline">自助学习</div><nav class="learning-side-links"><a href="#lesson?id=reliable-ai">可靠使用 AI · 完整示范课</a><a href="#my-learning">我的作品与备份</a><a href="#courses?mode=foundations&ch=0&tab=learn">六章基础与练习</a><a href="#courses?mode=textbook">系统教材目录</a><a href="#courses?mode=training&day=1">16 天培训大纲</a></nav><p class="side-subtitle">从一个小任务开始，保留依据，解释你的选择。</p>';
+  }else if(['learn','flash','quiz'].includes(ui.tab)){
     panel.innerHTML=`
-      <div class="side-overline">FOUNDATIONS · 基础六章目录</div>
+      <div class="side-overline">课程通道</div>
+      <div class="side-track-switcher">
+        <button type="button" class="side-track-pill active" data-action="nav-foundations">基础六章</button>
+        <button type="button" class="side-track-pill" data-action="nav-textbook">系统教材</button>
+        <button type="button" class="side-track-pill" data-action="nav-training">16天培训</button>
+      </div>
+      <div class="side-overline">基础六章目录</div>
       <nav class="chapter-nav" id="chapterNav">
         ${COURSES.map((c,i)=>`
           <button type="button" class="chapter-button ${i===ui.chapter?'active':''} ${saved.mastered[i]?'passed':''}" data-action="chapter" data-index="${i}">
             <span class="chapter-no">${saved.mastered[i]?'✓':String(i+1).padStart(2,'0')}</span>
             <span class="chapter-meta">
               <strong>${esc(c.title)}</strong>
-              <small>${saved.mastered[i]?'✓ 练习达标':'◷ 待达标'} · ${esc(c.subtitle)}</small>
+              <small>${saved.mastered[i]?'✓ 达标':'◷ 待达标'} · ${esc(c.subtitle)}</small>
             </span>
           </button>
         `).join('')}
       </nav>
-      <div class="side-footer">
+      <div class="side-sub-footer">
         <button type="button" class="side-link-btn" data-action="show-wrong">📝 错题本 (${wrong} 题)</button>
         <button type="button" data-action="clear">重置基础六章记录</button>
       </div>`;
@@ -2347,11 +2242,17 @@ function updateMainSidebar(){
     const groups=manifest?[...new Set(manifest.lessons.map(l=>l.group))]:[];
 
     panel.innerHTML=`
-      <div class="side-overline">TEXTBOOK · 系统教材 (${finished}/8)</div>
-      <div class="book-sidebar-progress"><span style="width:${finished*12.5}%"></span></div>
+      <div class="side-overline">课程通道</div>
+      <div class="side-track-switcher">
+        <button type="button" class="side-track-pill" data-action="nav-foundations">基础六章</button>
+        <button type="button" class="side-track-pill active" data-action="nav-textbook">系统教材</button>
+        <button type="button" class="side-track-pill" data-action="nav-training">16天培训</button>
+      </div>
+      <div class="side-overline">系统教材 (${finished}/${HOME_LESSONS.length})</div>
+      <div class="book-sidebar-progress"><span style="width:${finished/HOME_LESSONS.length*100}%"></span></div>
       <button type="button" class="chapter-button ${activeLesson===null?'active':''}" data-book-open="">
         <span class="chapter-no">⌂</span>
-        <span class="chapter-meta"><strong>教材概览</strong><small>8 篇深度原创体系</small></span>
+        <span class="chapter-meta"><strong>教材概览</strong><small>${HOME_LESSONS.length} 篇 · 基础与工程进阶</small></span>
       </button>
       <nav class="chapter-nav">
         ${groups.map(g=>`
@@ -2371,7 +2272,13 @@ function updateMainSidebar(){
     const halfCount=Object.values(trSaved.completed||{}).filter(Boolean).length;
     const passDays=TRAINING_PLAN.filter(x=>Number(trSaved.best[x.day]||0)>=3).length;
     panel.innerHTML=`
-      <div class="side-overline">TRAINING · 16 天集训大纲</div>
+      <div class="side-overline">课程通道</div>
+      <div class="side-track-switcher">
+        <button type="button" class="side-track-pill" data-action="nav-foundations">基础六章</button>
+        <button type="button" class="side-track-pill" data-action="nav-textbook">系统教材</button>
+        <button type="button" class="side-track-pill active" data-action="nav-training">16天培训</button>
+      </div>
+      <div class="side-overline">16 天集训大纲</div>
       <div class="side-overline" style="font-size:11px;color:var(--ink-secondary);letter-spacing:0">已确认 ${halfCount}/32 时段 · ${passDays}/16 天达标</div>
       <nav class="chapter-nav">
         ${TRAINING_PLAN.map(x=>`
@@ -2384,7 +2291,7 @@ function updateMainSidebar(){
           </button>
         `).join('')}
       </nav>
-      <div class="side-footer">
+      <div class="side-sub-footer">
         <button type="button" class="side-link-btn" data-action="tr-wrong">📝 培训错题复练 (${trPending().length})</button>
       </div>`;
   }else if(ui.tab==='projects'){
@@ -2392,7 +2299,7 @@ function updateMainSidebar(){
     const selected=(typeof ProjectLab!=='undefined'&&ProjectLab.getSelected)?ProjectLab.getSelected():null;
     const flags=(typeof ProjectLab!=='undefined'&&ProjectLab.getProgress)?ProjectLab.getProgress():{};
     panel.innerHTML=`
-      <div class="side-overline">PROJECTS · 4 大实战项目</div>
+      <div class="side-overline">实战项目</div>
       <button type="button" class="chapter-button ${selected===null?'active':''}" data-project="back">
         <span class="chapter-no">⌂</span>
         <span class="chapter-meta"><strong>实战项目中心</strong><small>可验证的实践交付</small></span>
@@ -2408,12 +2315,12 @@ function updateMainSidebar(){
           </button>
         `).join('')}
       </nav>
-      <div class="side-footer">
-        <button type="button" class="side-link-btn" data-project="export-all">导出全部项目成果 JSON</button>
+      <div class="side-sub-footer">
+        <button type="button" class="side-link-btn" data-project="export-all">导出成果 JSON</button>
       </div>`;
   }else if(['review','lab','mission','wrong'].includes(ui.tab)){
     panel.innerHTML=`
-      <div class="side-overline">PRACTICE · 练习与复习</div>
+      <div class="side-overline">练习与复习</div>
       <nav class="chapter-nav">
         <button type="button" class="chapter-button ${ui.tab==='review'?'active':''}" data-action="nav-review">
           <span class="chapter-no">🧠</span>
@@ -2434,34 +2341,44 @@ function updateMainSidebar(){
       </nav>`;
   }else{
     // Home or Feedback
-    const tbDone=(typeof Textbook!=='undefined'&&Textbook.getProgress&&Textbook.getProgress())?Textbook.getProgress().completed:0;
+    const tbDone=HOME_LESSONS.filter(l=>Textbook.getState()[l.id]?.completed).length;
     const projDone=(typeof ProjectLab!=='undefined'&&ProjectLab.getProgress)?Object.values(ProjectLab.getProgress()).filter(Boolean).length:0;
     panel.innerHTML=`
-      <div class="side-overline">OVERVIEW · 学习概览</div>
+      <div class="side-overline">学习进度总览</div>
       <div class="side-home-stats">
         <div><span>基础六章</span><strong>${mastered} / 6 达标</strong></div>
-        <div><span>系统教材</span><strong>${tbDone} / 8 篇已读</strong></div>
+        <div><span>系统教材</span><strong>${tbDone} / ${HOME_LESSONS.length} 篇已读</strong></div>
         <div><span>实战项目</span><strong>${projDone} / 4 项达标</strong></div>
         <div><span>待复习卡</span><strong>${due} 张到期</strong></div>
         <div><span>错题巩固</span><strong>${wrong} 道待练</strong></div>
       </div>
-      <div class="side-footer">
+      <div class="side-sub-footer">
         <button type="button" data-action="clear">重置基础学习记录</button>
       </div>`;
   }
 }
 
 function updateMobileSubbar(){
+  const barEl=$('mobileSubbar');
+  if(!barEl)return;
+  if(ui.tab==='home'){
+    barEl.style.display='none';
+    return;
+  }
+  barEl.style.display='flex';
   const titleEl=$('mobileCurrentTitle'),metaEl=$('mobileCurrentMeta');
   if(!titleEl)return;
   if(ui.tab==='home'){
     titleEl.textContent='学习首页';if(metaEl)metaEl.textContent='概览与推荐';
+  }else if(ui.tab==='pathways'||ui.tab==='lesson'||ui.tab==='portfolio'){
+    titleEl.textContent=ui.tab==='lesson'?'可靠使用 AI':ui.tab==='portfolio'?'我的成果':'学习路线';
+    if(metaEl)metaEl.textContent=ui.tab==='lesson'?'六步实践课':ui.tab==='portfolio'?'个人作品与备份':'按目标选择';
   }else if(ui.tab==='textbook'){
     const active=(typeof Textbook!=='undefined'&&Textbook.getActive)?Textbook.getActive():null;
     const manifest=(typeof Textbook!=='undefined'&&Textbook.getManifest)?Textbook.getManifest():null;
     const lesson=manifest?manifest.lessons.find(l=>l.id===active):null;
     titleEl.textContent=lesson?`教材 · ${lesson.title}`:'系统教材大纲';
-    if(metaEl)metaEl.textContent=lesson?`建议 ${lesson.mins} 分钟`:'8 篇';
+    if(metaEl)metaEl.textContent=lesson?`建议 ${lesson.mins} 分钟`:HOME_LESSONS.length+' 篇';
   }else if(ui.tab==='training'){
     titleEl.textContent=`16 天培训 · 第 ${trState.day} 天`;
     if(metaEl)metaEl.textContent='实战大纲';
@@ -2490,12 +2407,12 @@ function updateMobileSubbar(){
 function render(){
   const isHome=ui.tab==='home';
   const heroBox=$('homeHeroArea');
-  if(heroBox)heroBox.style.display=isHome?'block':'none';
+  if(heroBox)heroBox.style.display='none';
 
   $('mainContent').classList.toggle('feedback-mode',ui.tab==='feedback');
   document.querySelectorAll('[data-action="nav-feedback"]').forEach(b=>b.classList.toggle('active',ui.tab==='feedback'));
 
-  // Update primary navigation tabs
+  // Update primary navigation tabs in sidebar
   const mainNav=currentMainNav();
   document.querySelectorAll('.main-nav .nav-item').forEach(b=>{
     b.classList.toggle('active',b.dataset.mainNav===mainNav);
@@ -2519,6 +2436,19 @@ function render(){
   if($('progressFill'))$('progressFill').style.width=`${pct}%`;
   if($('progressBar'))$('progressBar').setAttribute('aria-valuenow',pct);
 
+  if(ui.tab==='lesson'||ui.tab==='portfolio'){
+    LearningWorkspace.render($('dynamicArea'),ui.tab);
+    return;
+  }
+  $('dynamicArea').classList.remove('learn-workspace');
+  $('dynamicArea').removeAttribute('data-workshop');
+  $('dynamicArea').oninput=null;
+  $('dynamicArea').onchange=null;
+  $('dynamicArea').onclick=null;
+  if(ui.tab==='pathways'){
+    $('dynamicArea').innerHTML=LearningHome.render(homeMeta(),true);
+    return;
+  }
   if(ui.tab==='projects'){
     ProjectLab.render();
     return;
@@ -2605,7 +2535,7 @@ function renderQuiz(c){
   const total=ui.quizItems.length,correct=currentScore();
   if(ui.finished){
     const pct=Math.round(100*correct/total),pass=pct>=70;
-    return `<div class="quiz-result"><div class="score-ring" style="border-color:${pass?'#dff5ee':'#fee2e2'};color:${pass?'var(--teal)':'var(--red)'}">${pct}%</div><h3>${pass?'练习达标！':'继续加油'}</h3><p>本次作答 ${total} 题，答对 ${correct} 题。答错题目已加入错题本。${pass?'已记录达标状态。':'正确率满 70% 即可达标。'}</p><div class="review">${ui.quizItems.map((id,i)=>{
+    return `<div class="quiz-result"><div class="score-ring" style="border-color:${pass?'#d1fae5':'#fee2e2'};color:${pass?'var(--accent)':'var(--red)'}">${pct}%</div><h3>${pass?'练习达标！':'继续加油'}</h3><p>本次作答 ${total} 题，答对 ${correct} 题。答错题目已加入错题本。${pass?'已记录达标状态。':'正确率满 70% 即可达标。'}</p><div class="review">${ui.quizItems.map((id,i)=>{
       const q=ALL_QUESTIONS.get(id),ans=ui.answers[i],ok=ans===q.a;
       return `<div class="review-item"><strong>${i+1}. ${esc(q.q)}</strong><p>你的回答：${ans!==undefined?esc(q.o[ans]):'未作答'} ${ok?'✓':'✕'}　<span class="answer">正确答案：${esc(q.o[q.a])}</span></p><p>${esc(q.why)}</p></div>`;
     }).join('')}</div><div class="result-actions">${actionBtn('restart-quiz','再练一次')}${ui.chapter<5?actionBtn('next-chapter','下一章 →',true):''}${actionBtn('show-wrong','查看错题本',true)}</div></div>`;
@@ -2639,6 +2569,8 @@ document.addEventListener('click',event=>{
     case 'chapter':resetChapter(i);break;
     case 'tab':if(el.dataset.tab==='quiz'){ui.quizItems=[];ui.finished=false;}changeTab(el.dataset.tab);break;
     case 'nav-home':case 'review-home':ui.tab='home';updateHashRoute();render();break;
+    case 'nav-pathways':ui.tab='pathways';updateHashRoute();render();break;
+    case 'nav-portfolio':ui.tab='portfolio';updateHashRoute();render();break;
     case 'nav-courses':resetChapter(ui.chapter,'learn');break;
     case 'nav-foundations':resetChapter(ui.chapter,'learn');break;
     case 'nav-practice':changeTab(dueIds().length?'review':'lab');break;

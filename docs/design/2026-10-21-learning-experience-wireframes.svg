@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1700" viewBox="0 0 1800 1700">
+<defs><style>
+text{font-family:'Microsoft YaHei','PingFang SC',sans-serif;fill:#182D49;font-size:17px} .h{font-size:28px;font-weight:700}.title{font-size:23px;font-weight:700}.small{font-size:14px;fill:#61748B}.label{font-size:15px;font-weight:700}.blue{fill:#245CE0}.white{fill:#FFF}.muted{fill:#61748B}.ok{fill:#087D79}.panel{fill:#FFF;stroke:#CFD9E5;stroke-width:1.5}.soft{fill:#F2F6FD}.line{stroke:#D9E2EC;stroke-width:1}.cta{fill:#245CE0}.tag{fill:#E3F4F1}.dash{fill:none;stroke:#8EA5C4;stroke-dasharray:6 5;stroke-width:1.5}
+</style></defs>
+<rect width="1800" height="1700" fill="#F5F8FC"/>
+<text x="48" y="56" class="h">AI 学习实验室 · 从第一次使用，到独立完成一件事</text>
+<text x="48" y="90" class="muted">面向所有 AI 初学者｜共同基础 → 自选应用 / 构建路线｜设计草案 · 非运行页面</text>
+<text x="48" y="124" class="small">体验主线：清楚目标 → 看例子 → 自己做 → 核对解释 → 留下作品。所有状态与结果均为设计示例。</text>
+<!-- screen 1 -->
+<rect x="48" y="156" width="720" height="640" rx="15" class="panel"/>
+<text x="72" y="193" class="title">01 学习首页</text><text x="72" y="220" class="small">每天只帮助你决定下一步，不在首页堆满目录</text>
+<line x1="48" y1="240" x2="768" y2="240" class="line"/>
+<text x="72" y="271" class="label">学习实验室</text><text x="278" y="271" class="blue">首页</text><text x="342" y="271">路径</text><text x="407" y="271">实践</text><text x="472" y="271">复习</text><text x="678" y="271" class="small">我的</text>
+<rect x="72" y="298" width="672" height="94" rx="9" class="soft"/>
+<text x="92" y="327" class="label">第一次来？先完成一个 10 分钟小任务</text><text x="92" y="354" class="small">把一段活动通知变成清单，体验如何提问与核对。</text><text x="92" y="378" class="small">初次状态显示「开始体验」；有记录后切换为下方继续状态。</text>
+<text x="72" y="430" class="small">继续学习 · 状态示例</text>
+<text x="72" y="465" class="title">把活动通知整理成可核对的清单</text><text x="72" y="497">本节练习：信息没写清楚时，留下“未提及”。</text>
+<rect x="72" y="519" width="230" height="47" rx="8" class="cta"/><text x="99" y="550" class="white label">继续本节练习 →</text>
+<text x="72" y="608" class="label">今天做这两件事就够了</text><line x1="72" y1="625" x2="744" y2="625" class="line"/>
+<text x="79" y="656">□ 完成通知清单，核对时间与地点</text><text x="656" y="656" class="small">约 8 分钟</text>
+<text x="79" y="694">□ 用自己的话说出一条 AI 使用边界</text><text x="656" y="694" class="small">约 2 分钟</text>
+<text x="72" y="747" class="small">全部课程在「学习路径」中按需查找。无需每天完成整条路线。</text>
+<!-- screen 2 -->
+<rect x="792" y="156" width="720" height="640" rx="15" class="panel"/>
+<text x="816" y="193" class="title">02 学习路径</text><text x="816" y="220" class="small">先共学，再按目标分流；编程不是通识课程的前提</text>
+<line x1="792" y1="240" x2="1512" y2="240" class="line"/>
+<text x="816" y="278" class="label">共同基础 · 每个人都可以从这里开始</text>
+<rect x="816" y="299" width="672" height="154" rx="9" class="soft"/>
+<text x="836" y="327">1 认识 AI：适合什么任务，哪里容易出错</text><text x="836" y="356">2 可靠使用：说清任务、提供材料、核对结果</text><text x="836" y="385">3 原理直觉：数据、训练、推理与模型</text><text x="836" y="414">4 质量判断：评估、核对与独立作品</text><text x="836" y="442" class="small">共享成果：一份活动通知清单 + 原文核对记录</text>
+<path d="M1152 453 V475 M980 475 H1320 M980 475 V493 M1320 475 V493" fill="none" stroke="#8EA5C4" stroke-width="2"/>
+<rect x="816" y="493" width="325" height="167" rx="9" class="panel"/><rect x="1163" y="493" width="325" height="167" rx="9" class="panel"/>
+<text x="836" y="526" class="title">AI 日常应用</text><text x="836" y="559">办公 · 学习 · 资料整理</text><text x="836" y="589">知识库 · 内容 · 可视化工作流</text><text x="836" y="626" class="small">成果：可重复使用的任务包</text>
+<text x="1183" y="526" class="title">AI 项目构建</text><text x="1183" y="559">代码入门 · API · 数据保存</text><text x="1183" y="589">结构化输出 · RAG · 工具</text><text x="1183" y="626" class="small">成果：可独立运行的小应用</text>
+<rect x="816" y="681" width="672" height="69" rx="8" class="tag"/><text x="836" y="708" class="ok label">选学进阶：架构 / 工程 / 流程</text><text x="836" y="734" class="small">遇到真实项目问题再深入；允许跨路线，允许返回基础补课。</text>
+<!-- screen 3 -->
+<rect x="48" y="824" width="720" height="702" rx="15" class="panel"/>
+<text x="72" y="862" class="title">03 单课工作区</text><text x="72" y="890" class="small">一节一目标 · 短讲解和练习在同一工作区</text>
+<line x1="48" y1="909" x2="768" y2="909" class="line"/>
+<rect x="64" y="926" width="123" height="572" rx="7" class="soft"/>
+<text x="79" y="955" class="label">本节目录</text><text x="79" y="995">学习目标</text><text x="79" y="1030">看一个例子</text><text x="79" y="1065" class="blue">自己试一试</text><text x="79" y="1100">核对与解释</text><text x="79" y="1135">下一步</text>
+<text x="204" y="955" class="label">活动通知 → 可核对清单</text>
+<text x="204" y="987" class="small">目标：提取事实，区分缺失信息与猜测。</text>
+<rect x="204" y="1007" width="374" height="91" rx="7" class="soft"/>
+<text x="218" y="1034" class="label">原文</text><text x="218" y="1060" class="small">周六下午在社区举办读书会。</text><text x="218" y="1084" class="small">报名方式稍后公布。</text>
+<text x="204" y="1131" class="ok">✓ 地点：社区；具体地址：未提及</text><text x="204" y="1163" fill="#9A5D21">× 地点：社区一楼（原文未提供）</text>
+<line x1="204" y1="1182" x2="578" y2="1182" class="line"/>
+<text x="204" y="1213" class="label">你的练习：开始时间应该怎么填？</text><rect x="204" y="1230" width="374" height="43" rx="7" class="panel"/><text x="217" y="1258" class="small">填写原文信息，或说明缺失……</text>
+<rect x="204" y="1291" width="136" height="40" rx="7" class="cta"/><text x="222" y="1318" class="white label">核对答案</text>
+<rect x="204" y="1349" width="374" height="81" rx="7" class="tag"/><text x="218" y="1377" class="ok label">反馈示例：下午 ≠ 明确的几点</text><text x="218" y="1405" class="small">保留“周六下午”，具体钟点记为未提及。</text>
+<text x="204" y="1471" class="blue label">下一步：把清单用于你的第一份作品 →</text>
+<rect x="595" y="926" width="157" height="572" rx="7" class="soft"/><text x="608" y="955" class="label">按需任务栏</text><text x="608" y="989" class="small">术语解释</text><text x="608" y="1020" class="small">提示，不直接给答案</text><text x="608" y="1051" class="small">查看原文</text><text x="608" y="1082" class="small">我的笔记</text><text x="608" y="1456" class="small">默认可收起</text>
+<!-- screen 4 -->
+<rect x="792" y="824" width="720" height="702" rx="15" class="panel"/>
+<text x="816" y="862" class="title">04 项目 / 我的成果</text><text x="816" y="890" class="small">作品体现学习过程；完成、自动检查、自评分开呈现</text>
+<line x1="792" y1="909" x2="1512" y2="909" class="line"/>
+<text x="816" y="948" class="title">活动通知整理任务包</text><text x="816" y="980" class="small">练习任务：让另一位读者能核对通知内容，不补写未知事实。</text>
+<rect x="816" y="1000" width="672" height="56" rx="7" class="soft"/><text x="834" y="1035">任务 → 输入 → 步骤 → 结果 → 核对 → 作品包</text>
+<text x="816" y="1092" class="label">输入材料</text><text x="816" y="1122">一份虚构活动通知；保留原文供逐项核对。</text>
+<text x="816" y="1160" class="label">结果预览 · 示例，尚未代表你的成果</text>
+<rect x="816" y="1177" width="672" height="104" rx="7" class="panel"/>
+<text x="832" y="1206" class="label">字段</text><text x="991" y="1206" class="label">整理结果</text><text x="1239" y="1206" class="label">原文依据</text>
+<line x1="816" y1="1220" x2="1488" y2="1220" class="line"/><text x="832" y="1248">活动时间</text><text x="991" y="1248">周六下午；钟点未提及</text><text x="1239" y="1248">“周六下午”</text>
+<rect x="816" y="1302" width="322" height="91" rx="7" class="tag"/><text x="832" y="1333" class="ok label">本地自动检查</text><text x="832" y="1364" class="small">检查样例字段，不代表全面语义验收。</text>
+<rect x="1155" y="1302" width="333" height="91" rx="7" class="soft"/><text x="1171" y="1333" class="label">我的核对与自评</text><text x="1171" y="1364" class="small">逐项对照原文，说明不确定与修改原因。</text>
+<rect x="816" y="1414" width="220" height="43" rx="7" class="cta"/><text x="841" y="1443" class="white label">导出作品包 ↓</text><text x="1053" y="1443" class="small">原文 + 清单 + 核对记录 + 复盘</text>
+<text x="816" y="1490" class="small">保存位置须明确：本机记录与导出文件；不暗示云同步或能力认证。</text>
+<!-- mobile thumbnail -->
+<text x="1544" y="190" class="title">手机收敛</text><text x="1544" y="220" class="small">同一节课，一列完成</text>
+<rect x="1544" y="245" width="220" height="622" rx="25" fill="#182D49"/>
+<rect x="1552" y="264" width="204" height="584" rx="18" fill="#FFF"/>
+<text x="1565" y="299" class="small">← 课程　　目录　⋯</text><line x1="1552" y1="315" x2="1756" y2="315" class="line"/>
+<text x="1566" y="348" class="label">把活动通知整理成</text><text x="1566" y="375" class="label">可核对的清单</text>
+<rect x="1565" y="396" width="178" height="77" rx="7" class="soft"/><text x="1575" y="422" class="small">本节目标</text><text x="1575" y="448" class="small">不补写材料没有的事实</text>
+<text x="1566" y="509" class="label">看例子 → 自己做</text><text x="1566" y="545" class="small">周六下午举办读书会</text><text x="1566" y="575" class="small">具体几点？</text><rect x="1565" y="592" width="178" height="47" rx="7" class="panel"/><text x="1575" y="623" class="small">填写你的答案……</text>
+<rect x="1565" y="663" width="178" height="43" rx="7" class="cta"/><text x="1615" y="691" class="white label">核对答案</text>
+<text x="1566" y="745" class="small">提示 / 原文 / 笔记</text><text x="1566" y="775" class="small">需要时从底部展开</text>
+<text x="1566" y="824" class="small" style="font-size:12px">首页　路径　实践　复习　我的</text>
+<text x="1544" y="912" class="label">阅读优先</text><text x="1544" y="942" class="small">目录转抽屉</text><text x="1544" y="972" class="small">任务栏转按需面板</text><text x="1544" y="1002" class="small">一次只有一个主操作</text><text x="1544" y="1032" class="small">反馈紧跟练习出现</text>
+<!-- footer -->
+<line x1="48" y1="1564" x2="1752" y2="1564" class="line"/>
+<text x="48" y="1600" class="label">设计取舍</text><text x="48" y="1632">用一份通知贯穿课程与作品，把“有依据的清单”作为视觉锚点；降低入口选择成本，保留按需深入的空间。</text>
+<text x="48" y="1664" class="small">本图仅表达信息架构与交互意图。按钮、反馈、进度、本地检查及导出均为拟议设计，不表示当前产品已经实现。</text>
+</svg>

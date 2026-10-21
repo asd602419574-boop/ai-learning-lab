@@ -25,7 +25,7 @@ const Textbook = (() => {
       if (!r.ok) throw Error('教材目录无法加载（HTTP ' + r.status + '）');
       return r.json()
     }).then(d => {
-      if (!d || !Array.isArray(d.lessons) || d.lessons.length !== 8) throw Error('教材目录格式异常');
+      if (!d || !Array.isArray(d.lessons) || d.lessons.length < 8 || new Set(d.lessons.map(l => l.id)).size !== d.lessons.length) throw Error('教材目录格式异常');
       manifest = d; return d
     }).finally(() => loading = null);
     return loading
@@ -59,7 +59,7 @@ const Textbook = (() => {
       }
       const finished = manifest.lessons.filter(l => itemState(l.id).completed).length;
       const groups = [...new Set(manifest.lessons.map(l => l.group))];
-      const sidebar = `<aside class="book-sidebar"><div class="book-sidebar-head"><strong>📚 AI 系统教材</strong><small>${finished} / 8 完成阅读</small></div><div class="book-progress"><span style="width:${finished * 12.5}%"></span></div><button type="button" class="book-nav ${active === null ? 'active' : ''}" data-book-open=""><span>⌂</span><div><strong>教材首页</strong><small>8 篇 · 原理与实践</small></div></button><div class="book-sidebar-list">${groups.map(g => `<div class="book-group">${escape(g)}</div>${manifest.lessons.filter(l => l.group === g).map((l) => `<button type="button" class="book-nav ${active === l.id ? 'active' : ''}" data-book-open="${escape(l.id)}"><span>${itemState(l.id).completed ? '✓' : manifest.lessons.indexOf(l) + 1}</span><div><strong>${escape(l.title)}</strong><small>${l.mins} 分钟 · ${itemState(l.id).completed ? '已完成阅读' : itemState(l.id).opened ? '继续阅读' : '未开始'}</small></div></button>`).join('')}`).join('')}</div></aside>`;
+      const sidebar = `<aside class="book-sidebar"><div class="book-sidebar-head"><strong>📚 AI 系统教材</strong><small>${finished} / ${manifest.lessons.length} 完成阅读</small></div><div class="book-progress"><span style="width:${finished / manifest.lessons.length * 100}%"></span></div><button type="button" class="book-nav ${active === null ? 'active' : ''}" data-book-open=""><span>⌂</span><div><strong>教材首页</strong><small>${manifest.lessons.length} 篇 · 原理与实践</small></div></button><div class="book-sidebar-list">${groups.map(g => `<div class="book-group">${escape(g)}</div>${manifest.lessons.filter(l => l.group === g).map((l) => `<button type="button" class="book-nav ${active === l.id ? 'active' : ''}" data-book-open="${escape(l.id)}"><span>${itemState(l.id).completed ? '✓' : manifest.lessons.indexOf(l) + 1}</span><div><strong>${escape(l.title)}</strong><small>${l.mins} 分钟 · ${itemState(l.id).completed ? '已完成阅读' : itemState(l.id).opened ? '继续阅读' : '未开始'}</small></div></button>`).join('')}`).join('')}</div></aside>`;
       const inner = lesson ? lessonView(lesson) : libraryView();
       area.innerHTML = `<div class="book-shell"><div class="book-desktop-catalog-slot">${sidebar}</div><div class="book-lesson-body">${inner}<div class="book-foot">本教材为原创教学文本。外部资源仅作延伸阅读；实验在本机浏览器执行，不会上传学习数据。完成阅读不等于知识已经掌握。</div></div></div>`;
       if (lesson && lesson.lab) paintLab(lesson.lab);
@@ -133,7 +133,7 @@ const Textbook = (() => {
     getManifest: () => manifest,
     getState: () => state,
     itemState,
-    getProgress: () => manifest ? { completed: manifest.lessons.filter(l => itemState(l.id).completed).length, total: 8 } : null,
+    getProgress: () => manifest ? { completed: manifest.lessons.filter(l => itemState(l.id).completed).length, total: manifest.lessons.length } : null,
     _test: { gradientStats, tokens, retrieve }
   };
 })();

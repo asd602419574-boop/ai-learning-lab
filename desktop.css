@@ -1,53 +1,61 @@
-/* Desktop workspace sizing uses CSS viewport pixels, so OS/browser scaling is respected.
-   Keep the existing tablet/mobile layout and a separate readable article measure. */
-@media (min-width: 1600px) {
-  .shell { width: 92%; max-width: 3200px; padding-left: 0; padding-right: 0; }
-  .layout { grid-template-columns: clamp(280px, 14vw, 360px) minmax(0, 1fr); gap: 32px; }
-  .nav-item, .brand strong { font-size: 16px; }
-  .save-note, .header-pill, .header-feedback-btn, .subnav-pill { font-size: 14px; }
-  .chapter-meta strong, .side-home-stats > div { font-size: 15px; }
-  .chapter-meta small, .side-footer button { font-size: 13px; }
-  .side-overline, .eyebrow, .hero-overline { font-size: 12px; }
-  .hero h1 { font-size: clamp(38px, 2vw, 54px); max-width: 900px; }
-  .hero p { font-size: 17px; max-width: 900px; }
-  .stat small, .progress-info small { font-size: 14px; }
-  .progress-info strong, .home-quick-head h4 { font-size: 17px; }
-  .home-resume-main h3 { font-size: 24px; }
-  .home-resume-main p, .home-track-card p { font-size: 17px; }
-  .home-track-card { padding: 28px; }
-  .home-track-card h4 { font-size: 21px; }
-  .home-track-badge, .home-quick-btn div small { font-size: 14px; }
-  .home-track-cta, .home-quick-btn div strong, .btn { font-size: 16px; }
-  .home-quick-btn { padding: 16px; }
-  .section-header p, .concept-body, .insight p, .choice, .tab { font-size: 16px; }
-  .concept-name, .panel-title { font-size: 18px; }
-  /* Center the article and TOC together; widening the workspace must not separate them. */
-  .book-reading-wrap { grid-template-columns: minmax(0, 960px) 260px; justify-content: center; }
-  .book-reading-main { max-width: 960px; }
-  .book-article p, .book-article li { font-size: 18px; }
-  .book-toc, .book-toc-link.level-3, .book-breadcrumb { font-size: 15px; }
-  .studio-header p, .studio-project-head p, .studio-tile-main > span,
-  .studio-task li, .studio-main section > p, .studio-help { font-size: 17px; }
-  .studio-step-pill, .studio-back { font-size: 15px; }
+/* Quiet Learning Workspace: Large-Screen & High-Resolution Layout
+   The workspace fills the viewport; only article text has a reading-width limit.
+   Sidebar and font sizes remain stable on 2K/4K monitors. */
+
+@media (min-width: 1441px) {
+  .home-tracks-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .home-quick-row {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .book-reading-wrap {
+    grid-template-columns: minmax(0, 840px) 240px;
+    gap: 36px;
+    justify-content: center;
+  }
+  .book-reading-main {
+    max-width: 840px;
+  }
+  .book-article {
+    max-width: 840px;
+  }
 }
 
-@media (min-width: 2200px) {
-  .layout { gap: 40px; padding-top: 32px; }
-  .topbar { height: 80px; }
-  .nav-item, .brand strong { font-size: 20px; }
-  .nav-item { padding: 10px 20px; }
-  .save-note, .header-pill, .header-feedback-btn, .subnav-pill { font-size: 16px; }
-  .chapter-meta strong, .side-home-stats > div { font-size: 18px; }
-  .chapter-meta small, .side-footer button { font-size: 15px; }
-  .home-tracks-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
-  .home-track-card p, .home-resume-main p, .hero p { font-size: 19px; }
-  .home-track-card h4 { font-size: 24px; }
-  .home-track-top { flex-wrap: wrap; gap: 12px; }
-  .home-track-badge, .home-quick-btn div small { font-size: 16px; }
-  .home-track-cta, .home-quick-btn div strong, .btn { font-size: 18px; }
-  .home-quick-head h4, .progress-info strong { font-size: 20px; }
-  .hero-stats { gap: 32px; }
-  .stat strong { font-size: 28px; }
-  .stat small, .progress-info small { font-size: 16px; }
-  .book-article p, .book-article li { font-size: 20px; }
+@media (min-width: 1920px) {
+  :root { --sidebar-w: 210px; }
+  .home-tracks-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+  }
+  .book-reading-wrap {
+    grid-template-columns: minmax(0, 860px) 250px;
+    gap: 40px;
+    justify-content: center;
+  }
+  .book-reading-main {
+    max-width: 860px;
+  }
+  .book-article {
+    max-width: 860px;
+  }
+}
+
+@media (min-width: 2560px) {
+  /* 4K & Ultrawide: Keep UI calm, stable and disciplined.
+     Do NOT balloon font sizes or cards across the screen. */
+  :root { --sidebar-w: 216px; }
+  .book-reading-wrap {
+    grid-template-columns: minmax(0, 880px) 260px;
+    gap: 44px;
+    justify-content: center;
+  }
+  .book-reading-main {
+    max-width: 880px;
+  }
+  .book-article {
+    max-width: 880px;
+  }
 }

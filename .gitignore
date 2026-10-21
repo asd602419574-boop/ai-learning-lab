@@ -6,6 +6,8 @@ venv/
 node_modules/
 playwright-report/
 test-results/
+screenshots_v2/download-check/
+screenshots_v2/**/downloads/
 *.log
 .env
 .env.*
