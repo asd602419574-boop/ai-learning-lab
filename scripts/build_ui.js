@@ -412,6 +412,7 @@ const part1 = `<!DOCTYPE html>
   <link rel="stylesheet" href="./content/home.css">
   <link rel="stylesheet" href="./desktop.css">
   <link rel="stylesheet" href="./learning/editorial.css">
+  <link rel="stylesheet" href="./learning/system.css?v=20261022-overview1">
   <link rel="stylesheet" href="./learning/workspace.css">
   <link rel="stylesheet" href="./learning/overview.css">
 </head>
@@ -537,8 +538,11 @@ const part1 = `<!DOCTYPE html>
 <script src="./training/training-ui.js"></script>
 <script src="./learning/content.js"></script>
 <script src="./learning/catalog.js"></script>
+<script src="./learning/system-core.js"></script>
+<script src="./learning/system-content.js"></script>
 <script src="./learning/core.js"></script>
 <script src="./learning/workspace.js"></script>
+<script src="./learning/system-workspace.js?v=20261022-overview1"></script>
 <script src="./learning/overview.js"></script>
 <script src="./learning/home.js"></script>
 <script>
@@ -718,7 +722,7 @@ function currentMainNav(){
   if(ui.tab==='home')return 'home';
   if(['pathways','lesson','learn','flash','quiz','textbook','training'].includes(ui.tab))return 'pathways';
   if(ui.tab==='portfolio')return 'portfolio';
-  if(ui.tab==='projects')return 'projects';
+  if(ui.tab==='projects'||ui.tab==='system')return 'projects';
   if(['review','lab','mission','wrong'].includes(ui.tab))return 'practice';
   if(ui.tab==='feedback')return 'feedback';
   return 'home';
@@ -731,6 +735,7 @@ function updateHashRoute(){
   else if(ui.tab==='pathways')hash='#pathways';
   else if(ui.tab==='lesson')hash='#lesson?id='+encodeURIComponent(ui.lessonId)+(ui.lessonView==='practice'?'&view=practice':'');
   else if(ui.tab==='portfolio')hash='#my-learning';
+  else if(ui.tab==='system')hash=ui.systemView==='overview'?'#system?view=overview':'#system?stage='+encodeURIComponent(ui.systemStage||'brief')+(ui.systemView==='practice'?'&view=practice':'');
   else if(ui.tab==='textbook'){
     const active=(typeof Textbook!=='undefined'&&Textbook.getActive)?Textbook.getActive():null;
     hash=active?\`#courses?mode=textbook&lesson=\${active}\`:'#courses?mode=textbook';
@@ -768,7 +773,9 @@ function syncRouteFromHash(){
   const [route,queryStr]=hash.split('?');
   const params=new URLSearchParams(queryStr||'');
 
-  if(route==='pathways'||route==='lesson'||route==='my-learning'){
+  if(route==='system'){
+    ui.tab='system';ui.systemStage=params.get('stage')||'brief';ui.systemView=params.get('view')==='practice'?'practice':params.get('view')==='overview'?'overview':'reading';render();
+  }else if(route==='pathways'||route==='lesson'||route==='my-learning'){
     ui.tab=route==='my-learning'?'portfolio':route;
     if(route==='lesson'){ui.lessonId=params.get('id')||'reliable-ai';ui.lessonView=params.get('view')==='practice'?'practice':'reading';}
     render();
@@ -854,7 +861,7 @@ function learningSidebar(){
   return '<div class="learning-side-catalog">'+
     learningSideGroup('学习安排',learningSideLink('#pathways','课程说明','概','学习顺序与内容',isOverview&&!isOutline)+learningSideLink('#pathways?anchor=training-overview','16天培训大纲','16','每日主题与任务',isOutline))+
     learningSideGroup('入门资料',courses)+
-    learningSideGroup('继续深入',learningSideLink('#courses?mode=foundations&ch=0&tab=learn','六章系统基础','基')+learningSideLink('#courses?mode=textbook','专题教材','读'))+
+    learningSideGroup('继续深入',learningSideLink('#system','架构、工程与流程','进','从通知到完整交付')+learningSideLink('#courses?mode=foundations&ch=0&tab=learn','六章系统基础','基')+learningSideLink('#courses?mode=textbook','专题教材','读'))+
     '<p class="learning-side-note">先读资料与示范，再进入练习。</p></div>';
 }
 /* Context-Aware Main Sidebar */
@@ -863,7 +870,9 @@ function updateMainSidebar(){
   if(!panel)return;
   const mastered=score(),wrong=activeWrongIds().length,due=dueIds().length;
 
-  if(['lesson','portfolio','pathways'].includes(ui.tab)){
+  if(ui.tab==='system'){
+    panel.innerHTML='<div class="learning-side-catalog">'+learningSideGroup('贯穿项目',learningSideLink('#system?view=overview','通知整理器','项','项目概览与学习进度',ui.systemView==='overview'))+learningSideGroup('学习阶段',LearningSystemContent.stages.map((stage,index)=>learningSideLink('#system?stage='+stage.id,['需求与架构','实现与保存','验证与恢复','交付与复盘'][index],String(index+1).padStart(2,'0'),['明确目标与系统边界','校验、确认与读回','固定案例与失败恢复','版本、证据与改进'][index],ui.systemView!=='overview'&&(ui.systemStage===stage.id||(!ui.systemStage&&index===0)))).join(''))+learningSideGroup('个人成果',learningSideLink('#my-learning','成果与备份','存','回看版本，备份恢复'))+'</div>';
+  }else if(['lesson','portfolio','pathways'].includes(ui.tab)){
     panel.innerHTML=learningSidebar();
   }else if(['learn','flash','quiz'].includes(ui.tab)){
     panel.innerHTML=\`
@@ -1029,6 +1038,8 @@ function updateMobileSubbar(){
   if(!titleEl)return;
   if(ui.tab==='home'){
     titleEl.textContent='学习首页';if(metaEl)metaEl.textContent='概览与推荐';
+  }else if(ui.tab==='system'){
+    titleEl.textContent='通知整理器';if(metaEl)metaEl.textContent=ui.systemView==='overview'?'项目概览与学习进度':LearningSystemContent.stages.find(s=>s.id===ui.systemStage)?.title||'架构、工程与流程';
   }else if(ui.tab==='pathways'||ui.tab==='lesson'||ui.tab==='portfolio'){
     titleEl.textContent=ui.tab==='lesson'?(LearningCatalog.get(ui.lessonId)?.title||'课程不存在'):ui.tab==='portfolio'?'我的成果':'基础学习';
     if(metaEl)metaEl.textContent=ui.tab==='lesson'?(ui.lessonView==='practice'?'配套练习':'课程资料'):ui.tab==='portfolio'?'个人作品与备份':'课程与16天安排';
@@ -1066,9 +1077,9 @@ function updateMobileSubbar(){
 let lastRenderedPage='';
 function render(){
   if(typeof LearningStorage!=='undefined'&&LearningStorage.role==='starting'){LearningStorage.ready.then(()=>render());return;}
-  const pageKey=ui.tab==='lesson'?'lesson:'+ui.lessonId+':'+ui.lessonView:ui.tab;
+  const pageKey=ui.tab==='lesson'?'lesson:'+ui.lessonId+':'+ui.lessonView:ui.tab==='system'?'system:'+ui.systemStage+':'+ui.systemView:ui.tab;
   const routeAnchor=new URLSearchParams(window.location.hash.split('?')[1]||'').get('anchor');
-  if(['pathways','lesson','portfolio'].includes(ui.tab)&&pageKey!==lastRenderedPage&&!routeAnchor){
+  if(['pathways','lesson','portfolio','system'].includes(ui.tab)&&pageKey!==lastRenderedPage&&!routeAnchor){
     requestAnimationFrame(()=>{if(lastRenderedPage===pageKey)window.scrollTo({top:0,left:0,behavior:'instant'});});
   }
   lastRenderedPage=pageKey;
@@ -1122,6 +1133,10 @@ function render(){
   $('dynamicArea').oninput=null;
   $('dynamicArea').onchange=null;
   $('dynamicArea').onclick=null;
+  if(ui.tab==='system'){
+    LearningSystemWorkspace.render($('dynamicArea'),ui.systemStage||'brief',ui.systemView||'reading');
+    return;
+  }
   if(ui.tab==='pathways'){
     $('dynamicArea').innerHTML=LearningOverview.render({trainingPlan:TRAINING_PLAN,foundationCourses:COURSES,textbookLessons:HOME_LESSONS,lessons:LearningCatalog.list()});
     return;

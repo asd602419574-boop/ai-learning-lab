@@ -4,7 +4,7 @@ const {KEYS,createGuard}=require('../learning/storage.js');
 const C=require('../learning/core.js');
 function memory(){const data=new Map();return {getItem:k=>data.get(k)??null,setItem:(k,v)=>data.set(k,String(v)),removeItem:k=>data.delete(k)};}
 const raw=memory(),a=createGuard(raw),b=createGuard(raw);
-assert.equal(KEYS.length,7);
+assert.equal(KEYS.length,8);
 a.setItem(KEYS[0],'{"first":1}');
 assert.throws(()=>b.setItem(KEYS[0],'{"second":2}'),/其他页面|其他标签|已改变|冲突/);
 assert.equal(raw.getItem(KEYS[0]),'{"first":1}');
