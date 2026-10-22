@@ -6,7 +6,7 @@
   const esc = value => String(value == null ? '' : value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const content = () => catalog().find(c => c.id === activeId);
   const now = () => new Date().toISOString();
-  function storage() { try { return window.localStorage; } catch(error) { return { getItem() { throw error; }, setItem() { throw error; }, removeItem() { throw error; } }; } }
+  function storage() { try { return window.LearningStorage?window.LearningStorage.storage:window.localStorage; } catch(error) { return { getItem() { throw error; }, setItem() { throw error; }, removeItem() { throw error; } }; } }
   const labels = ['预测', '尝试', '观察', '解释', '重试', '迁移'];
   function init(id = activeId) { activeId = id; if (!cache.has(id)) { const itemStore = LearningCore.createLessonStore ? LearningCore.createLessonStore(storage(), id) : LearningCore.createStore(storage()); const itemState = itemStore.read(); cache.set(id, {store:itemStore, state:itemState, savedAt:itemState.updatedAt, notice:''}); } const entry = cache.get(id); store = entry.store; state = entry.state; savedAt = entry.savedAt; notice = entry.notice; }
   function finished(a) { return a.scenarioId === 'transfer' && a.status === 'passed' && !!a.explanation.trim() && !!a.reflection.trim() && ['evidence','uncertainty','explain'].every(k => a.selfReview[k] === true); }

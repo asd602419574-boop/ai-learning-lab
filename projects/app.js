@@ -2,6 +2,7 @@
 const ProjectLab = (() => {
   'use strict';
   const L = ProjectLogic, KEY = 'ai_lab_projects_v1';
+  const recordStorage = typeof LearningStorage!=='undefined'?LearningStorage.storage:localStorage;
   const $ = s => document.querySelector(s);
   const esc = v => String(v ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
   function init() {
@@ -14,7 +15,7 @@ const ProjectLab = (() => {
   }
   let state = init(), selected = null, notice = '', storageWarn = '';
   try {
-    const raw = JSON.parse(localStorage.getItem(KEY) || 'null');
+    const raw = JSON.parse(recordStorage.getItem(KEY) || 'null');
     if (raw && raw.version === 1 && raw.data) {
       const defaults = init();
       for (const k of Object.keys(defaults)) {
@@ -24,7 +25,7 @@ const ProjectLab = (() => {
     }
   } catch { storageWarn = '旧记录无法解析，已使用新的本地学习状态。' }
   function save() {
-    try { localStorage.setItem(KEY, JSON.stringify({ version: 1, data: state })) }
+    try { recordStorage.setItem(KEY, JSON.stringify({ version: 1, data: state })) }
     catch { storageWarn = '浏览器无法保存项目进度；可使用导出成果备份。' }
   }
   function download(name, body, type) {

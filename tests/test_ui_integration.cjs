@@ -3,24 +3,12 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const http = require('node:http');
 const path = require('node:path');
-const vm = require('node:vm');
-const { execFileSync } = require('node:child_process');
+const { questionData, assertQuestionBaseline } = require('./fixtures/question-baseline.cjs');
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const root = path.resolve(__dirname, '..');
 
-function questionData(html) {
-  const code = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].at(-1)[1]
-    .replace(/render\(\);\s*(?:syncRouteFromHash\(\);\s*)?$/, '');
-  const context = { document: { addEventListener() {} }, window: { addEventListener() {} },
-    localStorage: { getItem() { return null; } }, console };
-  return JSON.parse(JSON.stringify(vm.runInNewContext(code + `;
-    [...ALL_QUESTIONS.values()].map(q=>({id:q.id,chapter:q.chapter,q:q.q,o:q.o,a:q.a,why:q.why}));`, context)));
-}
-const previous = questionData(execFileSync('git', ['show',
-  '97976e4297856364fb5daf795ebc0c07870a7ef0:index.html'], { cwd: root, encoding: 'utf8' }));
 const current = questionData(fs.readFileSync(path.join(root, 'index.html'), 'utf8'));
-assert.equal(current.length, 144);
-assert.deepEqual(current, previous, 'All old question IDs, contents and answer keys must survive');
+assertQuestionBaseline(current);
 
 const server = http.createServer((req, res) => {
   const name = new URL(req.url, 'http://localhost').pathname;

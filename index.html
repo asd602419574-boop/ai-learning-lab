@@ -518,6 +518,7 @@
   </main>
 </div>
 
+<script src="./learning/storage.js"></script>
 <script src="./feedback/feedback.js"></script>
 <script src="./content/reader.js"></script>
 <script src="./content/home.js"></script>
@@ -1999,10 +2000,11 @@ function renderMission(){
 }
 
 const STORAGE_KEY='ai_foundations_learning_v1';
+function learningStorage(){return typeof LearningStorage!=='undefined'?LearningStorage.storage:localStorage;}
 const savedDefaults=()=>({mastered:{},known:{},best:{},bestPct:{},questionStats:{},reviewCards:{},missions:{}});
 let saved=savedDefaults();
 try{
-  const raw=localStorage.getItem(STORAGE_KEY);
+  const raw=learningStorage().getItem(STORAGE_KEY);
   if(raw){
     const parsed=JSON.parse(raw);
     if(parsed&&typeof parsed==='object'){
@@ -2023,7 +2025,7 @@ let ui={
 
 const $=id=>document.getElementById(id);
 const esc=value=>String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-function persist(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(saved));}catch(e){console.warn('学习记录保存失败',e);}}
+function persist(){try{learningStorage().setItem(STORAGE_KEY,JSON.stringify(saved));}catch(e){console.warn('学习记录保存失败',e);}}
 function totalConcepts(){return COURSES.reduce((n,c)=>n+c.concepts.length,0)}
 function score(){return COURSES.reduce((n,_,i)=>n+(saved.mastered[i]?1:0),0)}
 function activeWrongIds(){return [...ALL_QUESTIONS.keys()].filter(id=>saved.questionStats[id]?.needsReview)}
@@ -2439,6 +2441,7 @@ function updateMobileSubbar(){
 
 let lastRenderedPage='';
 function render(){
+  if(typeof LearningStorage!=='undefined'&&LearningStorage.role==='starting'){LearningStorage.ready.then(()=>render());return;}
   const pageKey=ui.tab==='lesson'?'lesson:'+ui.lessonId+':'+ui.lessonView:ui.tab;
   const routeAnchor=new URLSearchParams(window.location.hash.split('?')[1]||'').get('anchor');
   if(['pathways','lesson','portfolio'].includes(ui.tab)&&pageKey!==lastRenderedPage&&!routeAnchor){

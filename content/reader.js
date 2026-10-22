@@ -2,6 +2,7 @@
 const Textbook = (() => {
   'use strict';
   const KEY = 'ai_lab_textbook_v1';
+  const recordStorage = typeof LearningStorage!=='undefined'?LearningStorage.storage:localStorage;
   const BASE = './content/';
   const $ = selector => document.querySelector(selector);
   const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -13,9 +14,9 @@ const Textbook = (() => {
     { id: 'D', name: '活动公告', text: '十一月八日下午两点举行科普讲座，地点是图书馆二楼多功能室。' }
   ];
   let retrievalQuery = '图书续借几天', retrievalTop = 2;
-  function readState() { try { const s = JSON.parse(localStorage.getItem(KEY) || '{}'); return s && typeof s === 'object' && !Array.isArray(s) ? s : {} } catch { return {} } }
+  function readState() { try { const s = JSON.parse(recordStorage.getItem(KEY) || '{}'); return s && typeof s === 'object' && !Array.isArray(s) ? s : {} } catch { return {} } }
   let state = readState();
-  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)) } catch { lastError = '当前浏览器无法保存阅读进度，请检查隐私模式或存储空间。' } }
+  function save() { try { recordStorage.setItem(KEY, JSON.stringify(state)) } catch { lastError = '当前浏览器无法保存阅读进度，请检查保存提示或存储空间。' } }
   function itemState(id) { return state[id] || { opened: false, completed: false, quiz: {} } }
   function markOpened(id) { if (!id) return; const item = itemState(id); if (!item.opened) { state[id] = { ...item, opened: true }; save() } }
   async function loadManifest() {

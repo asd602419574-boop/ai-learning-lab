@@ -90,12 +90,12 @@
     return {passed:correct===total,correct,total,items,summary:'字段规则检查：'+correct+'/'+total+' 项正确；自由文字解释需自行对照量规，不作语义评分。'};
   }
   function createStore(storage) {
-    let current=emptyState(), error='', protectedRaw=false;
-    try {const raw=storage.getItem(KEY);if(raw!==null){if(typeof raw!=='string'||raw.length>MAX)throw Error('记录尺寸过大');current=clone(stateCheck(JSON.parse(raw)));}}
+    let current=emptyState(), error='', protectedRaw=false,expectedRaw=null;
+    try {const raw=storage.getItem(KEY);expectedRaw=raw;if(raw!==null){if(typeof raw!=='string'||raw.length>MAX)throw Error('记录尺寸过大');current=clone(stateCheck(JSON.parse(raw)));}}
     catch(e){protectedRaw=true;error='读取学习记录失败，原始数据已保留；请保留浏览器中的原始值，再显式恢复可信备份；普通导出只包含当前可用状态。'+e.message;}
     return {read:()=>clone(current),getError:()=>error,write(s){
       if(protectedRaw)return {ok:false,error};
-      try{stateCheck(s);const next=clone(s);storage.setItem(KEY,JSON.stringify(next));current=next;error='';return {ok:true,error:''};}
+      try{stateCheck(s);if(storage.getItem(KEY)!==expectedRaw)throw Error('记录已被其他页面改变，请备份本页内容后重新载入');const next=clone(s),raw=JSON.stringify(next);storage.setItem(KEY,raw);expectedRaw=raw;current=next;error='';return {ok:true,error:''};}
       catch(e){error='保存失败：'+e.message;return {ok:false,error};}
     }};
   }
@@ -111,16 +111,17 @@
   function createLessonStore(storage,lessonId) {
     lessonIdCheck(lessonId);
     if(lessonId==='reliable-ai')return createStore(storage);
-    let current=emptyState(),error='',protectedRaw=false;
-    try{const all=readPathway(storage);if(own(all.lessons,lessonId))current=clone(all.lessons[lessonId]);}
+    let current=emptyState(),error='',protectedRaw=false,expectedLesson=null;
+    try{const all=readPathway(storage);if(own(all.lessons,lessonId)){current=clone(all.lessons[lessonId]);expectedLesson=JSON.stringify(current);}}
     catch(e){protectedRaw=true;error='读取课程记录失败，原始数据已保留；请保留原始值并显式恢复可信备份。'+e.message;}
     return {read:()=>clone(current),getError:()=>error,write(s){
       if(protectedRaw)return {ok:false,error};
       try{
         // Read again before each write so stores opened on different lessons preserve siblings.
         const all=readPathway(storage),next=clone(stateCheck(s));
+        if((own(all.lessons,lessonId)?JSON.stringify(all.lessons[lessonId]):null)!==expectedLesson)throw Error('课程记录已被其他页面改变，请备份本页内容后重新载入');
         all.lessons[lessonId]=next;pathwayCheck(all);
-        storage.setItem(PATHWAY_KEY,JSON.stringify(all));current=next;error='';return {ok:true,error:''};
+        storage.setItem(PATHWAY_KEY,JSON.stringify(all));current=next;expectedLesson=JSON.stringify(next);error='';return {ok:true,error:''};
       }catch(e){error='保存失败：'+e.message;return {ok:false,error};}
     }};
   }

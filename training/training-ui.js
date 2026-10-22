@@ -1,11 +1,12 @@
 /* V1.3: 16-day course pathway. Uses independent storage; does not touch base progress. */
 const TR_STORE = 'ai_training_16day_v1';
+const trStorage = typeof LearningStorage!=='undefined'?LearningStorage.storage:localStorage;
 let trSaved = {completed:{},best:{},stats:{}};
-try {const v=JSON.parse(localStorage.getItem(TR_STORE)||'null');if(v&&typeof v==='object')for(const k of ['completed','best','stats'])if(v[k]&&typeof v[k]==='object'&&!Array.isArray(v[k]))trSaved[k]=v[k];}catch(e){}
+try {const v=JSON.parse(trStorage.getItem(TR_STORE)||'null');if(v&&typeof v==='object')for(const k of ['completed','best','stats'])if(v[k]&&typeof v[k]==='object'&&!Array.isArray(v[k]))trSaved[k]=v[k];}catch(e){}
 const trQuestions = new Map(TRAINING_PLAN.flatMap(day=>day.questions.map(q=>[q.id,{...q,day:day.day}])));
 const trState={day:1,mode:'lesson',type:'day',ids:[],index:0,selected:null,checked:false,answers:[],finished:false};
 const trEsc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const trSave=()=>{try{localStorage.setItem(TR_STORE,JSON.stringify(trSaved));}catch(e){console.warn('培训课程进度保存失败',e);}};
+const trSave=()=>{try{trStorage.setItem(TR_STORE,JSON.stringify(trSaved));}catch(e){console.warn('培训课程进度保存失败',e);}};
 const trPending=()=>[...trQuestions.keys()].filter(id=>trSaved.stats[id]?.needsReview);
 const trCompleted=d=>trSaved.completed[`${d}-0`]&&trSaved.completed[`${d}-1`]&&Number(trSaved.best[d]||0)>=3;
 function renderTraining(){
@@ -51,9 +52,9 @@ document.addEventListener('click',event=>{const node=event.target.closest('[data
 const TR_LESSON_EXT=[["生成答案流畅不代表事实可靠。","不要把模型推测当作已核实事实。","如何核验关键事实？","回查权威原文与引用。"],["横向比较模型需要相同输入和评分标准。","不能在任务条件不同的情况下直接排名。","怎样保证比较公平？","相同输入、相同约束、相同指标。"],["生成代码需要测试输入与失败路径。","能运行不等于满足业务要求。","最少验证哪些场景？","正常闭环和典型失败场景。"],["先做可运行的最小示例。","不要功能未完成就重构全部架构。","初版成果的核心是什么？","真实可操作的结果与验证步骤。"],["模型部署取决于内存和运行资源。","模型能下载不代表能顺畅运行。","部署前关注什么？","模型体积、量化和设备资源。"],["训练更新参数，推理利用参数。","提示词改变不等于重新训练。","模型回答新问题属于什么？","通常属于推理。"],["RAG先处理文本、切块并索引。","切块过细会丢失上下文。","切块为什么保留语义？","防止可引用事实被拆散。"],["RAG检索结果是证据候选。","检索命中不保证支持结论。","没有足够证据时怎么办？","明确不足，不编造引用。"],["工作流步骤预设，Agent可依反馈选择动作。","不能把任意接口串联都叫自主Agent。","什么影响下一步行动？","目标、状态、工具和权限。"],["外部工具使用应检查权限和参数。","有副作用的写入不能擅自执行。","写入前一般检查什么？","授权、范围及必要确认。"],["智能体要处理失败和超时。","不能无限重试或假称完成。","工具超时后如何处理？","报告状态并给出有限重试路径。"],["执行结果要以真实工具响应为准。","模型自己说完成不算证据。","如何确认日历创建？","核对写入响应及结果。"],["UI应根据业务状态更新。","只改文字不更新状态会出错。","点击后应保持什么一致？","状态与界面反馈。"],["交互要完整验证输入到结果的路径。","只看页面好看无法证明可用。","怎样验证一个表单？","输入、提交、结果和异常。"],["API契约包括输入、输出和错误。","HTTP 200不保证业务数据正确。","验收API需看什么？","响应结构和业务语义。"],["持久化意味着刷新后仍能读取。","只看当前页面状态不足。","怎么验证保存？","重新加载后核对相同记录。"],["文件自动化应先确定输入范围。","未经核对不应直接覆盖原始文件。","运行前先做什么？","确认输入、输出与备份。"],["自动化应避免重复写入。","重试可能生成重复数据。","怎样减少重复？","稳定标识与幂等处理。"],["短视频制作先做脚本和分镜。","素材逐段生成可能风格不一。","分镜解决什么问题？","顺序、节奏和角色一致性。"],["AI生成内容也可能有版权限制。","AI生成不等于拥有全部商业使用权。","发布前检查什么？","素材许可、人物肖像与来源。"],["抽取信息应保留出处。","不要猜测填补未知字段。","不确定字段怎样处理？","标记未知并记录来源。"],["会议整理需要区别决定和建议。","建议不能写成已获批准的行动。","任务字段有哪些？","负责人、事项、期限和出处。"],["数据清洗要理解字段含义。","空值不都适合填零。","处理空值前先判断什么？","缺失原因及字段语义。"],["清洗过程要可追溯。","修改原值后不能丢掉来源。","结果如何便于复核？","保留原值、规则与规范值。"],["标注需要统一标签边界。","不能让人员随意解释类别。","为什么先写标注规范？","降低不同标注者的歧义。"],["不同标注形式对应不同任务。","不是所有场景都适合矩形框。","选择标注形式取决于什么？","任务目标及所需精度。"],["增强样本要保持标签语义。","改写后标签变化不算合法增强。","增强后需验证什么？","目标类别仍然成立。"],["标注质量要抽检和处理冲突。","只看标注数量不能代表质量。","出现冲突怎么办？","按规则复核并记录争议。"],["有效复习需要尝试主动回忆。","只反复阅读不等于记住。","复习时先做什么？","先尝试作答再核对。"],["综合项目需要明确成功标准。","华丽演示不能代替业务闭环。","怎样证明功能跑通？","可重复步骤及实际结果。"],["考核结果应可核验。","只展示截图不等于交付成果。","什么证明实操完成？","真实输出及复现方法。"],["项目展示要说明边界。","不能把计划写成已完成。","汇报时区分哪几项？","已验证能力、限制和计划。"]];
 const TR_MICRO_DAYS={3:'模型训练与过拟合',4:'RAG 证据检索',5:'Agent 工具决策',13:'数据标注一致性'};
 const TR_MICRO_KEY='ai_training_practice_v1';
-let trMicroDone={};try{const x=JSON.parse(localStorage.getItem(TR_MICRO_KEY)||'{}');if(x&&typeof x==='object')trMicroDone=x;}catch(e){}
+let trMicroDone={};try{const x=JSON.parse(trStorage.getItem(TR_MICRO_KEY)||'{}');if(x&&typeof x==='object')trMicroDone=x;}catch(e){}
 const trMicro={epoch:7,model:null,rag:null,step:0,message:'',labels:{},checked:false};
-function trMicroSave(day){trMicroDone[day]=Date.now();try{localStorage.setItem(TR_MICRO_KEY,JSON.stringify(trMicroDone));}catch(e){console.warn('交互实验存储失败',e);}}
+function trMicroSave(day){trMicroDone[day]=Date.now();try{trStorage.setItem(TR_MICRO_KEY,JSON.stringify(trMicroDone));}catch(e){console.warn('交互实验存储失败',e);}}
 function renderTrainingInsight(day,half){
  const c=TR_LESSON_EXT[(day-1)*2+half];if(!c)return '';
  return '<section class="tr-insight"><b>💡 换个角度理解</b><p>'+trEsc(c[0])+'</p><small>⚠️ 常见误区：'+trEsc(c[1])+'</small><details><summary>🧠 先回忆：'+trEsc(c[2])+'</summary><p>'+trEsc(c[3])+'</p></details></section>';

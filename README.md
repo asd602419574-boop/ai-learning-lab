@@ -22,9 +22,20 @@ python -m http.server 8876 --bind 127.0.0.1
 
 每节入门课默认先展示背景、原理、案例与完整示范等七段正文；阅读后显式进入“预测 → 尝试 → 观察 → 解释 → 重试 → 迁移”练习。练习入口使用 `#lesson?id=课程ID&view=practice`；已有练习记录可继续上次练习。保存后到“个人成果”回看、导出或备份。可以刷新续学；没有账号或云同步，记录限当前浏览器与域名。阅读不改变既有步骤号或学习存储结构。本次修正未启动 P4，未部署；本地验证见核心开发计划，提交与推送版本以实际 Git 记录为准。
 
+同源、同版本的多个标签页由 Web Locks 协调：一个页面可作答保存，其余页面可阅读，并在其他页更新记录时显示提示。点击“在此页继续学习”会让旧页停止写入，重载此页最新记录后再允许作答；提示不会自动刷新全部页面内容。保存要求支持 Web Locks 的浏览器以及 HTTPS 或 localhost，不支持时明确进入只读。发布后，原先已打开的页面需重新加载才能使用新保护。此机制沿用原有学习存储键与备份格式，不增加账号或云同步。
+
 四课使用原创虚构材料、固定模拟回答和明确字段规则，无需密钥、付费或实时模型调用。自由解释与自评不会自动转换为知识掌握分数。旧教材、基础题、培训及项目仍可从资源架或学习路线进入。
 
-当前页面需要保留 `learning/`、`content/`、`projects/`、`training/`、`feedback/` 和 `desktop.css` 等实际静态依赖，不能只复制 `index.html`。修改基础数据后执行 `node scripts/build_ui.js` 重新生成入口，基础题源在 `content/foundations.js`。课程阅读使用 HTTP 服务。
+当前页面需要保留 `learning/`、`content/`、`projects/`、`training/`、`feedback/` 和 `desktop.css` 等实际静态依赖，不能只复制 `index.html`。修改基础数据或入口模板后执行 `node scripts/build_ui.js`，修改教材后执行 `python scripts/build_textbook.py`，再检查生成产物一致性。基础题源在 `content/foundations.js`；课程阅读使用 HTTP 服务。当前发布资源、反馈后端边界及回滚方式见[当前部署说明](docs/DEPLOY_CURRENT.md)。发布需要单独授权，本文不证明生产环境已部署。
+
+构建依赖安装与产物一致性检查：
+
+```powershell
+python -m pip install -r scripts/requirements-build.txt
+python scripts/check_generated.py
+```
+
+检查器在临时目录重建入口与教材，对比 `index.html`、教材清单和渲染结果，不覆写工作区。发现漂移时先运行对应生成器并复核差异，再提交。仓库 CI 只做验证，不自动部署生产。
 
 从基础学习说明按顺序阅读四课，也可直接访问以下资料入口：
 
@@ -36,6 +47,11 @@ python -m http.server 8876 --bind 127.0.0.1
 每课独立保存。只有保存了字段规则通过的迁移作品，并补齐解释、复盘和三项自评，才记“本课任务完成”；选择通过不会自动等于知识掌握。原课继续沿用 `ai_lab_learning_v2`，三节新课使用 `ai_lab_pathway_v1`，旧备份仍可恢复。
 
 已验证流程、命令与限制见[核心开发计划](CORE_DEVELOPMENT_PLAN.md)。布局证据分阶段保留：[P1](screenshots_v2/p1/layout-results.json)、[四课路线](screenshots_v2/p2/layout-results.json)。以下 V1.2 运行、打包和测试说明为历史记录。
+
+<details>
+<summary>历史记录：V1.2 交付、验证与部署说明（不适用于当前发布）</summary>
+
+以下是早期单文件版本的原始说明，保留作兼容性与演进参考。其中“120 题”“仅复制 index.html”“双击运行”等描述属于当时版本；当前运行与发布以上文及[当前部署说明](docs/DEPLOY_CURRENT.md)为准，不应按下列历史步骤覆盖现站。
 
 ## 交付内容
 
@@ -92,3 +108,5 @@ python -m http.server 8876 --bind 127.0.0.1
 - **版本**：V1.2.0，首次导入；不假定线上已部署此版本。
 
 > 当前保留原生单文件应用结构，后续新增功能建议先检查并复用现有 JS 函数和存储键，不要为了构建工具重写已经稳定的应用。
+
+</details>

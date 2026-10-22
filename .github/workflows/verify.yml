@@ -1,0 +1,40 @@
+name: Verify static learning site
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          package-manager-cache: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install existing textbook build dependency
+        run: python -m pip install -r scripts/requirements-build.txt
+      - name: Check committed generated outputs without rewriting them
+        run: python scripts/check_generated.py
+      - name: Verify drift detection and read-only behavior
+        run: python tests/test_generated.py
+      - name: Check learning and project logic
+        run: |
+          node tests/fixtures/question-baseline.cjs
+          node tests/test_project_logic.cjs
+          node tests/test_learning_catalog.cjs
+          node tests/test_learning_core.cjs
+          node tests/test_learning_pathway_core.cjs
+          node tests/test_storage_guard.cjs
+          node tests/test_learning_overview.cjs
