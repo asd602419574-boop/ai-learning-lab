@@ -1,15 +1,16 @@
 /* Local learning rules and explicit whole-site backup. No network or semantic grading. */
 (function (root, factory) {
-  const api = factory(typeof module === 'object' && module.exports ? require('./system-core.js') : root.LearningSystemCore);
+  const common = typeof module === 'object' && module.exports;
+  const api = factory(common ? require('./system-core.js') : root.LearningSystemCore, common ? require('./process-core.js') : root.ProcessCore);
   if (typeof module === 'object' && module.exports) module.exports = api;
   if (root) root.LearningCore = api;
-})(typeof globalThis !== 'undefined' ? globalThis : this, function (systemCore) {
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (systemCore, processCore) {
   'use strict';
   const KEY = 'ai_lab_learning_v2';
   const PATHWAY_KEY = 'ai_lab_pathway_v1';
   const LESSON_IDS = Object.freeze(['ai-basics','clear-task','reliable-ai','evaluate-results']);
   // Source-proven keys: index.html, content/reader.js, training/training-ui.js, projects/app.js.
-  const KEYS = ['ai_foundations_learning_v1', 'ai_lab_textbook_v1', 'ai_training_16day_v1', 'ai_lab_projects_v1', 'ai_training_practice_v1', KEY, PATHWAY_KEY, 'ai_lab_system_v1'];
+  const KEYS = ['ai_foundations_learning_v1', 'ai_lab_textbook_v1', 'ai_training_16day_v1', 'ai_lab_projects_v1', 'ai_training_practice_v1', KEY, PATHWAY_KEY, 'ai_lab_system_v1', 'ai_lab_process_v1'];
   const MAX = 2000000;
   const own = (o,k) => Object.prototype.hasOwnProperty.call(o,k);
   const object = x => x !== null && typeof x === 'object' && !Array.isArray(x) && (Object.getPrototypeOf(x) === Object.prototype || Object.getPrototypeOf(x) === null);
@@ -108,6 +109,10 @@
     if(key==='ai_lab_system_v1'){
       if(!systemCore || typeof systemCore.validateState!=='function')throw Error('系统实践记录校验模块未加载');
       systemCore.validateState(value);
+    }
+    if(key==='ai_lab_process_v1'){
+      if(!processCore || typeof processCore.validateState!=='function')throw Error('流程课程记录校验模块未加载');
+      processCore.validateState(value);
     }
     // These legacy records predate this module; preserve their actual JSON shape.
     if(key==='ai_lab_projects_v1' && own(value,'version') && value.version!==1)throw Error('项目记录版本不支持');

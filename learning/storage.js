@@ -5,7 +5,7 @@
   if(root&&root.document)root.LearningStorage=api.connect(root);
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
-  const KEYS=Object.freeze(['ai_foundations_learning_v1','ai_lab_textbook_v1','ai_training_16day_v1','ai_lab_projects_v1','ai_training_practice_v1','ai_lab_learning_v2','ai_lab_pathway_v1','ai_lab_system_v1']);
+  const KEYS=Object.freeze(['ai_foundations_learning_v1','ai_lab_textbook_v1','ai_training_16day_v1','ai_lab_projects_v1','ai_training_practice_v1','ai_lab_learning_v2','ai_lab_pathway_v1','ai_lab_system_v1','ai_lab_process_v1']);
   const CONFLICT='学习记录已被其他页面改变。已停止保存，请先备份本页需要保留的内容，再重新载入最新记录。';
   function createGuard(raw,onConflict=()=>{}){
     const expected=new Map(KEYS.map(k=>[k,raw.getItem(k)]));
@@ -16,7 +16,7 @@
     let role='starting',updated=false,release=null,channel=null,banner=null,guard,raw,resolveReady;
     const ready=new Promise(resolve=>resolveReady=resolve),disabled=new Set();
     const lockName='ai-learning-record-writer-v1';
-    const allowed='[data-system-action="export"],[data-system-action="export-json"],[data-storage-activate],[data-action^="nav-"],[data-action="chapter"],[data-action="tab"],[data-action="concept"],[data-action="view-chapter"],[data-action="flip"],[data-action="flash-prev"],[data-action="flash-next"],[data-action="backup"],[data-action="export-artifact"],[data-reading-anchor],[data-learning-path],[data-book-open],[data-project="open"],[data-project="back"],[data-project="export-all"],[data-project="export-project"]';
+    const allowed='[data-proc-action="export-json"],[data-proc-action="export-md"],[data-system-action="export"],[data-system-action="export-json"],[data-storage-activate],[data-action^="nav-"],[data-action="chapter"],[data-action="tab"],[data-action="concept"],[data-action="view-chapter"],[data-action="flip"],[data-action="flash-prev"],[data-action="flash-next"],[data-action="backup"],[data-action="export-artifact"],[data-reading-anchor],[data-learning-path],[data-book-open],[data-project="open"],[data-project="back"],[data-project="export-all"],[data-project="export-project"]';
     function stop(nextRole){role=nextRole;if(release){release();release=null;}paint();}
     function protectControls(){
       if(role==='writer'){

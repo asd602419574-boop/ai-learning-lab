@@ -1,0 +1,13 @@
+'use strict';
+const assert=require('node:assert/strict'),C=require('../learning/core.js'),P=require('../learning/process-core.js'),G=require('../learning/storage.js');
+const memory=()=>{const m=new Map();return {getItem:k=>m.has(k)?m.get(k):null,setItem:(k,v)=>m.set(k,String(v)),removeItem:k=>m.delete(k),m};};
+const a=memory(),p=P.emptyState();p.tasks.main.model=P.exampleModel();a.setItem(P.KEY,JSON.stringify(p));a.setItem('ai_foundations_learning_v1',JSON.stringify({best:{0:18}}));
+const raw=C.exportBackup(a,C.emptyState());assert.deepEqual(JSON.parse(raw).records[P.KEY],p,'全站备份必须包含流程作品');
+const b=memory();assert.equal(C.importBackup(b,raw).ok,true);assert.equal(b.getItem(P.KEY),a.getItem(P.KEY));
+const old=JSON.parse(raw);delete old.records[P.KEY];assert.equal(C.importBackup(b,JSON.stringify(old)).ok,true);assert.equal(b.getItem(P.KEY),a.getItem(P.KEY),'旧备份不得删除新课程记录');
+old.records[P.KEY]={...p,schemaVersion:99};const before=b.getItem(P.KEY);assert.equal(C.importBackup(b,JSON.stringify(old)).ok,false);assert.equal(b.getItem(P.KEY),before);
+assert(G.KEYS.includes(P.KEY),'流程记录必须参与现有多页写入保护');
+const guard=G.createGuard(b);b.setItem(P.KEY,'outside');assert.throws(()=>guard.setItem(P.KEY,JSON.stringify(p)),/其他页面/);
+assert.equal(typeof P.importRecord,'function','独立流程备份需要显式恢复接口');
+assert.equal(P.importRecord(b,JSON.stringify(p)).ok,true);assert.deepEqual(P.createStore(b).read(),p);assert.equal(P.importRecord(b,'{bad}').ok,false);assert.deepEqual(P.createStore(b).read(),p);
+console.log('PASS process backup: ninth-key roundtrip, old backup retention, future rejection, stale write protection, explicit recovery');
