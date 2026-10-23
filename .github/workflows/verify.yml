@@ -23,8 +23,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install existing textbook build dependency
-        run: python -m pip install -r scripts/requirements-build.txt
+      - name: Install textbook build and local teaching dependencies
+        run: python -m pip install -r scripts/requirements-build.txt -r teaching_server/requirements.txt
+      - name: Check real teaching HTTP and SQLite lifecycle
+        run: python -m unittest discover -s tests -p test_teaching_http.py -v
       - name: Check committed generated outputs without rewriting them
         run: python scripts/check_generated.py
       - name: Verify drift detection and read-only behavior

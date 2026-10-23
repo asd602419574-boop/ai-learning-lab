@@ -1,5 +1,27 @@
 # AI 学习工作台
 
+## V2.2：从流程到真实系统（2026-10-23）
+
+新增《从业务流程到真实系统：企业审批实践》，从 V2.1 的同一审批案例连续学习系统上下文/C4、模块职责、关系数据/SQL、HTTP/REST、状态/权限/事务和前后端运行。六个主题各有五节讲解、图表、完整示范、设计取舍与独立变式；阅读入口 `/#architecture`，实践入口 `/#architecture?view=practice`。原流程编辑器和课程保留。
+
+实践实际调用本地 Flask API、读写磁盘 SQLite：提交 → 服务端校验 → 保存/查询 → 岗位审批或驳回 → 状态与事件同事务提交 → 再查询结果；支持申请人撤回，重复审批、撤回后审批和过期版本返回409，错误岗位返回403。修改金额、成本中心或可编辑 JSON 请求，观察角色路由、校验响应、真实 SQL 参数/行和状态事件；可导出当次请求及反思证据包。默认5000元及以下由主管审批，更高由负责人审批，角色没有隐含上下级放行。
+
+在仓库根目录运行（Python 3.12，macOS/Linux）：
+
+```sh
+python3 -m venv .venv-teaching
+.venv-teaching/bin/python -m pip install -r teaching_server/requirements.txt
+.venv-teaching/bin/python -m teaching_server --port 8877
+```
+
+打开 [本地系统架构课程](http://127.0.0.1:8877/#architecture)。Windows命令、接口示例、改阈值实验及数据库保留方式见 [教学服务说明](teaching_server/README.md)。仅启动下文的纯静态8876服务时可以阅读，真实审批API不可用，工作台会明确提示。
+
+教学服务与原私有反馈服务隔离，只监听127.0.0.1、使用独立数据库 `instance/approval.sqlite3`，不修改反馈服务配置。界面可切换的固定 `X-Lab-User` 身份是可伪装的教学机制，**不是生产认证**，仅使用本机虚构数据；没有真实通知、定时调度、通用流程执行引擎或生产部署。查询到的状态是工程验证证据，不自动判断知识掌握；真实初学者试学与迁移效果尚未验证。
+
+新课程不增加或改写学习存储键。审批记录在SQLite；刷新按URL中的申请号重新HTTP读回。请求日志仅保留当前页面会话最近50次，刷新前可导出，导出文件不是数据库备份。8877与原8876是不同浏览器存储来源，旧学习记录仍保留在原来源，可使用既有全站备份显式迁移；不会自动搬迁或覆盖。
+
+本地已通过真实HTTP/SQLite的7项测试、新课程Chrome全流程、V2.1全流程与旧基础课程回归；详情见核心计划第12节。新增后端检查加入既有CI配置，远端CI未运行。本轮分支 `codex/v22-approval-system` 基于 `81efc5c`；用户已明确授权本轮提交与推送，提交及远端结果以Git记录为准，不合并main或部署生产。
+
 ## V2.1 第一阶段：业务流程深度样板（2026-10-23）
 
 本地实现《业务流程建模与流程优化：从业务问题到系统实现》。在仓库根目录启动下文的HTTP服务，访问 `/#process`；首页、基础学习侧栏和“我的成果”均有入口。面向零编程者；既有课程、实验、通知整理器和作品保留。
@@ -23,7 +45,7 @@ node tests/test_process_backup.cjs
 node tests/test_process_browser.cjs
 ```
 
-浏览器测试可使用 `PLAYWRIGHT_MODULE` 指向已有Playwright包，`CHROME_CHANNEL=chrome` 使用本机Chrome。当前本地分支 `codex/v21-process-course` 基于 `a15c6e4`；用户后续授权本地提交，提交标识以Git记录为准，未推送、合并或部署。验证结果及未实现项见核心计划第11节。
+浏览器测试可使用 `PLAYWRIGHT_MODULE` 指向已有Playwright包，`CHROME_CHANNEL=chrome` 使用本机Chrome。V2.1 已按用户后续授权提交并推送到 `codex/v21-process-course`，提交 `81efc5c`；没有合并或部署。验证结果及未实现项见核心计划第11节。
 
 ## 当前开发入口（2026-10-22）
 

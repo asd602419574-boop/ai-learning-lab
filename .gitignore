@@ -14,3 +14,8 @@ screenshots_v2/**/downloads/
 *.sqlite3
 *.sqlite3-wal
 *.sqlite3-shm
+
+# Local approval teaching service
+.venv-teaching/
+instance/
+*.sqlite3-journal
