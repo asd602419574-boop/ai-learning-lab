@@ -1,0 +1,93 @@
+--- a/teaching_server/db.py
++++ b/teaching_server/db.py
+@@ -40,8 +40,21 @@
+     with connect(path) as connection:
+         version = connection.execute('PRAGMA user_version').fetchone()[0]
+         tables = {r[0] for r in connection.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")}
+-        if version not in (0, 1) or tables - {'lab_users', 'applications', 'application_events'}:
++        if version not in (0, 1, 2) or tables - {'lab_users', 'applications', 'application_events'}:
+             raise RuntimeError('数据库不属于本教学服务或版本不支持；原数据未修改，请使用独立文件。')
+-        connection.executescript(Path(__file__).with_name('schema.sql').read_text('utf-8'))
++        if version == 0:
++            connection.executescript(Path(__file__).with_name('schema.sql').read_text('utf-8'))
++            version = 1
++        if version == 1:
++            # Additive migration: retain every old field/event, default old applications to normal.
++            # execute(), not executescript(), keeps all DDL inside this explicit transaction.
++            with transaction(connection):
++                connection.execute("ALTER TABLE applications ADD COLUMN urgency TEXT NOT NULL DEFAULT 'normal' CHECK(urgency IN ('normal','urgent'))")
++                connection.execute("ALTER TABLE applications ADD COLUMN urgent_reason TEXT NOT NULL DEFAULT '' CHECK(length(urgent_reason)<=500)")
++                for operation in ('INSERT', 'UPDATE'):
++                    connection.execute(f"CREATE TRIGGER urgency_reason_{operation.lower()} BEFORE {operation} ON applications "
++                        "WHEN NEW.urgency='urgent' AND length(trim(NEW.urgent_reason))=0 "
++                        "BEGIN SELECT RAISE(ABORT,'urgent reason required'); END")
++                connection.execute('PRAGMA user_version=2')
+         with transaction(connection):
+             connection.executemany('INSERT OR IGNORE INTO lab_users(id,display_name,role) VALUES(?,?,?)', USERS)
+--- a/teaching_server/service.py
++++ b/teaching_server/service.py
+@@ -59,17 +59,23 @@
+ def submit(connection, actor, data, threshold, request_id):
+     if actor['role'] != 'employee':
+         raise RuleError(403, 'forbidden', '请切换到教学员工身份提交申请。')
+-    validate_fields(data, ['title', 'purpose', 'amount_cents'], ['cost_center'])
++    validate_fields(data, ['title', 'purpose', 'amount_cents'], ['cost_center', 'urgency', 'urgent_reason'])
+     title, purpose = string(data, 'title', 120), string(data, 'purpose', 2000)
+     cost_center = string(data, 'cost_center', 40, required=False)
++    urgency = data.get('urgency', 'normal')
++    if urgency not in ('normal', 'urgent'):
++        raise RuleError(422, 'invalid_urgency', 'urgency仅允许normal或urgent。', {'urgency': 'invalid'})
++    urgent_reason = string(data, 'urgent_reason', 500, required=False)
++    if urgency == 'urgent' and not urgent_reason:
++        raise RuleError(422, 'urgent_reason_required', '紧急申请必须说明原因。', {'urgent_reason': 'required'})
+     amount = integer(data['amount_cents'], 'amount_cents')
+     role = 'manager' if amount <= threshold else 'director'
+     timestamp = now()
+     with transaction(connection):
+         cursor = connection.execute('''INSERT INTO applications
+-            (applicant_id,title,purpose,cost_center,amount_cents,threshold_cents,required_role,status,version,created_at,updated_at)
+-            VALUES(?,?,?,?,?,?,?,'pending',1,?,?)''',
+-            (actor['id'], title, purpose, cost_center, amount, threshold, role, timestamp, timestamp))
++            (applicant_id,title,purpose,cost_center,amount_cents,threshold_cents,required_role,status,version,created_at,updated_at,urgency,urgent_reason)
++            VALUES(?,?,?,?,?,?,?,'pending',1,?,?,?,?)''',
++            (actor['id'], title, purpose, cost_center, amount, threshold, role, timestamp, timestamp, urgency, urgent_reason))
+         identifier = cursor.lastrowid
+         event(connection, identifier, actor, 'submitted', None, 'pending', 1, '提交并通过服务端资料校验', request_id, timestamp)
+         result = get_application(connection, identifier)
+--- a/learning/architecture-workspace.js
++++ b/learning/architecture-workspace.js
+@@ -7,7 +7,7 @@
+   let host, chapter = 1, view = 'reading', identifier = 0, identity = 'alice', generation = 0;
+   let online = false, serviceInfo = null, application = null, evidence = null, last = null, notice = '', active = 0;
+   let routeChanged = () => {}, requests = [], notes = '';
+-  const draft = {title:'共享投影设备',purpose:'虚构教学工作坊使用',amount:'2300.00',cost_center:'TRAINING-A',reason:'已核对教学材料与用途',expected_version:1};
++  const draft = {title:'共享投影设备',purpose:'虚构教学工作坊使用',amount:'2300.00',cost_center:'TRAINING-A',reason:'已核对教学材料与用途',expected_version:1,urgency:'normal',urgent_reason:''};
+   const http = {method:'POST',path:'/api/teaching/applications',body:pretty({title:'自主资源申请',purpose:'填写自己的虚构用途',amount_cents:230000,cost_center:'TRAINING'})};
+   const data = () => window.ArchitectureContent;
+   const href = (ch = chapter, targetView = view) => '#architecture?chapter=' + ch + (targetView === 'practice' ? '&view=practice' : '') + (identifier ? '&id=' + identifier : '') + '&user=' + encodeURIComponent(identity);
+@@ -107,7 +107,7 @@
+     return Number(whole)*100+Number(fraction.padEnd(2,'0'));
+   }
+   function workbench() {
+-    return '<div class="arch-workbench" data-architecture-workspace><aside class="arch-mode"><strong>真实HTTP + SQLite；固定教学身份，不是生产登录</strong><p>只使用虚构数据。此服务仅本机运行；切换人物用于理解权限，不能证明真实身份。数据库申请与事件会保存，本页日志与笔记需另行导出。</p></aside><details class="arch-task"><summary>本主题实验与独立变式：' + esc(data().chapters[chapter-1].title) + '</summary>' + data().chapters[chapter-1].sections.at(-1).html + '</details><div class="arch-toolbar"><label>当前教学身份<select data-arch-identity>' + Object.entries(data().identities).map(([key,label]) => '<option value="'+key+'"'+(key===identity?' selected':'')+'>'+esc(label)+'</option>').join('')+'</select></label>'+button('health','检查教学服务')+'</div><p data-arch-notice role="status" aria-live="polite"></p><div class="arch-columns"><section class="arch-card"><h2>1. 提交自己的申请</h2><p>页面使用元输入，发送JSON时转换为整数分；申请人与审批岗位由后端决定。</p>'+field('title','资源标题',draft.title)+'<label class="arch-field">用途<textarea data-arch-field="purpose" rows="3" maxlength="2000">'+esc(draft.purpose)+'</textarea></label><div class="arch-form-grid">'+field('amount','金额（元）',draft.amount,'number')+field('cost_center','成本中心（可修改字段）',draft.cost_center)+'</div>'+button('submit','通过HTTP提交申请',true)+'</section><section class="arch-card"><h2>2. 查询与作出决定</h2><div class="arch-form-grid">'+field('id','申请号',identifier||'','number')+field('expected_version','操作预期版本',draft.expected_version,'number')+'</div><div class="arch-actions">'+button('query','重新HTTP查询')+button('evidence','查询SQLite证据')+'</div><label class="arch-field">操作原因<textarea data-arch-field="reason" rows="3" maxlength="2000">'+esc(draft.reason)+'</textarea></label><div class="arch-actions">'+button('approve','批准',true)+button('reject','驳回')+button('withdraw','申请人撤回')+'</div><p class="arch-note">非法操作也会实际发到服务端，便于观察403/409。切换身份后应重新查询；处理结果以响应及读回为准。</p></section></div><section class="arch-card"><h2>当前申请：服务端返回</h2><div data-arch-current></div><details><summary>查询申请列表 / 成本中心筛选</summary><div class="arch-actions"><label>成本中心（空为不筛选）<input data-arch-list-filter maxlength="40"></label>'+button('list','查询申请列表')+'</div><div data-arch-list></div></details></section><section class="arch-card"><h2>3. 可编辑HTTP请求台</h2><p>先预测，再编辑契约字段和金额；失败请求同样保留实际状态，不按填写字数判定掌握。</p><div class="arch-http-line"><label>方法<select data-arch-http-method><option'+(http.method==='GET'?' selected':'')+'>GET</option><option'+(http.method==='POST'?' selected':'')+'>POST</option></select></label><label>同源教学路径<input data-arch-http-path value="'+esc(http.path)+'"></label></div><label class="arch-field">JSON正文（GET忽略）<textarea rows="7" data-arch-http-body spellcheck="false">'+esc(http.body)+'</textarea></label>'+button('send-http','发送当前请求',true)+'<div class="arch-response" data-arch-response aria-live="polite"></div></section><section class="arch-card"><h2>4. SQLite参数化查询证据</h2><div data-arch-evidence></div></section><section class="arch-card"><h2>5. 解释与可导出的工程证据</h2><label class="arch-field">我的分析：上下文/模块、数据与状态、预期与实际、限制<textarea rows="5" data-arch-notes>'+esc(notes)+'</textarea></label><p>开放解释不做语义自动评分。成功执行、规则拒绝与专业知识掌握是不同结论。</p><p data-arch-log-count></p>'+button('export','导出本页HTTP证据与笔记')+'<details><summary>查看最近请求记录</summary><div data-arch-log></div></details></section></div>';
++    return '<div class="arch-workbench" data-architecture-workspace><aside class="arch-mode"><strong>真实HTTP + SQLite；固定教学身份，不是生产登录</strong><p>只使用虚构数据。此服务仅本机运行；切换人物用于理解权限，不能证明真实身份。数据库申请与事件会保存，本页日志与笔记需另行导出。</p></aside><details class="arch-task"><summary>本主题实验与独立变式：' + esc(data().chapters[chapter-1].title) + '</summary>' + data().chapters[chapter-1].sections.at(-1).html + '</details><div class="arch-toolbar"><label>当前教学身份<select data-arch-identity>' + Object.entries(data().identities).map(([key,label]) => '<option value="'+key+'"'+(key===identity?' selected':'')+'>'+esc(label)+'</option>').join('')+'</select></label>'+button('health','检查教学服务')+'</div><p data-arch-notice role="status" aria-live="polite"></p><div class="arch-columns"><section class="arch-card"><h2>1. 提交自己的申请</h2><p>页面使用元输入，发送JSON时转换为整数分；申请人与审批岗位由后端决定。</p>'+field('title','资源标题',draft.title)+'<label class="arch-field">用途<textarea data-arch-field="purpose" rows="3" maxlength="2000">'+esc(draft.purpose)+'</textarea></label><div class="arch-form-grid">'+field('amount','金额（元）',draft.amount,'number')+field('cost_center','成本中心（可修改字段）',draft.cost_center)+'</div><label class="arch-field">紧急程度（只影响说明要求，不跳过审批）<select data-arch-field="urgency"><option value="normal"'+(draft.urgency==='normal'?' selected':'')+'>普通 normal</option><option value="urgent"'+(draft.urgency==='urgent'?' selected':'')+'>紧急 urgent</option></select></label><label class="arch-field">紧急原因<textarea data-arch-field="urgent_reason" maxlength="500" rows="3">'+esc(draft.urgent_reason)+'</textarea></label>'+button('submit','通过HTTP提交申请',true)+'</section><section class="arch-card"><h2>2. 查询与作出决定</h2><div class="arch-form-grid">'+field('id','申请号',identifier||'','number')+field('expected_version','操作预期版本',draft.expected_version,'number')+'</div><div class="arch-actions">'+button('query','重新HTTP查询')+button('evidence','查询SQLite证据')+'</div><label class="arch-field">操作原因<textarea data-arch-field="reason" rows="3" maxlength="2000">'+esc(draft.reason)+'</textarea></label><div class="arch-actions">'+button('approve','批准',true)+button('reject','驳回')+button('withdraw','申请人撤回')+'</div><p class="arch-note">非法操作也会实际发到服务端，便于观察403/409。切换身份后应重新查询；处理结果以响应及读回为准。</p></section></div><section class="arch-card"><h2>当前申请：服务端返回</h2><div data-arch-current></div><details><summary>查询申请列表 / 成本中心筛选</summary><div class="arch-actions"><label>成本中心（空为不筛选）<input data-arch-list-filter maxlength="40"></label>'+button('list','查询申请列表')+'</div><div data-arch-list></div></details></section><section class="arch-card"><h2>3. 可编辑HTTP请求台</h2><p>先预测，再编辑契约字段和金额；失败请求同样保留实际状态，不按填写字数判定掌握。</p><div class="arch-http-line"><label>方法<select data-arch-http-method><option'+(http.method==='GET'?' selected':'')+'>GET</option><option'+(http.method==='POST'?' selected':'')+'>POST</option></select></label><label>同源教学路径<input data-arch-http-path value="'+esc(http.path)+'"></label></div><label class="arch-field">JSON正文（GET忽略）<textarea rows="7" data-arch-http-body spellcheck="false">'+esc(http.body)+'</textarea></label>'+button('send-http','发送当前请求',true)+'<div class="arch-response" data-arch-response aria-live="polite"></div></section><section class="arch-card"><h2>4. SQLite参数化查询证据</h2><div data-arch-evidence></div></section><section class="arch-card"><h2>5. 解释与可导出的工程证据</h2><label class="arch-field">我的分析：上下文/模块、数据与状态、预期与实际、限制<textarea rows="5" data-arch-notes>'+esc(notes)+'</textarea></label><p>开放解释不做语义自动评分。成功执行、规则拒绝与专业知识掌握是不同结论。</p><p data-arch-log-count></p>'+button('export','导出本页HTTP证据与笔记')+'<details><summary>查看最近请求记录</summary><div data-arch-log></div></details></section></div>';
+   }
+   function paint() {
+     const lesson = data().chapters[chapter-1];
+@@ -120,7 +120,7 @@
+     if (active && action !== 'export') return;
+     try {
+       if (action === 'health') await send('GET','/api/teaching/health');
+-      else if (action === 'submit') await send('POST','/api/teaching/applications',{title:draft.title,purpose:draft.purpose,amount_cents:cents(draft.amount),cost_center:draft.cost_center});
++      else if (action === 'submit') await send('POST','/api/teaching/applications',{title:draft.title,purpose:draft.purpose,amount_cents:cents(draft.amount),cost_center:draft.cost_center,urgency:draft.urgency,urgent_reason:draft.urgent_reason});
+       else if (action === 'query') await queryCurrent();
+       else if (action === 'evidence') {
+         if (!identifier) throw Error('请先填写申请号。');
+@@ -154,6 +154,7 @@
+   }
+   function change(event) {
+     const el=event.target;
++    if (el.dataset.archField==='urgency') draft.urgency=el.value;
+     if (el.hasAttribute('data-arch-identity')) {
+       identity=Object.hasOwn(data().identities,el.value)?el.value:'alice';application=null;evidence=null;last=null;notice='已切换教学人物，请重新HTTP查询；此操作不是登录认证。';syncRoute();resultPanels();
+     } else if (el.hasAttribute('data-arch-http-method')) http.method=el.value;

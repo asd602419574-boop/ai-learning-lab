@@ -19,3 +19,4 @@ screenshots_v2/**/downloads/
 .venv-teaching/
 instance/
 *.sqlite3-journal
+.change-labs/
