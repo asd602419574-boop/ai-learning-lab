@@ -1,6 +1,7 @@
-/* One file-based learning artifact, no existing browser keys. Author: Lliftime. */
+/* One independently stored artifact; legacy keys are untouched. Author: Lliftime. */
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;if(root)root.ChangeCore=api;})(typeof globalThis!=='undefined'?globalThis:this,function(){
 'use strict';
+const KEY='ai_lab_change_v1';
 const FIELDS=['impact','flow','data','contract','compatibility','acceptance','changes','reflection'];
 const BASIC=['service','legacy','old-client','urgent-create','persist-read','validation','database-constraint','approved','rejected','withdrawn','role-boundary','restart'];
 const REQUIRED=[...BASIC,'independent-variant','variant-database'];
@@ -34,5 +35,20 @@ function parse(text){if(typeof text!=='string'||text.length>2000000)throw Error(
  for(const v of s.submissions)if(!sameKeys(v,['at','track','design','signature'])||!Number.isFinite(Date.parse(v.at))||!['business','engineering'].includes(v.track)||!sameKeys(v.design,FIELDS)||FIELDS.some(k=>typeof v.design[k]!=='string'||v.design[k].length>6000)||typeof v.signature!=='string'||v.signature.length>100000)throw Error('历史提交格式不支持。');
  return s;
 }
-return {FIELDS,REQUIRED,labels,empty,check,current,submit,attach,parse};
+function createStore(storage){
+ let current=empty(),expected=null,protectedRaw=false,error='';
+ try{expected=storage.getItem(KEY);if(expected!==null)current=parse(expected);}
+ catch(e){protectedRaw=true;error='无法读取本机设计稿，原始记录未覆盖；自动保存已暂停。请保留原始值，或预览确认恢复可信JSON。'+e.message;}
+ return {read:()=>copy(current),getError:()=>error,hasSaved:()=>expected!==null&&!protectedRaw,write(next,{restore=false}={}){
+  if(protectedRaw&&!restore)return {ok:false,error};
+  try{
+   const raw=JSON.stringify(next),validated=parse(raw);
+   if(storage.getItem(KEY)!==expected)throw Error('记录已被其他页面改变，请先导出本页材料并重新载入。');
+   storage.setItem(KEY,raw);
+   if(storage.getItem(KEY)!==raw)throw Error('写入后读回不一致，请导出当前材料。');
+   current=validated;expected=raw;protectedRaw=false;error='';return {ok:true,error:''};
+  }catch(e){error='本机保存失败：'+e.message;return {ok:false,error};}
+ }};
+}
+return {KEY,FIELDS,REQUIRED,labels,empty,check,current,submit,attach,parse,createStore};
 });

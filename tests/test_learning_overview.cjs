@@ -42,3 +42,11 @@ const escaped = render({ lessons: [{ id: 'x"><img', title: '<script>alert(1)</sc
 assert.ok(!escaped.includes('<script>'));
 assert.ok(escaped.includes('&lt;script&gt;'));
 console.log('Learning overview: complete curriculum, honest scope, links and escaping PASS');
+
+for(const route of ['#process','#architecture','#change'])assert.ok(html.includes('href="'+route+'"'),'缺少连续学习入口 '+route);
+assert.ok(!html.includes('深入后端与模型接入仍是后续扩展'));
+const processCourse=require('../learning/process-content.js');
+const architecture=require('../learning/architecture-content.js');
+assert.ok(processCourse.chapters.at(-1).sections.at(-1).html.includes('href="#architecture"'));
+assert.ok(architecture.chapters.at(-1).sections.at(-1).html.includes('href="#change"'));
+console.log('PASS V2.1 -> V2.2 -> V2.3 continuation and preparation links');

@@ -46,4 +46,5 @@ jobs:
           node tests/test_process_core.cjs
           node tests/test_process_backup.cjs
           node tests/test_change_core.cjs
+          node tests/test_change_autosave.cjs
           node tests/test_learning_overview.cjs
