@@ -78,7 +78,7 @@ with sync_playwright() as p:
     page.locator('[data-action="nav-projects"]').click()
     assert '4 / 4' in page.locator('.studio-stats').inner_text()
     page.locator('[data-action="nav-textbook"]').click();page.wait_for_selector('.book-library-card')
-    assert page.locator('.book-library-card').count()==8
+    assert page.locator('.book-library-card').count()==len(json.loads(assets['content/manifest.json'])['lessons'])
     mobile=browser.new_page(viewport={'width':390,'height':844},is_mobile=True,has_touch=True)
     mobile.on('pageerror',lambda err:errors.append(str(err)))
     mobile.set_content(html,wait_until='load')

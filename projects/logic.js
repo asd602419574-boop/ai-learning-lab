@@ -24,15 +24,40 @@ const DOCS=[
 {id:'PLAN',title:'学习计划建议',text:'建议每周分三次进行专项练习，每次二十五分钟。首次学习阅读教材，然后手动复现实验，最后记录反思与问题。'}
 ];
 const QUERY_SET=[{q:'普通图书最多可以借几本？',want:'LIB'},{q:'图书馆周一是否开放？',want:'OPEN'},{q:'科普讲座在哪里举行？',want:'EVENT'},{q:'编程工作坊需要自带什么？',want:'WORK'},{q:'学习记录默认保存在哪里？',want:'POLICY'},{q:'每周建议练习几次？',want:'PLAN'}];
+// Longer fictional materials for evidence coverage, separate from the six legacy sources.
+const EVIDENCE_TEXT='【虚构教学资料，不适用于真实图书馆】普通图书借阅办法：每位读者最多借五本，普通图书借期为二十一天。借阅办法同时说明读者可在服务台查询账户、借阅历史和到期提醒。图书馆提供多种阅读区，检索到借阅标题不代表已经找到全部规则。借阅办法的期限与续借办法的条件需要同时核对，不能把一个期限直接用于所有情形。续借办法：仅当无人预约且未逾期，普通图书可续借一次，额外延长十四天。已经被他人预约或已经逾期时不可续借，需要先联系服务台。馆内少儿阅览室另有安排：少儿阅览室周末无需预约，十六点结束服务，十二岁以下须监护人陪同。成人自习区开放时间不适用于少儿阅览室，不能用另一房间的闭馆时间推断。少儿阅览室提供亲子阅读位置，结束服务前请整理借阅材料。';
+const EVIDENCE_TASKS=[
+  {id:'loan',title:'示范：借期与续借条件',q:'普通图书借阅办法借期以及续借条件是什么？',want:'E-RULE',facts:['二十一天','仅当无人预约且未逾期','十四天']},
+  {id:'child',title:'独立变式：少儿阅览室',q:'少儿阅览室周末要预约吗，几点结束，十二岁以下有什么要求？',want:'E-RULE',facts:['周末无需预约','十六点结束服务','十二岁以下须监护人陪同']}
+];
+function evidenceDocs(text=EVIDENCE_TEXT){return [
+  {id:'E-RULE',title:'图书馆服务办法',text},
+  {id:'E-OLD',title:'旧版资料（已停用）',text:'旧版普通图书借阅办法，借阅办法曾规定借期为三十天。旧版续借条件仅供历史查阅，不是现行规则。'},
+  {id:'E-ADULT',title:'成人自习区',text:'成人自习区周末预约入场，二十点结束服务。此安排只适用于成人自习区，不适用于少儿阅览室。'}
+]}
 function tokens(text){const s=String(text||'').toLowerCase();const zh=(s.match(/[\u3400-\u9fff]+/g)||[]).flatMap(part=>part.length===1?[part]:Array.from({length:part.length-1},(_,i)=>part.slice(i,i+2)));const en=s.match(/[a-z0-9]+/g)||[];return [...zh,...en]}
 function confusion(labels,truth,pred){const matrix=Object.fromEntries(labels.map(l=>[l,Object.fromEntries(labels.map(k=>[k,0]))]));let used=0;for(let i=0;i<truth.length;i++){if(!labels.includes(pred[i])||!labels.includes(truth[i]))continue;matrix[truth[i]][pred[i]]++;used++}const matches=labels.reduce((n,l)=>n+matrix[l][l],0);const metrics=labels.map(l=>{const tp=matrix[l][l],support=labels.reduce((n,k)=>n+matrix[l][k],0),predicted=labels.reduce((n,k)=>n+matrix[k][l],0);const precision=predicted?tp/predicted:0,recall=support?tp/support:0;return {label:l,tp,support,predicted,precision,recall,f1:precision+recall?2*precision*recall/(precision+recall):0}});let pe=0;for(const m of metrics)pe+=(m.support/Math.max(1,used))*(m.predicted/Math.max(1,used));const po=used?matches/used:0;return {matrix,used,total:truth.length,accuracy:po,kappa:used&&pe!==1?(po-pe)/(1-pe):0,metrics,macroF1:metrics.reduce((s,m)=>s+m.f1,0)/labels.length}}
 function naiveBayes(train,labels=['正常','垃圾'],alpha=1){const counts={},classDocs={},totals={},vocab=new Set();for(const l of labels){counts[l]={};classDocs[l]=0;totals[l]=0}for(const row of train){if(!labels.includes(row.label))continue;classDocs[row.label]++;for(const w of tokens(row.text)){counts[row.label][w]=(counts[row.label][w]||0)+1;totals[row.label]++;vocab.add(w)}}const n=labels.reduce((s,l)=>s+classDocs[l],0);return {labels:[...labels],count:vocab.size,trainSize:n,predict(text){const words=tokens(text);const scores=labels.map(l=>({label:l,score:Math.log((classDocs[l]+alpha)/(n+alpha*labels.length))+words.reduce((a,w)=>a+Math.log(((counts[l][w]||0)+alpha)/(totals[l]+alpha*Math.max(1,vocab.size))),0)}));scores.sort((a,b)=>b.score-a.score);return {label:scores[0].label,scores,words,matched:words.filter(w=>vocab.has(w)).length}}}}
 function splitDoc(text,size=65,overlap=12){const plain=String(text||'').replace(/\s+/g,' ').trim();size=Math.min(200,Math.max(30,Number(size)||65));overlap=Math.min(size-1,Math.max(0,Number(overlap)||0));const step=size-overlap;const out=[];for(let start=0;start<plain.length;start+=step){const piece=plain.slice(start,start+size);if(piece)out.push(piece);if(start+size>=plain.length)break}return out}
-function buildIndex(docs=DOCS,size=65){const chunks=docs.flatMap(d=>splitDoc(d.text,size,Math.min(12,Math.floor(size/4))).map((text,i)=>({key:d.id+'-'+i,docId:d.id,title:d.title,text,words:tokens(d.title+' '+text)})));const freq={};for(const c of chunks)for(const w of new Set(c.words))freq[w]=(freq[w]||0)+1;return {chunks,freq,n:chunks.length}}
-function searchIndex(index,query,k=3){const q=[...new Set(tokens(query))];const results=index.chunks.map(c=>{const counts={};for(const w of c.words)counts[w]=(counts[w]||0)+1;let score=0;for(const w of q){const tf=counts[w]||0;if(tf)score+=(1+Math.log(tf))*Math.log(1+(index.n-index.freq[w]+0.5)/(index.freq[w]+0.5))}return {...c,score}}).filter(c=>c.score>0).sort((a,b)=>b.score-a.score||a.key.localeCompare(b.key));const unique=[],seen=new Set();for(const c of results){if(!seen.has(c.docId)){unique.push(c);seen.add(c.docId)}if(unique.length>=k)break}return unique}
+function buildIndex(docs=DOCS,size=65,overlap=Math.min(12,Math.floor(size/4))){const chunks=docs.flatMap(d=>splitDoc(d.text,size,overlap).map((text,i)=>({key:d.id+'-'+i,docId:d.id,title:d.title,text,words:tokens(d.title+' '+text)})));const freq={};for(const c of chunks)for(const w of new Set(c.words))freq[w]=(freq[w]||0)+1;return {chunks,freq,n:chunks.length}}
+function rankChunks(index,query){const q=[...new Set(tokens(query))];const results=index.chunks.map(c=>{const counts={};for(const w of c.words)counts[w]=(counts[w]||0)+1;let score=0;for(const w of q){const tf=counts[w]||0;if(tf)score+=(1+Math.log(tf))*Math.log(1+(index.n-index.freq[w]+0.5)/(index.freq[w]+0.5))}return {...c,score}}).filter(c=>c.score>0).sort((a,b)=>b.score-a.score||a.key.localeCompare(b.key));return results}
+function searchIndex(index,query,k=3){const unique=[],seen=new Set();for(const c of rankChunks(index,query)){if(!seen.has(c.docId)){unique.push(c);seen.add(c.docId)}if(unique.length>=k)break}return unique}
 function evaluateRetrieval(docs,size,k,queries=QUERY_SET){const idx=buildIndex(docs,size);let hit=0,mrr=0;const rows=queries.map(v=>{const results=searchIndex(idx,v.q,k);const rank=results.findIndex(r=>r.docId===v.want)+1;if(rank){hit++;mrr+=1/rank}return {...v,rank,found:results.map(r=>r.docId)}});return {hit,denom:queries.length,recall:hit/queries.length,mrr:mrr/queries.length,rows,index:idx}}
+function evaluateEvidence(docs,size=45,k=1,overlap=0,tasks=EVIDENCE_TASKS){
+  const index=buildIndex(docs,size,overlap);
+  const rows=tasks.map(task=>{
+    // Keep chunks from one source: document deduplication would hide multi-fragment evidence.
+    const results=rankChunks(index,task.q).slice(0,k);
+    const relevant=results.filter(r=>r.docId===task.want);
+    const found=task.facts.filter(f=>relevant.some(r=>r.text.includes(f)));
+    const missing=task.facts.filter(f=>!found.includes(f));
+    return {...task,results,sourceHit:relevant.length>0,found,missing,complete:missing.length===0,coverage:found.length/task.facts.length};
+  });
+  const all=rows.reduce((sum,r)=>sum+r.facts.length,0),found=rows.reduce((sum,r)=>sum+r.found.length,0);
+  return {rows,coverage:all?found/all:0,sourceHitRate:rows.filter(r=>r.sourceHit).length/Math.max(1,rows.length),complete:rows.every(r=>r.complete),index};
+}
 const BASE_CALENDAR=[{id:'existing-a',day:'周二',time:'10:00',title:'已安排：阅读研讨'},{id:'existing-b',day:'周四',time:'15:00',title:'已安排：工作坊'}];
 const DAYS=['周一','周二','周三','周四','周五'];const HOURS=['10:00','15:00'];
 function scheduleCheck(calendar,day,time,title,approved){if(!DAYS.includes(day)||!HOURS.includes(time))return {ok:false,why:'超出允许的工作日与时段'};if(!title||String(title).length>40)return {ok:false,why:'会议名称需要 1–40 字'};if(calendar.some(e=>e.day===day&&e.time===time))return {ok:false,why:'时间冲突：已有日历事件占用此时段'};if(!approved)return {ok:false,why:'缺少用户明确确认，禁止写入日历'};return {ok:true,why:'时间空闲，用户已授权，可写入本地沙箱日历'}}
-return {LABELS,LABEL_ROWS,MAIL_TRAIN,MAIL_TEST,DOCS,QUERY_SET,BASE_CALENDAR,DAYS,HOURS,tokens,confusion,naiveBayes,splitDoc,buildIndex,searchIndex,evaluateRetrieval,scheduleCheck};
+return {LABELS,LABEL_ROWS,MAIL_TRAIN,MAIL_TEST,DOCS,QUERY_SET,EVIDENCE_TEXT,EVIDENCE_TASKS,evidenceDocs,evaluateEvidence,BASE_CALENDAR,DAYS,HOURS,tokens,confusion,naiveBayes,splitDoc,buildIndex,searchIndex,evaluateRetrieval,scheduleCheck};
 });

@@ -487,7 +487,7 @@
           <div class="home-stats-chips">
             <span class="home-chip"><strong id="conceptTotal">30</strong> 基础概念</span>
             <span class="home-chip"><strong id="questionTotal">144</strong> 练习题</span>
-            <span class="home-chip">12 篇深度教材</span>
+            <span class="home-chip">13 篇深度教材</span>
             <span class="home-chip">4 个实战项目</span>
           </div>
         </div>
@@ -550,7 +550,7 @@
 <script>
 'use strict';
 /* Training module loads before the existing app. */
-const HOME_LESSONS = [{"id":"ai-systems","title":"从业务问题到 AI 系统","group":"AI 基础","mins":18,"prereq":"无"},{"id":"ml-evaluation","title":"机器学习与正确评估","group":"AI 基础","mins":20,"prereq":"从业务问题到 AI 系统"},{"id":"neural-training","title":"神经网络与梯度下降","group":"模型原理","mins":23,"prereq":"机器学习与正确评估","lab":"gradient"},{"id":"transformers","title":"Transformer 与语言模型","group":"模型原理","mins":21,"prereq":"神经网络与梯度下降"},{"id":"prompt-llm","title":"Prompt 与可靠输出","group":"生成式应用","mins":19,"prereq":"Transformer 与语言模型"},{"id":"rag","title":"RAG：从检索到可信引用","group":"生成式应用","mins":24,"prereq":"Prompt 与可靠输出","lab":"retrieval"},{"id":"agents","title":"Agent：工具、权限与状态","group":"系统实践","mins":22,"prereq":"RAG：从检索到可信引用"},{"id":"data-delivery","title":"数据标注与 AI 项目交付","group":"系统实践","mins":23,"prereq":"机器学习与正确评估"},{"id":"data-quality","title":"数据清洗与泄漏防范","group":"工程进阶","mins":22,"prereq":"机器学习与正确评估"},{"id":"vector-retrieval","title":"向量检索与重排","group":"工程进阶","mins":24,"prereq":"RAG：从检索到可信引用"},{"id":"ai-release","title":"AI 应用上线与评估","group":"工程进阶","mins":20,"prereq":"数据标注与 AI 项目交付"},{"id":"prompt-injection","title":"提示注入与工具安全","group":"工程进阶","mins":22,"prereq":"Agent：工具、权限与状态"}];
+const HOME_LESSONS = [{"id":"ai-systems","title":"从业务问题到 AI 系统","group":"AI 基础","mins":18,"prereq":"无"},{"id":"ml-evaluation","title":"机器学习与正确评估","group":"AI 基础","mins":20,"prereq":"从业务问题到 AI 系统"},{"id":"neural-training","title":"神经网络与梯度下降","group":"模型原理","mins":55,"prereq":"机器学习与正确评估","lab":"gradient"},{"id":"transformers","title":"Transformer 与语言模型","group":"模型原理","mins":55,"prereq":"神经网络与梯度下降（数学深入可选）","lab":"attention"},{"id":"prompt-llm","title":"Prompt 与可靠输出","group":"生成式应用","mins":19,"prereq":"Transformer 与语言模型"},{"id":"rag","title":"RAG：从检索到可信引用","group":"生成式应用","mins":30,"prereq":"Prompt 与可靠输出","lab":"retrieval"},{"id":"agents","title":"Agent：工具、权限与状态","group":"系统实践","mins":22,"prereq":"RAG：从检索到可信引用"},{"id":"data-delivery","title":"数据标注与 AI 项目交付","group":"系统实践","mins":23,"prereq":"机器学习与正确评估"},{"id":"data-quality","title":"数据清洗与泄漏防范","group":"工程进阶","mins":22,"prereq":"机器学习与正确评估"},{"id":"vector-retrieval","title":"向量检索与重排","group":"工程进阶","mins":24,"prereq":"RAG：从检索到可信引用"},{"id":"ai-release","title":"AI 应用上线与评估","group":"工程进阶","mins":20,"prereq":"数据标注与 AI 项目交付"},{"id":"prompt-injection","title":"提示注入与工具安全","group":"工程进阶","mins":22,"prereq":"Agent：工具、权限与状态"},{"id":"reliable-ai-workshop","title":"可靠使用 AI：识别幻觉与引用核对","group":"可靠使用实践","mins":40,"prereq":"无；可直接从四课入门的可靠使用AI实践开始"}];
 const COURSES=[
   {title:'人工智能概述',subtitle:'定义、主要学派与基本分类',goal:'理解什么是人工智能，以及不同技术路径怎样实现智能。',example:'一个根据交通规则判断路口通行条件的专家系统，也属于人工智能，但不一定使用神经网络。',concepts:[
     ['人工智能（AI）','人工智能是研究与构建能够执行通常需要人类智能的任务的系统的领域，包括感知、学习、推理、规划和语言处理。'],

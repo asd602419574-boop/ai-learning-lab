@@ -5,11 +5,12 @@ const ProjectLab = (() => {
   const recordStorage = typeof LearningStorage!=='undefined'?LearningStorage.storage:localStorage;
   const $ = s => document.querySelector(s);
   const esc = v => String(v ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+  const emptyEvidence=()=>({text:L.EVIDENCE_TEXT,task:'loan',size:45,overlap:0,k:2,prediction:'',explanation:'',report:null,attempts:[]});
   function init() {
     return {
       label: { labels: {}, reviewed: false },
       ml: { alpha: 1, trained: false, tested: false, custom: '', result: null },
-      rag: { size: 65, k: 2, query: '图书馆周一开放吗', docs: [], tested: false, evaluated: false, last: [] },
+      rag: { size: 65, k: 2, query: '图书馆周一开放吗', docs: [], tested: false, evaluated: false, last: [], evidence:emptyEvidence() },
       agent: { day: '周三', time: '10:00', title: 'AI 学习讨论', inspected: false, proposed: null, approved: false, added: [], trace: [] }
     }
   }
@@ -24,6 +25,7 @@ const ProjectLab = (() => {
       }
     }
   } catch { storageWarn = '旧记录无法解析，已使用新的本地学习状态。' }
+  state.rag.evidence={...emptyEvidence(),...(state.rag.evidence&&typeof state.rag.evidence==='object'?state.rag.evidence:{})};
   function save() {
     try { recordStorage.setItem(KEY, JSON.stringify({ version: 1, data: state })) }
     catch { storageWarn = '浏览器无法保存项目进度；可使用导出成果备份。' }
@@ -77,7 +79,7 @@ const ProjectLab = (() => {
   function mlView() {
     const s = state.ml;
     const { model, matrix, preds } = mlReport();
-    return `<section id="proj-step-1"><h3>1. 分离训练集与测试集</h3><p>本项目使用 **18 条训练文本**（模型能学习）和 **8 条独立留出文本**（只用于评估）。采用多项式朴素贝叶斯，计算各词在类别中出现的频数、拉普拉斯平滑概率与类别后验对数得分。</p><p class="studio-help">⚠️ 这只是教学数据，样本量极小且人为构造。测试准确率不能推广到真实邮件系统。</p></section><section id="proj-step-2"><h3>2. 训练模型</h3><div class="studio-input-row"><label>Laplace 平滑 α <select data-ml-alpha><option value="0.5" ${s.alpha == .5 ? 'selected' : ''}>0.5</option><option value="1" ${s.alpha == 1 ? 'selected' : ''}>1</option><option value="2" ${s.alpha == 2 ? 'selected' : ''}>2</option></select></label><button data-project="train-model">重新训练并评估</button></div>${s.trained ? `<div class="studio-metrics"><div><small>训练样本</small><strong>${model.trainSize}</strong></div><div><small>词汇表词项</small><strong>${model.count}</strong></div><div><small>测试集准确率</small><strong>${(matrix.accuracy * 100).toFixed(1)}%</strong></div><div><small>宏 F1</small><strong>${matrix.macroF1.toFixed(3)}</strong></div></div><div class="studio-scroll" id="proj-step-3"><table><thead><tr><th>留出测试文本</th><th>真实</th><th>预测</th></tr></thead><tbody>${L.MAIL_TEST.map((r, i) => `<tr><td>${esc(r.text)}</td><td>${r.label}</td><td class="${preds[i] === r.label ? 'studio-good' : 'studio-bad'}">${preds[i]}</td></tr>`).join('')}</tbody></table></div><small class="studio-help">模型内部用词频、对数概率计算；没有在线大模型参与。比较不同 α 与失败样本，观察真实可解释的变化。</small>` : '<div class="studio-placeholder">点击“重新训练并评估”，实时训练并计算留出测试集指标。</div>'}</section><section id="proj-step-4"><h3>3. 对新的文本推理与成果</h3><div class="studio-input-row"><label class="studio-grow">新邮件内容 <input id="mlCustom" maxlength="180" value="${esc(s.custom || '限时免费领取课程资料')}" placeholder="例如：明日会议安排"></label><button data-project="predict-model" ${!s.trained ? 'disabled' : ''}>预测并解释</button><button class="studio-secondary" data-project="export-project" ${!s.trained ? 'disabled' : ''}>导出模型记录 ↓</button></div>${s.result ? `<div class="studio-explain"><strong>预测：${esc(s.result.label)}</strong><p>匹配训练词项 ${s.result.matched}/${s.result.words.length}；${s.result.scores.map(x => `${x.label} 对数分数 ${x.score.toFixed(3)}`).join('，')}。</p><small>这是模型推断，不保证正确。对比不同措辞并记录误判。</small></div>` : ''}</section>`;
+    return `<section id="proj-step-1"><h3>1. 分离训练集与测试集</h3><p>本项目使用 **18 条训练文本**（模型能学习）和 **8 条独立留出文本**（只用于评估）。采用多项式朴素贝叶斯，计算各词在类别中出现的频数、拉普拉斯平滑概率与类别后验对数得分。</p><p class="studio-help">⚠️ 这只是教学数据，样本量极小且人为构造。测试准确率不能推广到真实邮件系统。</p></section><section id="proj-step-2"><h3>2. 训练模型</h3><div class="studio-input-row"><label>Laplace 平滑 α <select data-ml-alpha><option value="0.5" ${s.alpha == .5 ? 'selected' : ''}>0.5</option><option value="1" ${s.alpha == 1 ? 'selected' : ''}>1</option><option value="2" ${s.alpha == 2 ? 'selected' : ''}>2</option></select></label><button data-project="train-model">重新训练并评估</button></div>${s.trained ? `<div class="studio-metrics"><div><small>训练样本</small><strong>${model.trainSize}</strong></div><div><small>词汇表词项</small><strong>${model.count}</strong></div><div><small>测试集准确率</small><strong>${(matrix.accuracy * 100).toFixed(1)}%</strong></div><div><small>宏 F1</small><strong>${matrix.macroF1.toFixed(3)}</strong></div></div><div class="studio-scroll" id="proj-step-3"><table><thead><tr><th>留出测试文本</th><th>真实</th><th>预测</th></tr></thead><tbody>${L.MAIL_TEST.map((r, i) => `<tr><td>${esc(r.text)}</td><td>${r.label}</td><td class="${preds[i] === r.label ? 'studio-good' : 'studio-bad'}">${preds[i]}</td></tr>`).join('')}</tbody></table></div><small class="studio-help">模型内部用词频、对数概率计算；没有在线大模型参与。比较不同 α 与失败样本，观察真实可解释的变化。</small>` : '<div class="studio-placeholder">点击“重新训练并评估”，实时训练并计算留出测试集指标。</div>'}</section><section id="proj-step-4"><h3>3. 对新的文本推理与成果</h3><div class="studio-input-row"><label class="studio-grow">新邮件内容 <input id="mlCustom" maxlength="180" value="${esc(s.custom || '限时免费领取课程资料')}" placeholder="例如：明日会议安排"></label><button data-project="predict-model" ${!s.trained ? 'disabled' : ''}>预测并解释</button><button class="studio-secondary" data-project="export-project" ${!s.trained ? 'disabled' : ''}>导出模型记录 ↓</button></div>${s.result ? `<div class="studio-explain"><strong>预测：${esc(s.result.label)}</strong><p>匹配训练词项 ${s.result.matched}/${s.result.words.length}；字符/英文特征：${s.result.words.map(esc).join(" / ")}；${s.result.scores.map(x => `${x.label} 对数分数 ${x.score.toFixed(3)}`).join('，')}。</p><small>这是模型推断，不保证正确。对比不同措辞并记录误判。</small></div>` : ''}</section>`;
   }
   function docSet() {
     const s = state.rag;
@@ -92,6 +94,10 @@ const ProjectLab = (() => {
     const results = s.tested ? ragResults(s.query, s.size, s.k) : [], metrics = s.evaluated ? L.evaluateRetrieval(L.DOCS, s.size, s.k) : null;
     return `<section id="proj-step-1"><h3>1. 准备带来源的资料库</h3><p>内置六份公开领域示例文档：图书馆规则、开放时间、科普讲座、编程工作坊、平台隐私、学习计划。所有文档拥有独立 ID，检索后将展示来源标识。</p><details><summary>查看 ${docs.length} 份文档内容</summary>${docs.map(d => `<div class="studio-doc"><strong>[${d.id}] ${esc(d.title)}</strong><p>${esc(d.text)}</p></div>`).join('')}</details></section><section id="proj-step-2"><h3>2. 执行可追溯检索</h3><div class="studio-input-row"><label>分块长度 <select data-rag-size>${[45, 65, 100, 160].map(n => `<option value="${n}" ${s.size == n ? 'selected' : ''}>${n} 字符</option>`).join('')}</select></label><label>Top-K <select data-rag-k>${[1, 2, 3, 4].map(n => `<option value="${n}" ${s.k == n ? 'selected' : ''}>${n}</option>`).join('')}</select></label></div><div class="studio-input-row"><label class="studio-grow">你的问题 <input id="ragQuery" maxlength="150" value="${esc(s.query)}" placeholder="例如：普通图书能续借几天？"></label><button data-project="rag-search">检索</button></div>${s.tested ? `<div class="studio-explain"><strong>${results.length ? `检索到 ${results.length} 个来源` : '没有足够的词项匹配依据'}</strong><p>${results.length ? '下方为按词频和文档频率重新计算的 TF-IDF 排名。这里只摘录原文证据，不根据证据生成未经核实的回答。' : '当前应回答“资料中没有可靠依据”，不能编造。请尝试修改提问或补充文档。'}</p></div>${results.map((x, i) => `<div class="studio-hit"><strong>${i + 1}. [${x.docId}] ${esc(x.title)}</strong><small>得分 ${x.score.toFixed(3)} · 分块 ${esc(x.key)}</small><p>「${esc(x.text)}」</p></div>`).join('')}` : ''}</section><section id="proj-step-3"><h3>3. 用六个已知答案的问题评测</h3><p>评测只使用固定测试问题和六份原始文档，不包含临时添加的资料，避免改变标准答案。计算来源命中率 Recall@K 与平均倒数排名 MRR。</p><button data-project="rag-eval">运行六题检索评估</button>${metrics ? `<div class="studio-metrics"><div><small>命中问题数</small><strong>${metrics.hit} / 6</strong></div><div><small>Recall@K</small><strong>${metrics.recall.toFixed(3)}</strong></div><div><small>MRR</small><strong>${metrics.mrr.toFixed(3)}</strong></div><div><small>原始分块</small><strong>${metrics.index.n}</strong></div></div><div class="studio-scroll"><table><thead><tr><th>测试问题</th><th>目标来源</th><th>排名</th></tr></thead><tbody>${metrics.rows.map(x => `<tr><td>${esc(x.q)}</td><td>${x.want}</td><td>${x.rank || '未命中'}</td></tr>`).join('')}</tbody></table></div>` : ''}</section><section id="proj-step-4"><h3>4. 扩展自己的资料与导出成果</h3><p class="studio-help">添加一条公开且不包含个人信息的短文档，观察检索变化。本地最多 3 条，每条最多 800 字；更复杂的嵌入向量、重排模型和答案生成属于后续高级项目。</p><div class="studio-input-row"><label>标题 <input id="ragDocTitle" maxlength="50" placeholder="例如：公共交通乘车说明"></label></div><label class="studio-block-label">文档内容 <textarea id="ragDocText" maxlength="800" rows="3" placeholder="输入有事实依据的短文段，不要输入密码或私人资料"></textarea></label><div class="studio-actions"><button data-project="rag-add" ${s.docs?.length >= 3 ? 'disabled' : ''}>添加到本地资料库</button><button class="studio-secondary" data-project="rag-clear">移除自定义资料</button><button class="studio-secondary" data-project="export-project">导出项目成果 JSON ↓</button></div></section>`;
   }
+  function evidenceView() {
+    const e=state.rag.evidence,task=L.EVIDENCE_TASKS.find(t=>t.id===e.task)||L.EVIDENCE_TASKS[0],r=e.report?.row;
+    return `<section class="studio-evidence" id="evidenceLab"><h3>5. 从来源命中，到必要证据：可修改的长文实验</h3><p>保留上面的六题作为入门基线；原项目达标标记只对应旧基础条件，不表示本长文变式通过。下面使用较长虚构原文、已停用旧版和成人自习区干扰材料，观察关键词排名为何不等于答案可靠。不运行向量模型、重排器或LLM。</p><ol><li>示范：45字块、Overlap=0、Top-K=2。先预测会漏什么，再运行；即使找到正确文档，返回片段也可能缺少条件。</li><li>只改一个条件重跑，对比每次缺失的原句；先试重叠，再试块长或Top-K。不是越大越好，要看额外片段和旧版噪声。</li><li>独立变式：选少儿阅览室问题，自定参数并解释与成人自习区规则的区别。也可在原文调整句子位置，观察切块边界变化。</li></ol><label class="studio-block-label">现行原文（可编辑，最多4000字；不要输入敏感信息）<textarea data-evidence-text rows="7" maxlength="4000">${esc(e.text)}</textarea></label><details><summary>查看固定干扰资料（不自动剔除旧版）</summary>${L.evidenceDocs(e.text).slice(1).map(d=>`<p><strong>[${d.id}] ${esc(d.title)}</strong>：${esc(d.text)}</p>`).join('')}</details><div class="studio-input-row"><label>问题<select data-evidence-param="task">${L.EVIDENCE_TASKS.map(t=>`<option value="${t.id}" ${e.task===t.id?'selected':''}>${esc(t.title)}</option>`).join('')}</select></label>${[['size','分块长度',[45,90,180]],['overlap','Overlap（字符）',[0,20,40]],['k','Top-K（片段）',[1,2,4,8]]].map(([key,label,values])=>`<label>${label}<select data-evidence-param="${key}">${values.map(n=>`<option value="${n}" ${Number(e[key])===n?'selected':''}>${n}</option>`).join('')}</select></label>`).join('')}</div><p><strong>当前问题：</strong>${esc(task.q)}</p><label class="studio-block-label">运行前预测：需要哪些证据，可能在哪一步丢失？<textarea data-evidence-note="prediction" rows="2" maxlength="2000">${esc(e.prediction)}</textarea></label><div class="studio-actions"><button data-project="evidence-run">运行当前问题与证据检查</button><button class="studio-secondary" data-project="evidence-reset">恢复练习材料与参数</button><button class="studio-secondary" data-project="export-project">导出输入、计算与解释 JSON ↓</button></div><p class="studio-help" role="status">本练习沿用项目记录自动保存；修改材料或参数后上次结果失效，请重跑。恢复只影响这份练习，已有运行记录仍保留。保存异常时请看项目提示并导出。</p><div data-evidence-output>${r?`<div class="studio-explain" data-evidence-result><strong>来源命中：${r.sourceHit?'是':'否'}；必要原句覆盖：${r.found.length}/${r.facts.length}</strong><p>${r.complete?'固定原句已覆盖；仍需自行核对版本、条件关系和解释，不能据此推断掌握。':'证据尚不完整。先定位下面缺失的原句，再决定调整切块、重叠、候选数量或补回原文。'}</p><p>缺失：${r.missing.length?r.missing.map(esc).join('；'):'无（仅固定原句检查）'}</p><p>计算词项：${L.tokens(task.q).map(esc).join(' / ')}。中文是重叠字符二元组，不是语义分词。</p></div>${r.results.map((x,i)=>`<div class="studio-hit"><strong>${i+1}. [${esc(x.docId)}] ${esc(x.title)}</strong><small>片段 ${esc(x.key)} · 词项分 ${x.score.toFixed(3)}${x.docId!==task.want?' · 非本题现行来源，不能因高分直接采用':''}</small><p>${esc(x.text)}</p></div>`).join('')}<details><summary>定位边界：查看全部${e.report.chunks.length}个原始片段</summary>${e.report.chunks.map(c=>`<p><strong>${esc(c.key)}</strong> ${esc(c.text)}</p>`).join('')}</details>`:'<p data-evidence-pending>还没有当前输入的结果。请先预测，再运行；不把旧参数下的结果当成新结果。</p>'}</div><label class="studio-block-label">修订解释：哪句丢失、为什么这样修改、还有什么不能证明？<textarea data-evidence-note="explanation" rows="3" maxlength="2000">${esc(e.explanation)}</textarea></label><details><summary>本练习最近${e.attempts.length}次运行（含输入与反馈，可随成果导出）</summary>${e.attempts.map(a=>`<p>${esc(a.at)} · ${esc(a.task)} · 块${a.size}/重叠${a.overlap}/K${a.k} · 来源${a.report.row.sourceHit?'命中':'未命中'} · 原句${a.report.row.found.length}/${a.report.row.facts.length}</p>`).join('')}</details><p class="studio-help">检查仅匹配指定现行来源中被返回片段的固定必要原句。合理改写、事实真假、条件逻辑、解释质量及版本适用性不由此自动判断；请对照原文和量规自行复核。两个问题都是教学用例，不是独立保留的生产评测集。</p></section>`;
+  }
   function agentCalendar() { return [...L.BASE_CALENDAR, ...state.agent.added] }
   function trace(msg) { const s = state.agent; s.trace = [...(s.trace || []), { at: new Date().toISOString(), event: msg }].slice(-50) }
   function agentView() {
@@ -103,7 +109,7 @@ const ProjectLab = (() => {
     if (!container || ui.tab !== 'projects') return;
     document.querySelectorAll('#dailyNav button').forEach(b => b.classList.toggle('active', b.dataset.action === 'nav-projects'));
     document.querySelectorAll('#chapterNav button').forEach(b => b.classList.remove('active'));
-    const view = !selected ? listPage() : shell(selected, { label: labelView, ml: mlView, rag: ragView, agent: agentView }[selected]());
+    const view = !selected ? listPage() : shell(selected, { label: labelView, ml: mlView, rag: ragView, agent: agentView }[selected]() + (selected==='rag'?evidenceView():''));
     container.innerHTML = view;
     if (typeof updateMainSidebar === 'function') updateMainSidebar();
   }
@@ -138,6 +144,15 @@ const ProjectLab = (() => {
         if (!input) { notice = '请先输入新文本。'; break }
         s.custom = input; s.result = L.naiveBayes(L.MAIL_TRAIN, ['正常', '垃圾'], Number(s.alpha)).predict(input); s.tested = true; break;
       }
+      case 'evidence-run': {
+        const e=s.evidence, task=L.EVIDENCE_TASKS.find(t=>t.id===e.task)||L.EVIDENCE_TASKS[0];
+        if(typeof e.text!=='string'||!e.text.trim()){notice='原文为空，无法检查；请补回资料或恢复练习材料。';break;}
+        const result=L.evaluateEvidence(L.evidenceDocs(e.text),Number(e.size),Number(e.k),Number(e.overlap),[task]);
+        e.report={row:result.rows[0],chunks:result.index.chunks};
+        e.attempts=[{at:new Date().toISOString(),text:e.text,task:e.task,size:e.size,overlap:e.overlap,k:e.k,prediction:e.prediction,report:e.report},...e.attempts].slice(0,6);
+        notice='已按当前输入重新计算。固定原句检查不是专业能力评价。';break;
+      }
+      case 'evidence-reset': {const attempts=s.evidence.attempts;s.evidence={...emptyEvidence(),attempts};notice='练习材料已恢复；原六题、其他成果和已有运行记录保留。';break;}
       case 'rag-search': s.query = $('#ragQuery')?.value.trim().slice(0, 150) || ''; s.tested = true; break;
       case 'rag-eval': s.evaluated = true; break;
       case 'rag-add': {
@@ -183,6 +198,7 @@ const ProjectLab = (() => {
   document.addEventListener('change', e => {
     if (ui.tab !== 'projects' || !e.target.closest('#dynamicArea')) return;
     const t = e.target;
+    if(t.matches('[data-evidence-param]')){const key=t.dataset.evidenceParam;state.rag.evidence[key]=key==='task'?t.value:Number(t.value);state.rag.evidence.report=null;save();render();return;}
     if (t.matches('[data-label-row]')) { state.label.labels[t.dataset.labelRow] = t.value; state.label.reviewed = false; save(); render(); return }
     if (t.matches('[data-ml-alpha]')) { state.ml.alpha = Number(t.value); state.ml.trained = false; state.ml.tested = false; state.ml.result = null; save(); render(); return }
     if (t.matches('[data-rag-size]')) { state.rag.size = Number(t.value); state.rag.tested = false; state.rag.evaluated = false; save(); render(); return }
@@ -194,6 +210,7 @@ const ProjectLab = (() => {
   document.addEventListener('input', e => {
     if (ui.tab !== 'projects' || !e.target.closest('#dynamicArea')) return;
     const t = e.target;
+    if(t.matches('[data-evidence-text],[data-evidence-note]')){const ev=state.rag.evidence;if(t.hasAttribute('data-evidence-text')){ev.text=t.value.slice(0,4000);ev.report=null;const result=$('[data-evidence-output]');if(result)result.innerHTML='<p data-evidence-result>原文已修改，上次结果失效，请重新运行。</p>';}else ev[t.dataset.evidenceNote]=t.value.slice(0,2000);save();return;}
     if (t.id === 'agentTitle') { state.agent.title = t.value.slice(0, 40); state.agent.proposed = null; state.agent.approved = false; save() }
   });
   return {

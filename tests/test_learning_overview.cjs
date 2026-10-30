@@ -37,7 +37,7 @@ assert.match(html, /部分专题仍是大纲与任务说明/);
 assert.match(html, /外部工具/);
 assert.match(html, /个人自学/);
 assert.match(html, /<details[\s>]/);
-assert.match(html, /12 篇/);
+assert.ok(html.includes(textbookLessons.length+' 篇'));
 const escaped = render({ lessons: [{ id: 'x"><img', title: '<script>alert(1)</script>' }] });
 assert.ok(!escaped.includes('<script>'));
 assert.ok(escaped.includes('&lt;script&gt;'));

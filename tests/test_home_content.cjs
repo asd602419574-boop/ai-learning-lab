@@ -5,7 +5,17 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const root = path.resolve(__dirname, '..');
 const manifest = JSON.parse(fs.readFileSync(path.join(root, 'content/manifest.json'), 'utf8'));
 const old = JSON.parse(execFileSync('git', ['show', '85613ac:content/manifest.json'], {cwd:root, encoding:'utf8'}));
-assert.deepEqual(manifest.lessons.slice(0,8), old.lessons, 'Original eight course IDs, quiz answers and metadata must survive');
+// Three authored upgrades intentionally change content; identity and historical records remain stable.
+const revised=new Set(['neural-training','transformers','rag']);
+assert.deepEqual(manifest.lessons.slice(0,8).map(l=>l.id),old.lessons.map(l=>l.id));
+for(const historical of old.lessons){
+  const current=manifest.lessons.find(l=>l.id===historical.id);
+  if(!revised.has(current.id))assert.deepEqual(current,historical,'Untouched course metadata must survive');
+  else{
+    for(const key of ['id','source','file','title','group'])assert.equal(current[key],historical[key],key);
+    assert.equal(current.quizVersion,'2026-10-depth-1');assert(current.quiz.length>=6);
+  }
+}
 const server = http.createServer((req,res)=>{
   const file = path.join(root,new URL(req.url,'http://localhost').pathname.replace(/^\/$/,'/index.html'));
   try { res.setHeader('Content-Type',file.endsWith('.js')?'text/javascript':file.endsWith('.css')?'text/css':file.endsWith('.json')?'application/json':'text/html; charset=utf-8'); res.end(fs.readFileSync(file)); }
@@ -55,7 +65,7 @@ const server = http.createServer((req,res)=>{
     await page.locator('.editorial-resources a[href="#courses?mode=textbook"]').click();
     await page.waitForSelector('.book-library-card');
     assert.equal(await page.locator('.book-library-card').count(),manifest.lessons.length);
-    await page.getByText('系统教材 (1/12)',{exact:true}).waitFor({state:'visible'});
+    await page.getByText(`系统教材 (1/${manifest.lessons.length})`,{exact:true}).waitFor({state:'visible'});
     for(const lesson of old.lessons) {
       assert.equal(await page.locator(`.book-library-card[data-book-open="${lesson.id}"]`).count(),1);
     }
@@ -75,11 +85,12 @@ const server = http.createServer((req,res)=>{
     }
     await page.goto(base+'#home');
     await page.locator('.editorial-resources a[href="#courses?mode=textbook"]').click();
-    await page.getByText('系统教材 (5/12)',{exact:true}).waitFor({state:'visible'});
+    await page.getByText(`系统教材 (${1+manifest.lessons.slice(8).length}/${manifest.lessons.length})`,{exact:true}).waitFor({state:'visible'});
     const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('ai_lab_textbook_v1')));
     assert.equal(saved.transformers.completed,true);
-    for(const l of manifest.lessons.slice(8))assert.deepEqual(saved[l.id].quiz,{'0':true,'1':true});
+    assert.deepEqual(saved.transformers.quiz,{'0':true},'Historical answers must remain untouched');
+    for(const l of manifest.lessons.slice(8)){const results=l.quizVersion?saved[l.id].checks[l.quizVersion]:saved[l.id].quiz;assert.equal(Object.keys(results).length,l.quiz.length);assert(Object.values(results).every(v=>v===true));}
     assert.deepEqual(errors,[]);
-    console.log('PASS editorial home: three route selections, four resource entries, 12 catalog courses, 16 training days, four projects, responsive discovery, new lessons/quizzes/reload and old records');
+    console.log('PASS editorial home: three route selections, four resource entries, manifest catalog courses, 16 training days, four projects, responsive discovery, new lessons/quizzes/reload and old records');
   } finally {await browser.close();server.close()}
 })().catch(e=>{console.error(e);process.exitCode=1;server.close()});

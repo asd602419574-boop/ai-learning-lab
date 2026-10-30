@@ -1,0 +1,33 @@
+/* Numerical checks and evidence coverage: independent expected values, not UI snapshots. */
+'use strict';
+const assert = require('node:assert/strict'), fs = require('node:fs'), vm = require('node:vm');
+const source = fs.readFileSync(require.resolve('../content/reader.js'), 'utf8');
+const T = vm.runInNewContext(source+'\nTextbook._test', {document:{addEventListener(){}},localStorage:{getItem(){return null}},console});
+const close=(a,b)=>assert(Math.abs(a-b)<1e-8,`${a} != ${b}`);
+const affine=T.affineStats(0,0,1);
+close(affine.loss,83/3);close(affine.dw,-68/3);close(affine.db,-10);
+assert(T.affineStats(0.1*68/3,1,1).loss<affine.loss);
+const h=T.hiddenStats(2,1,0,2,6); // z=2,a=2,yhat=4,L=4
+close(h.loss,4);close(h.dw1,-16);close(h.db1,-8);close(h.dw2,-8);
+const eps=1e-6;
+close((T.hiddenStats(2,1+eps,0,2,6).loss-T.hiddenStats(2,1-eps,0,2,6).loss)/(2*eps),h.dw1);
+const inactive=T.hiddenStats(2,-1,0,2,6);close(inactive.dw1,0);close(inactive.db1,0);close(inactive.dw2,0);
+const a=T.attentionStats([1,0],[[0,1],[0,2]],[[2,4],[6,8]]);
+assert.deepEqual(Array.from(a.output),[4,6]);close(a.weights.reduce((s,v)=>s+v,0),1);
+const stable=T.attentionStats([10000,0],[[10000,0],[-10000,0]],[[1,2],[3,4]]);
+assert(stable.output.every(Number.isFinite));
+assert.throws(()=>T.attentionStats([1,0],[[1]],[[1,2]]),/维度/);
+assert.throws(()=>T.attentionStats([1,0],[[1,0]],[[null,2]]),/有限数值/);
+const L=require('../projects/logic.js');
+assert.equal(typeof L.evaluateEvidence,'function');
+const docs=[{id:'X',title:'借阅',text:'借阅办法：普通图书借期二十一天。注意事项：'+ '请仔细阅读其他须知。'.repeat(5)+'续借条件：仅当无人预约且未逾期，可续借十四天。'}];
+const tasks=[{id:'test',q:'借阅办法借期',want:'X',facts:['二十一天','仅当无人预约且未逾期','十四天']}];
+const short=L.evaluateEvidence(docs,45,1,0,tasks);
+assert.equal(short.rows[0].sourceHit,true);assert.equal(short.rows[0].complete,false);
+assert(short.rows[0].missing.includes('仅当无人预约且未逾期'));
+const long=L.evaluateEvidence(docs,200,1,0,tasks);
+assert.equal(long.rows[0].complete,true);assert.equal(long.coverage,1);
+const partial=L.evaluateEvidence(docs,45,1,0,[{...tasks[0],facts:['二十一天','未出现的条件']}]);
+assert(partial.coverage<1);
+assert.equal(L.buildIndex(docs,45,0).chunks[1].text,docs[0].text.slice(45,90));
+console.log('PASS: affine partial derivatives, chain rule/finite difference, inactive ReLU, vector attention/stability, invalid matrix, source hit vs incomplete evidence');

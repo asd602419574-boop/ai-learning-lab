@@ -106,9 +106,9 @@ Author: Lliftime
 
 </details>
 
-## 资源与出处
+## 延伸阅读与出处
 
-正文为原创教学归纳；以下具体来源于2026年10月21日核实。本文未加入旧教材构建清单，避免改变原有12篇教材的构建验收范围。
+正文为原创教学归纳；以下具体来源于2026年10月21日核实。2026年10月30日本文已接入专题教材目录；原有四课入门中的可靠使用AI实践继续保留。长文是补充阅读，不重复累计成另一项能力认证。
 
 - [Anthropic：Reduce hallucinations](https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations)：官方实践指南：允许不确定、用原文支持回答、逐项核对引用。本课采用原则，不承诺消除所有错误。
 - [Lewis 等：Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks](https://arxiv.org/abs/2005.11401)：2020年原始研究：把参数化生成模型与检索得到的外部记忆结合。用于理解背景，不把固定通知练习等同完整RAG系统。

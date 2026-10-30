@@ -5,11 +5,12 @@ const path=require('node:path');
 const vm=require('node:vm');
 const root=path.resolve(__dirname,'..');
 const manifest=JSON.parse(fs.readFileSync(path.join(root,'content/manifest.json'),'utf8'));
-assert.equal(manifest.lessons.length,12);
+assert.equal(manifest.lessons.length,13);
 const ids=new Set();
 for(const lesson of manifest.lessons){
   assert(!ids.has(lesson.id),`duplicate id ${lesson.id}`);ids.add(lesson.id);
-  assert(lesson.quiz.length===2);
+  assert(lesson.quiz.length>=2);
+  if(['neural-training','transformers','rag'].includes(lesson.id)){assert(lesson.quiz.length>=6);assert(lesson.quizVersion);}
   for(const q of lesson.quiz){assert(q.options.length>=3);assert(Number.isInteger(q.answer)&&q.answer>=0&&q.answer<q.options.length);assert(q.why.length>8)}
   for(const key of ['file','source']){
     const file=path.join(root,lesson[key]);assert(fs.existsSync(file),`${file} missing`);
@@ -21,6 +22,8 @@ for(const lesson of manifest.lessons){
   const html=fs.readFileSync(path.join(root,lesson.file),'utf8');
   assert(html.includes('<h1>')&&html.length>500);
 }
+assert(manifest.lessons.some(l=>l.source==='content/lessons/13-reliable-ai-workshop.md'));
+assert(fs.readFileSync(path.join(root,'content/rendered/13-reliable-ai-workshop.html'),'utf8').includes('<table>'));
 const source=fs.readFileSync(path.join(root,'content/reader.js'),'utf8');
 new vm.Script(source);
 const context={document:{addEventListener(){}},localStorage:{getItem(){return null}},console};
@@ -32,4 +35,4 @@ const stats=lab.gradientStats();assert(Math.abs(stats.loss-56/3)<1e-9);
 assert(Math.abs(stats.gradient+56/3)<1e-9);
 const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
 for(const required of ['content/reader.js','content/reader.css','nav-textbook','training/training-ui.js','feedback/feedback.js'])assert(index.includes(required),required);
-console.log('TEXTBOOK STATIC TEST PASS — twelve articles, twenty-four checks, content files, source links, gradient, lexical search');
+console.log('TEXTBOOK STATIC TEST PASS — thirteen articles, versioned depth checks, content files, source links, gradient, lexical search');

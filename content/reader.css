@@ -671,3 +671,14 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Keep editable calculations inside the existing reading column. */
+.book-matrix-fields { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr)); gap:14px; margin:16px 0; }
+.book-matrix-fields label { display:grid; gap:6px; font-weight:600; }
+.book-matrix-fields textarea { width:100%; box-sizing:border-box; min-width:0; padding:10px; font:inherit; font-family:monospace; border:1px solid var(--line,#d9dfe4); border-radius:8px; }
+.book-lab-form label:has(input[type="number"]) { display:grid; gap:5px; }
+.book-lab-form input[type="number"] { width:110px; max-width:100%; padding:8px; box-sizing:border-box; }
+.book-lab-output { overflow-wrap:anywhere; white-space:pre-wrap; }
+/* Inline formulae wrap on narrow screens; diagrams keep their own scroll area. */
+.book-article { min-width:0; overflow-wrap:anywhere; }
+.book-article :not(pre) > code { white-space:normal; overflow-wrap:anywhere; }
