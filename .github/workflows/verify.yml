@@ -38,6 +38,7 @@ jobs:
           node tests/fixtures/question-baseline.cjs
           node tests/test_project_logic.cjs
           node tests/test_depth_labs.cjs
+          node tests/test_current_core.cjs
           node tests/test_learning_catalog.cjs
           node tests/test_learning_core.cjs
           node tests/test_learning_pathway_core.cjs

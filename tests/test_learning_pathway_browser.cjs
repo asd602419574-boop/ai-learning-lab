@@ -22,9 +22,9 @@ const server = http.createServer((req,res)=>{
     page.on('pageerror',e=>errors.push(e.message));
     page.on('response',r=>{if(r.status()>=400)errors.push(r.status()+' '+r.url());});
     await page.goto(base+'#home');
-    assert.equal(await page.locator('[data-pathway-lesson]').count(),4,'Home must offer the four connected lessons');
-    assert.deepEqual(await page.locator('[data-pathway-lesson]').evaluateAll(nodes=>nodes.map(n=>n.dataset.pathwayLesson)),ids);
-    assert.equal(await page.locator('[data-learning-start]').getAttribute('href'),'#pathways');
+    assert.equal(await page.locator('[data-subject]').count(),2,'Home offers the two implemented subjects');
+    await page.locator('[data-subject="ai"]').click();
+    assert.deepEqual(await page.evaluate(()=>LearningCatalog.list().map(l=>l.id)),ids);
     const legacy=await page.evaluate(()=>{
       const s=LearningCore.emptyState();s.step=4;s.reflection='P1已有复盘，不应被其他课程覆盖';s.drafts.practice.time='待确认';
       localStorage.setItem(LearningCore.KEY,JSON.stringify(s));localStorage.setItem('ai_training_practice_v1','{"3":123}');
@@ -73,7 +73,7 @@ const server = http.createServer((req,res)=>{
     }
     await page.goto(base+'#home');
     assert.equal(await page.evaluate(()=>LearningWorkspace.summary().completedCount),4);
-    assert((await page.locator('[data-pathway-progress]').innerText()).includes('4 / 4'));
+    assert((await page.locator('.subject-continue').innerText()).includes('AI'));
     await page.goto(base+'#my-learning');assert.equal(await page.locator('.learn-artifact').count(),5);
     await page.locator('[data-course-filter]').selectOption('ai-basics');assert.equal(await page.locator('.learn-artifact').count(),2);
     await page.locator('[data-course-filter]').selectOption('evaluate-results');assert.equal(await page.locator('.learn-artifact').count(),1);

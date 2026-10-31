@@ -37,11 +37,9 @@ const server = http.createServer((req, res) => {
     await page.reload();
     assert.equal(await page.locator('[data-learning-home]').count(), 1,
       'Home must offer the new guided learning experience');
-    assert.equal(await page.locator('.editorial-courses > article').count(), 3);
-    await page.locator('[data-learning-path="foundation"]').focus();
-    await page.keyboard.press('ArrowRight');
-    assert.equal(await page.locator('[data-learning-path="application"]').getAttribute('aria-selected'),'true');
-    await page.locator('[data-learning-start]').click();
+    assert.equal(await page.locator('[data-subject]').count(),2);
+    assert.equal(await page.locator('[data-subject="physics"]').getAttribute('href'),'#physics');
+    await page.locator('[data-subject="ai"]').click();
     await page.waitForSelector('[data-program-overview]');
     await page.locator('.btn[href="#lesson?id=ai-basics"]').first().click();
     await page.waitForSelector('[data-lesson-reading]');
@@ -106,7 +104,8 @@ const server = http.createServer((req, res) => {
     assert.equal(await page.locator('.learn-artifact').count(),3);
     for(const [key,value] of Object.entries(legacy))assert.equal(await page.evaluate(k=>localStorage.getItem(k),key),value);
     await page.goto(base+'#home');
-    assert((await page.locator('.editorial-metrics').innerText()).includes('3'));
+    assert((await page.locator('.subject-continue').innerText()).includes('继续AI入门练习'));
+    assert.equal((await page.evaluate(()=>LearningWorkspace.summary())).artifactCount,3);
     assert.deepEqual(errors, []);
     const failure=await browser.newPage();
     await failure.addInitScript(()=>{Storage.prototype.setItem=function(){throw new DOMException('test quota','QuotaExceededError');};});

@@ -32,37 +32,33 @@ const server = http.createServer((req,res)=>{
     await page.goto(base);
     await page.evaluate(()=>localStorage.setItem('ai_lab_textbook_v1',JSON.stringify({transformers:{opened:true,completed:true,quiz:{0:true}}})));
     await page.reload();
-    assert.equal(await page.locator('.editorial-courses article').count(),3);
-    assert.equal(await page.locator('.editorial-resources article').count(),4);
-    assert.equal(await page.locator('.editorial-tabs [role="tab"]').count(),4);
-    assert.equal(await page.locator('.editorial-study-steps li').count(),4);
-    for(const tab of ['foundation','application','building','advanced']) {
-      await page.locator(`[data-learning-path="${tab}"]`).click();
-      assert.equal(await page.locator('.editorial-courses article').count(),3);
-      assert.equal(await page.locator(`[data-learning-path="${tab}"]`).getAttribute('aria-selected'),'true');
-    }
+    assert.equal(await page.locator('[data-subject]').count(),2);
+    assert.equal(await page.locator('[data-subject="ai"]').getAttribute('href'),'#pathways');
+    assert.equal(await page.locator('[data-subject="physics"]').getAttribute('href'),'#physics');
+    assert(!(await page.locator('[data-learning-home]').innerText()).includes('16天'));
     for(const [width,height] of [[1440,900],[1920,1080],[2560,1440],[3840,2160],[390,844]]) {
       await page.setViewportSize({width,height});
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'overflow '+width);
-      if(width===3840) {
-        assert(await page.locator('.editorial-library').evaluate(e=>e.getBoundingClientRect().bottom)>1200, 'Resource discovery should remain reachable below the current task and routes');
-      }
+
     }
     await page.setViewportSize({width:1440,height:900});
-    await page.locator('.editorial-resources a[href="#courses?mode=training&day=1"]').click();
+    await page.locator('[data-subject="ai"]').click();
+    await page.locator('#training-overview > summary').click();
+    await page.locator('[data-training-day="1"] > summary').click();
+    await page.locator('a[href="#courses?mode=training&day=1"]').click();
     await page.waitForFunction(()=>trState.day===1);
     await page.waitForSelector('[data-action="tr-day"]');
     assert.equal(await page.locator('.chapter-button[data-action="tr-day"]').count(),16);
     await page.locator('.chapter-button[data-action="tr-day"][data-day="16"]').click();
     await page.waitForFunction(()=>trState.day===16);
     await page.goto(base+'#home');
-    await page.locator('.editorial-resources a[href="#projects"]').click();
+    await page.locator('.subject-library a[href="#projects"]').click();
     assert.equal(await page.evaluate(()=>ProjectLab.getProjects().length),4);
     await page.goto(base+'#projects?id=rag');
     await page.waitForSelector('[data-project="rag-search"]');
     // All original courses remain discoverable through the complete textbook catalog.
     await page.goto(base+'#home');
-    await page.locator('.editorial-resources a[href="#courses?mode=textbook"]').click();
+    await page.locator('.subject-card a[href="#courses?mode=textbook"]').click();
     await page.waitForSelector('.book-library-card');
     assert.equal(await page.locator('.book-library-card').count(),manifest.lessons.length);
     await page.getByText(`系统教材 (1/${manifest.lessons.length})`,{exact:true}).waitFor({state:'visible'});
@@ -71,7 +67,7 @@ const server = http.createServer((req,res)=>{
     }
     for(const lesson of manifest.lessons.slice(8)) {
       await page.goto(base+'#home');
-      await page.locator('.editorial-resources a[href="#courses?mode=textbook"]').click();
+      await page.locator('.subject-card a[href="#courses?mode=textbook"]').click();
       await page.locator(`.chapter-button[data-book-open="${lesson.id}"]`).click();
       await page.waitForSelector(`[data-book-complete="${lesson.id}"]`);
       assert((await page.locator('.book-article').innerText()).length>1500);
@@ -84,13 +80,13 @@ const server = http.createServer((req,res)=>{
       await page.locator(`[data-book-complete="${lesson.id}"]`).click();
     }
     await page.goto(base+'#home');
-    await page.locator('.editorial-resources a[href="#courses?mode=textbook"]').click();
+    await page.locator('.subject-card a[href="#courses?mode=textbook"]').click();
     await page.getByText(`系统教材 (${1+manifest.lessons.slice(8).length}/${manifest.lessons.length})`,{exact:true}).waitFor({state:'visible'});
     const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('ai_lab_textbook_v1')));
     assert.equal(saved.transformers.completed,true);
     assert.deepEqual(saved.transformers.quiz,{'0':true},'Historical answers must remain untouched');
     for(const l of manifest.lessons.slice(8)){const results=l.quizVersion?saved[l.id].checks[l.quizVersion]:saved[l.id].quiz;assert.equal(Object.keys(results).length,l.quiz.length);assert(Object.values(results).every(v=>v===true));}
     assert.deepEqual(errors,[]);
-    console.log('PASS editorial home: three route selections, four resource entries, manifest catalog courses, 16 training days, four projects, responsive discovery, new lessons/quizzes/reload and old records');
+    console.log('PASS subject home: AI and physics entries, manifest catalog courses, 16 training days, four projects, responsive discovery, new lessons/quizzes/reload and old records');
   } finally {await browser.close();server.close()}
 })().catch(e=>{console.error(e);process.exitCode=1;server.close()});
