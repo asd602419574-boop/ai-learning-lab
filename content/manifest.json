@@ -292,6 +292,7 @@
       "group": "生成式应用",
       "mins": 19,
       "prereq": "Transformer 与语言模型",
+      "lab": "tokenizer",
       "quiz": [
         {
           "q": "模型返回合法 JSON，是否可以直接认定字段内容正确？",
@@ -406,6 +407,7 @@
       "group": "系统实践",
       "mins": 22,
       "prereq": "RAG：从检索到可信引用",
+      "lab": "agent",
       "quiz": [
         {
           "q": "日历 API 超时，最稳妥的下一步是？",

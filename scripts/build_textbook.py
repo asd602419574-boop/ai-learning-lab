@@ -8,9 +8,9 @@ LESSONS=[
   dict(id='ml-evaluation',file='02-ml-evaluation',title='机器学习与正确评估',group='AI 基础',mins=20,prereq='从业务问题到 AI 系统'),
   dict(id='neural-training',file='03-neural-training',title='神经网络与梯度下降',group='模型原理',mins=55,prereq='机器学习与正确评估',lab='gradient',quizVersion='2026-10-depth-1'),
   dict(id='transformers',file='04-transformers',title='Transformer 与语言模型',group='模型原理',mins=55,prereq='神经网络与梯度下降（数学深入可选）',lab='attention',quizVersion='2026-10-depth-1'),
-  dict(id='prompt-llm',file='05-prompt-llm',title='Prompt 与可靠输出',group='生成式应用',mins=19,prereq='Transformer 与语言模型'),
+  dict(id='prompt-llm',file='05-prompt-llm',title='Prompt 与可靠输出',group='生成式应用',mins=19,prereq='Transformer 与语言模型',lab='tokenizer'),
   dict(id='rag',file='06-rag',title='RAG：从检索到可信引用',group='生成式应用',mins=30,prereq='Prompt 与可靠输出',lab='retrieval',quizVersion='2026-10-depth-1'),
-  dict(id='agents',file='07-agents',title='Agent：工具、权限与状态',group='系统实践',mins=22,prereq='RAG：从检索到可信引用'),
+  dict(id='agents',file='07-agents',title='Agent：工具、权限与状态',group='系统实践',mins=22,prereq='RAG：从检索到可信引用',lab='agent'),
   dict(id='data-delivery',file='08-data-and-delivery',title='数据标注与 AI 项目交付',group='系统实践',mins=23,prereq='机器学习与正确评估'),
 ]
 LESSONS.extend(json.loads((ROOT/'content/extra-lessons.json').read_text('utf-8')))

@@ -682,3 +682,299 @@
 /* Inline formulae wrap on narrow screens; diagrams keep their own scroll area. */
 .book-article { min-width:0; overflow-wrap:anywhere; }
 .book-article :not(pre) > code { white-space:normal; overflow-wrap:anywhere; }
+
+
+/* Interactive Labs & Visualizations in Textbook */
+.book-matrix-presets {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.book-tag-btn {
+  border: 1px solid var(--line, #e2e8f0);
+  background: var(--surface, #ffffff);
+  color: var(--ink-secondary, #475569);
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.book-tag-btn:hover {
+  background: #f8fafc;
+  color: var(--accent, #4f46e5);
+  border-color: #cbd5e1;
+}
+.book-tag-btn.active {
+  background: #eef2ff;
+  color: #4338ca;
+  border-color: #818cf8;
+  box-shadow: 0 1px 3px rgba(79, 70, 229, 0.1);
+}
+
+/* Attention Heatmap Visualizer */
+.book-attn-visual-box {
+  margin-top: 16px;
+  padding: 20px;
+  background: #ffffff;
+  border: 1px solid var(--line, #e2e8f0);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
+}
+.book-attn-visual-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.book-attn-visual-head span {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+}
+.book-attn-visual-head small {
+  font-size: 11.5px;
+  color: #64748b;
+}
+.book-attn-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.book-attn-row {
+  display: grid;
+  grid-template-columns: 140px 110px 1fr 180px;
+  align-items: center;
+  gap: 12px;
+  font-size: 12.5px;
+  padding: 8px 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+.book-attn-row-key {
+  font-family: monospace;
+  color: #334155;
+}
+.book-attn-row-score {
+  color: #64748b;
+  font-variant-numeric: tabular-nums;
+}
+.book-attn-row-bar-wrap {
+  height: 22px;
+  background: #f1f5f9;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+.book-attn-row-bar {
+  height: 100%;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.book-attn-row-val {
+  font-size: 11.5px;
+  color: #64748b;
+  font-family: monospace;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.book-attn-context-box {
+  margin-top: 14px;
+  padding: 12px 16px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.book-attn-context-box span {
+  font-size: 13px;
+  font-weight: 600;
+  color: #166534;
+}
+.book-attn-context-box strong {
+  font-size: 14px;
+  color: #15803d;
+  font-family: monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Tokenizer Styles */
+.book-token-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 16px 0;
+  background: #f8fafc;
+  border: 1px solid var(--line, #e2e8f0);
+  border-radius: 10px;
+  padding: 14px;
+}
+.book-token-stats div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.book-token-stats span {
+  font-size: 11px;
+  color: #64748b;
+}
+.book-token-stats strong {
+  font-size: 17px;
+  font-weight: 700;
+  color: #0f172a;
+}
+.book-token-stream-box {
+  padding: 16px;
+  background: #ffffff;
+  border: 1px solid var(--line, #e2e8f0);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.02);
+}
+.book-token-stream-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-size: 12px;
+  color: #64748b;
+}
+.book-token-stream-head span {
+  font-weight: 600;
+  color: #0f172a;
+}
+.book-token-stream {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  line-height: 1.8;
+  max-height: 240px;
+  overflow-y: auto;
+  padding: 8px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+.book-tok-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  cursor: default;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  user-select: text;
+}
+.book-tok-pill:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+.tok-c0 { background: #ede9fe; border: 1px solid #ddd6fe; color: #6d28d9; }
+.tok-c1 { background: #e0f2fe; border: 1px solid #bae6fd; color: #0369a1; }
+.tok-c2 { background: #ecfdf5; border: 1px solid #a7f3d0; color: #047857; }
+.tok-c3 { background: #fef3c7; border: 1px solid #fde68a; color: #b45309; }
+.tok-c4 { background: #ffe4e6; border: 1px solid #fecdd3; color: #be123c; }
+.tok-c5 { background: #f3e8ff; border: 1px solid #e9d5ff; color: #7e22ce; }
+
+/* Agent ReAct Lab */
+.book-agent-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 14px;
+}
+.book-agent-card {
+  background: #ffffff;
+  border: 1px solid var(--line, #e2e8f0);
+  border-radius: 10px;
+  padding: 14px 18px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+  animation: bookCardFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes bookCardFade {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.book-agent-card.thought { border-left: 4px solid #818cf8; }
+.book-agent-card.action { border-left: 4px solid #10b981; }
+.book-agent-card.observation { border-left: 4px solid #f59e0b; }
+.book-agent-card.final { border-left: 4px solid #6366f1; background: #faf5ff; }
+.book-agent-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.book-agent-card-header strong {
+  font-size: 13.5px;
+  color: #0f172a;
+}
+.book-agent-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 9999px;
+}
+.badge-thought { background: #e0e7ff; color: #3730a3; }
+.badge-action { background: #d1fae5; color: #065f46; }
+.badge-obs { background: #fef3c7; color: #92400e; }
+.badge-final { background: #ede9fe; color: #5b21b6; }
+.book-agent-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--line, #e2e8f0);
+  margin: 6px 0 0;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* Engineering Intuition Takeaway Card */
+.book-intuition-card {
+  padding: 16px 20px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  margin-top: 18px;
+}
+.book-intuition-card strong {
+  display: block;
+  font-size: 13.5px;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+.book-intuition-card p {
+  margin: 6px 0;
+  font-size: 13px;
+  line-height: 1.65;
+  color: #475569;
+}
+
+@media (max-width: 900px) {
+  .book-attn-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .book-token-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+}

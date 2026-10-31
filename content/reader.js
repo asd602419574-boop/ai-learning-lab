@@ -8,7 +8,9 @@ const Textbook = (() => {
   const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   let manifest = null, active = null, articleHtml = '', articleCache = {}, loading = null, renderVersion = 0, step = 0, rate = 0.1, weight = 0, quizChoice = {}, quizChecked = {}, lastError = '';
   let bias = 0, targetIntercept = 1, hidden = {x:2,w1:1,b1:0,w2:2,y:6};
-  let attentionDraft = {q:'[1,0]',k:'[[1,0],[0,1],[-1,0]]',v:'[[10,0],[0,10],[-10,5]]'}, labEvidence = null;
+  let attentionDraft = {q:'[1,0]',k:'[[1,0],[0,1],[-1,0]]',v:'[[10,0],[0,10],[-10,5]]'}, labEvidence = null, attentionPreset = 'classic';
+  let tokenizerText = 'Transformer 架构是现代 LLM 的基石。OpenAI 于 2026 年发布新型号，def eval(): return True 🚀', tokenizerPreset = 'mixed';
+  let agentPreset = 'weather', agentStep = 0, agentMockObs = '';
   const docs = [
     { id: 'A', name: '开放时间', text: '图书馆周二到周日开放，时间是上午九点至下午五点；每周一闭馆。' },
     { id: 'B', name: '借阅政策', text: '每位读者一次最多借五册图书，普通图书借期为二十一天。' },
@@ -74,8 +76,21 @@ const Textbook = (() => {
   function libraryView() {
     return `<div class="book-intro"><div class="book-overline">TEXTBOOK · 系统性知识阅读</div><h2>从概念、推导到真实案例，建立可以迁移的 AI 知识体系。</h2><p>从基础理论走向 RAG、Agent 与数据工程。每篇教材独立保存为 Markdown；你可以阅读、手算、自测，并对照资料重复实验。请按顺序学习，也可以跳转到需要补足的章节。</p></div><div class="book-library-grid">${manifest.lessons.map((l, i) => `<button class="book-library-card" type="button" data-book-open="${escape(l.id)}"><span class="book-overline">LESSON ${String(i + 1).padStart(2, '0')} · ${escape(l.group)}</span><strong>${escape(l.title)}</strong><p>约 ${l.mins} 分钟 · ${l.chars} 字符教材 · ${l.quiz.length} 道即时理解检查${l.lab ? ' · 可运行实验' : ''}</p><small class="book-skip">${itemState(l.id).completed ? '✓ 已阅读' : '开始阅读'} →</small></button>`).join('')}</div><div class="book-notice">学习建议：阅读正文 → 手算或动手复现例子 → 作答自测 → 完成课后任务。文字篇幅不是掌握程度，只有能够解释原因、重现结果和定位失败才算真正理解。</div>`;
   }
-  const labTitles = {gradient:'🧮 双参数与链式法则：真实计算', attention:'🧮 向量注意力：真实计算', retrieval:'🔎 检索实验：真实计算匹配排序'};
-  const labNotes = {gradient:'修改目标截距、参数和学习率；观察同步更新与隐藏层梯度。实验参数只在本页会话内保留，可导出本次计算。', attention:'输入JSON向量/矩阵，核对缩放得分、权重与上下文向量；这里只计算一个查询位置、一个头，不是完整语言模型。参数只在本页会话内保留，可导出本次计算。', retrieval:'本地四条短资料演示词项匹配；进一步的长文、切块与证据缺失实验在“项目实践 → RAG”中进行。没有在线LLM。'};
+  
+  const labTitles = {
+    gradient: '🧮 双参数与链式法则：真实计算',
+    attention: '🧮 向量注意力：真实计算与热力图显微镜',
+    tokenizer: '🔬 Tokenizer 实时分词切片与计费显微镜',
+    retrieval: '🔎 RAG 语义分块与相似度检索匹配',
+    agent: '🤖 ReAct 智能体循环与工具调用单步调试器'
+  };
+  const labNotes = {
+    gradient: '修改目标截距、参数和学习率；观察同步更新与隐藏层梯度。实验参数只在本页会话内保留，可导出本次计算。',
+    attention: '输入向量/矩阵或选择经典语境预设，直观观察点积得分、Softmax 归一化注意力权重热力图与最终上下文向量。',
+    tokenizer: '输入任意混合文本（中英双语、代码、特殊符号、数字），实时切分观察 Token 边界、Token 数量、压缩率及上下文开销。',
+    retrieval: '本地四条短资料演示词项匹配；进一步的长文、切块与证据缺失实验在“项目实践 → RAG”中进行。没有在线LLM。',
+    agent: '体验大模型智能体（Agent）的思考（Thought）与行动（Action）循环，单步观察 Tool Calling 参数生成与结果回填。'
+  };
   function lessonView(lesson) {
     const item = itemState(lesson.id);
     const currentIndex = manifest.lessons.findIndex(l => l.id === lesson.id);
@@ -137,9 +152,32 @@ const Textbook = (() => {
     $('#bookHiddenOutput').textContent=`前向：z=${h.z} → a=${h.a} → ŷ=${h.prediction} → L=${h.loss}\n反向：dL/dŷ=${h.dy} → dL/da=${h.da} → dL/dz=${h.dz}\n参数梯度：dw₁=${h.dw1}，db₁=${h.db1}，dw₂=${h.dw2}`;
     labEvidence={lab:'gradient',parameters:{weight,bias,targetIntercept,rate,step,hidden:{...hidden}},affine:d,hidden:h};
   }
+  const ATTN_PRESETS = {
+    classic: { name: '教材示例 (经典向量)', q: '[1,0]', k: '[[1,0],[0,1],[-1,0]]', v: '[[10,0],[0,10],[-10,5]]', desc: 'q 与 K₁ 方向完全重合，K₁ 获得最高注意力' },
+    pronoun: { name: '代词消歧 (“它” ➔ “树叶”)', q: '[0.9,0.3]', k: '[[0.85,0.35],[0.1,0.95],[-0.8,0.2]]', v: '[[12,4],[2,15],[-6,6]]', desc: '语境中“它”高概率指向先行词“树叶”而非“水面”' },
+    uniform: { name: '均等分散加权', q: '[1,1]', k: '[[1,1],[1,1],[1,1]]', v: '[[5,10],[10,5],[5,5]]', desc: 'Query 与全部 Key 点积完全一致，注意力平均分配' }
+  };
+
   function attentionView() {
-    return `<p>先复现正文三行Key，再独立改为两行Key与Value验证变式。每行Value是向量，输出维度等于Value列数。</p><div class="book-matrix-fields">${[['q','Query向量 q'],['k','Key矩阵 K'],['v','Value矩阵 V']].map(([key,label])=>`<label>${label}<textarea data-book-matrix="${key}" rows="2" maxlength="5000" spellcheck="false">${escape(attentionDraft[key])}</textarea></label>`).join('')}</div><button type="button" class="book-btn" data-book-attention>计算注意力</button><div class="book-lab-output" id="bookAttentionOutput" aria-live="polite"></div><button type="button" class="book-btn secondary" data-book-lab-export>导出本次计算 JSON</button>`;
+    return `
+      <div class="book-matrix-presets">
+        ${Object.entries(ATTN_PRESETS).map(([k, v]) => `
+          <button type="button" class="book-tag-btn ${attentionPreset === k ? 'active' : ''}" data-book-attn-preset="${k}">${escape(v.name)}</button>
+        `).join('')}
+      </div>
+      <p style="margin:12px 0 8px;font-size:13.5px;color:var(--muted,#64748b);">可直接选择上方预设，或在下方手动修改 JSON 向量。输出上下文向量维度严格等于 Value 列数。</p>
+      <div class="book-matrix-fields">
+        ${[['q','Query向量 q'],['k','Key矩阵 K'],['v','Value矩阵 V']].map(([key,label])=>`<label>${label}<textarea data-book-matrix="${key}" rows="2" maxlength="5000" spellcheck="false">${escape(attentionDraft[key])}</textarea></label>`).join('')}
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0;">
+        <button type="button" class="book-btn" data-book-attention>计算注意力与热力图</button>
+        <button type="button" class="book-btn secondary" data-book-lab-export>导出本次计算 JSON</button>
+      </div>
+      <div class="book-lab-output" id="bookAttentionOutput" aria-live="polite"></div>
+      <div id="bookAttentionVisual"></div>
+    `;
   }
+
   function showAttention() {
     const el=$('#bookAttentionOutput');if(!el)return;
     try {
@@ -147,16 +185,236 @@ const Textbook = (() => {
       const nums=a=>a.map(x=>Number(x.toFixed(6))).join(', ');
       el.textContent=`${result.shape}\n缩放得分：[${nums(result.scores)}]\nsoftmax权重：[${nums(result.weights)}]\n上下文向量：[${nums(result.output)}]\n计算检查不是语义评分，也不是完整LLM推理。`;
       labEvidence={lab:'attention',parameters:{q,k,v},result};
-    }catch(e){el.textContent='未计算：'+e.message;labEvidence=null;}
+
+      let visualEl = $('#bookAttentionVisual');
+      if (!visualEl) {
+        visualEl = document.createElement('div');
+        visualEl.id = 'bookAttentionVisual';
+        el.parentNode.insertBefore(visualEl, el.nextSibling);
+      }
+
+      const rowsHtml = k.map((row, i) => {
+        const score = result.scores[i];
+        const weight = result.weights[i];
+        const pct = (weight * 100).toFixed(1);
+        const intensity = Math.min(0.85, Math.max(0.12, weight));
+        const bg = `rgba(79, 70, 229, ${intensity})`;
+        const color = weight > 0.4 ? '#ffffff' : '#0f172a';
+        return `
+          <div class="book-attn-row">
+            <div class="book-attn-row-key"><strong>K<sub>${i+1}</sub></strong> [${row.join(', ')}]</div>
+            <div class="book-attn-row-score">点积得分: ${score.toFixed(3)}</div>
+            <div class="book-attn-row-bar-wrap">
+              <div class="book-attn-row-bar" style="width:${pct}%;background:${bg};color:${color};">
+                ${pct}%
+              </div>
+            </div>
+            <div class="book-attn-row-val">V<sub>${i+1}</sub> 加权贡献: [${v[i].map(x => (x * weight).toFixed(2)).join(', ')}]</div>
+          </div>
+        `;
+      }).join('');
+
+      visualEl.innerHTML = `
+        <div class="book-attn-visual-box">
+          <div class="book-attn-visual-head">
+            <span>📊 交互式注意力权重热力图 (Attention Heatmap)</span>
+            <small>深色代表 Softmax 高权重集中区域</small>
+          </div>
+          <div class="book-attn-rows">${rowsHtml}</div>
+          <div class="book-attn-context-box">
+            <span>最终汇总的上下文向量 (Context Vector)：</span>
+            <strong>[${result.output.map(x => x.toFixed(4)).join(', ')}]</strong>
+          </div>
+        </div>
+      `;
+    } catch(e) {
+      el.textContent='未计算：'+e.message;
+      labEvidence=null;
+      const visualEl = $('#bookAttentionVisual');
+      if (visualEl) visualEl.innerHTML = '';
+    }
+  }
+
+  // -------------------------------------------------------------
+  // Tokenizer Lab (Lesson 5)
+  // -------------------------------------------------------------
+  const TOKEN_PRESETS = {
+    mixed: { name: '中英混排与技术名词', text: 'Transformer 架构是现代 LLM 的基石。OpenAI 于 2026 年发布新型号，def eval(): return True 🚀' },
+    code: { name: '代码缩进与空白符', text: 'def fibonacci(n):\n    if n <= 1:\n        return n\n    return fibonacci(n-1) + fibonacci(n-2)' },
+    numbers: { name: '数学与浮点数切分', text: '版本号 9.11 与 9.9 谁更大？圆周率前十位是 3.1415926535，总耗时 128ms。' },
+    multilingual: { name: '多语言与 Emoji 编码', text: 'Hello 世界！Bonjour le monde! 🌍 人工智能与人类智慧并肩同行 💡✨' }
+  };
+
+  function tokenize(text) {
+    if (!text) return [];
+    const regex = /[\u4e00-\u9fa5]|[a-zA-Z]+|[0-9]+|\s+|[^\s\w\u4e00-\u9fa5]+/gu;
+    const matches = text.match(regex) || [];
+    return matches.map((tok, i) => {
+      let id = (Math.abs(tok.split('').reduce((acc, c) => (acc << 5) - acc + c.charCodeAt(0), 0)) % 89999) + 10000;
+      return { id, text: tok, len: tok.length, isSpace: /^\s+$/.test(tok), colorIdx: i % 6 };
+    });
+  }
+
+  function tokenizerView() {
+    return `
+      <div class="book-matrix-presets">
+        ${Object.entries(TOKEN_PRESETS).map(([k, v]) => `
+          <button type="button" class="book-tag-btn ${tokenizerPreset === k ? 'active' : ''}" data-book-token-preset="${k}">${escape(v.name)}</button>
+        `).join('')}
+      </div>
+      <div class="book-lab-form" style="margin-top:12px;">
+        <label for="bookTokenizerInput" style="width:100%;">输入任意待分词文本 (实时切片)：</label>
+        <textarea id="bookTokenizerInput" class="book-textarea" rows="3" style="width:100%;">${escape(tokenizerText)}</textarea>
+      </div>
+      <div id="bookTokenizerOutput"></div>
+    `;
+  }
+
+  function showTokenizer() {
+    const el = $('#bookTokenizerOutput');
+    if (!el) return;
+    const toks = tokenize(tokenizerText);
+    const charsCount = tokenizerText.length;
+    const tokCount = toks.length;
+    const ratio = tokCount > 0 ? (charsCount / tokCount).toFixed(2) : '0';
+
+    const tokenPills = toks.map(t => {
+      const display = t.isSpace ? (t.text === '\n' ? '↵\\n' : '␣'.repeat(t.text.length)) : escape(t.text);
+      return `<span class="book-tok-pill tok-c${t.colorIdx}" title="Token ID: ${t.id} · 长度: ${t.len} 字符">${display}</span>`;
+    }).join('');
+
+    el.innerHTML = `
+      <div class="book-token-stats">
+        <div><span>总字符数 (Chars)</span><strong>${charsCount}</strong></div>
+        <div><span>Token 总数 (Tokens)</span><strong style="color:var(--accent,#4f46e5);">${tokCount}</strong></div>
+        <div><span>压缩比率 (Chars/Token)</span><strong>${ratio}</strong></div>
+        <div><span>上下文占用估算</span><strong>${Math.min(100, (tokCount / 128 * 100)).toFixed(1)}% / 128</strong></div>
+      </div>
+      <div class="book-token-stream-box">
+        <div class="book-token-stream-head">
+          <span>分词切片预览 (每个色块代表一个独立的 Token)：</span>
+          <small>悬停可查看 Token ID 与字符长度</small>
+        </div>
+        <div class="book-token-stream">
+          ${tokenPills || '<span style="color:#94a3b8;">请输入文本以查看切分效果</span>'}
+        </div>
+      </div>
+      <div class="book-intuition-card">
+        <strong>💡 工程师视角：为什么 Tokenizer 决定了模型的行为边界？</strong>
+        <p>1. <strong>无法直视内部拼写</strong>：大模型并不直接读取字母或笔画，而是读取 Token ID 序列。例如单词 "strawberry"，若分词器将其切为单个 Token，模型内部便难以精确数出其中的字符 "r"。</p>
+        <p>2. <strong>空格与换行陷阱</strong>：在代码生成中，连续 4 空格若被编为一个单独的缩进 Token，而 3 空格拆成 3 个独立 Token，会导致模型在不同缩进风格下的连贯性大不相同。</p>
+      </div>
+    `;
+  }
+
+  // -------------------------------------------------------------
+  // Agent ReAct Lab (Lesson 7)
+  // -------------------------------------------------------------
+  const AGENT_PRESETS = {
+    weather: {
+      task: '查询北京明天的天气预报，并判断是否需要携带雨伞。',
+      defaultObs: '{"status": "success", "city": "北京", "condition": "雷阵雨", "temp": "18~24℃", "rain_prob": "85%"}',
+      steps: [
+        { phase: 'thought', title: 'Step 1: 意图分析与规划 (Thought)', badge: '思考', badgeCls: 'badge-thought', content: '用户需要查询北京明天的天气，并获知是否需备伞。我自身不具备实时天气数据，必须调用注册工具 get_weather 进行数据检索。' },
+        { phase: 'action', title: 'Step 2: 生成工具调用指令 (Action)', badge: '行动', badgeCls: 'badge-action', content: 'call_tool(name="get_weather", arguments={"city": "北京", "date": "tomorrow"})' },
+        { phase: 'observation', title: 'Step 3: 环境执行与结果回填 (Observation)', badge: '观察', badgeCls: 'badge-obs', content: '环境返回值：', isObs: true },
+        { phase: 'final', title: 'Step 4: 综合事实生成最终答复 (Final Answer)', badge: '结论', badgeCls: 'badge-final', content: '根据气象工具查询结果，北京明天为**雷阵雨**，降水概率高达 **85%**，气温 18~24℃。**强烈建议您外出随身携带雨伞**，并注意防雷避雨与交通安全。' }
+      ]
+    },
+    order: {
+      task: '用户查询订单号 #892147 的派送状态，并要求加急催派。',
+      defaultObs: '{"order_id": "892147", "carrier": "SF", "hub": "华北枢纽", "status": "in_transit", "eta": "今日18:00前"}',
+      steps: [
+        { phase: 'thought', title: 'Step 1: 意图分析与规划 (Thought)', badge: '思考', badgeCls: 'badge-thought', content: '用户需要查询指定订单状态并执行催单。我需要先通过物流 API 查询最新流转状态，再决定是否触发催派接口。' },
+        { phase: 'action', title: 'Step 2: 生成工具调用指令 (Action)', badge: '行动', badgeCls: 'badge-action', content: 'call_tool(name="query_logistics", arguments={"order_id": "892147"})' },
+        { phase: 'observation', title: 'Step 3: 环境执行与结果回填 (Observation)', badge: '观察', badgeCls: 'badge-obs', content: '环境返回值：', isObs: true },
+        { phase: 'final', title: 'Step 4: 综合事实生成最终答复 (Final Answer)', badge: '结论', badgeCls: 'badge-final', content: '您的订单 #892147 当前已到达**华北枢纽**，正在派送中，预计**今日 18:00 前送达**。我已为您在系统中同步提交了**优先配送催单**！' }
+      ]
+    }
+  };
+
+  function agentView() {
+    return `
+      <div class="book-matrix-presets">
+        ${Object.entries(AGENT_PRESETS).map(([k, v]) => `
+          <button type="button" class="book-tag-btn ${agentPreset === k ? 'active' : ''}" data-book-agent-preset="${k}">${escape(v.task)}</button>
+        `).join('')}
+      </div>
+      <div class="book-agent-toolbar" style="margin:16px 0;display:flex;gap:10px;align-items:center;">
+        <button type="button" class="book-btn" data-book-agent-step>
+          <span>${agentStep < AGENT_PRESETS[agentPreset].steps.length ? '▶ 单步步进执行 (Step ' + (agentStep + 1) + ')' : '✓ 流程已全部完成'}</span>
+        </button>
+        <button type="button" class="book-btn secondary" data-book-agent-reset>重置流程</button>
+        <span style="font-size:12px;color:var(--muted,#64748b);">当前进度：${agentStep} / ${AGENT_PRESETS[agentPreset].steps.length} 步</span>
+      </div>
+      <div id="bookAgentOutput"></div>
+    `;
+  }
+
+  function showAgent() {
+    const el = $('#bookAgentOutput');
+    if (!el) return;
+    const preset = AGENT_PRESETS[agentPreset];
+    const steps = preset.steps;
+
+    let stepsHtml = '';
+    for (let i = 0; i < agentStep; i++) {
+      const s = steps[i];
+      let body = '';
+      if (s.isObs) {
+        body = `
+          <pre class="book-agent-code" style="background:#f1f5f9;color:#0f172a;">${escape(agentMockObs || preset.defaultObs)}</pre>
+        `;
+      } else if (s.phase === 'action') {
+        body = `<pre class="book-agent-code" style="color:#047857;background:#ecfdf5;border-color:#a7f3d0;">${escape(s.content)}</pre>`;
+      } else {
+        body = `<p style="margin:4px 0;line-height:1.6;font-size:14px;color:#1e293b;">${escape(s.content)}</p>`;
+      }
+
+      stepsHtml += `
+        <div class="book-agent-card ${s.phase}">
+          <div class="book-agent-card-header">
+            <strong>${escape(s.title)}</strong>
+            <span class="book-agent-badge ${s.badgeCls}">${escape(s.badge)}</span>
+          </div>
+          <div class="book-agent-card-body">
+            ${body}
+          </div>
+        </div>
+      `;
+    }
+
+    if (agentStep === 0) {
+      stepsHtml = `<div class="book-empty-hint" style="padding:24px;text-align:center;color:var(--muted,#64748b);background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;">点击上方“单步步进执行”按钮，观察 Agent 如何从自然语言规划出工具参数，并在拿到结果后给出最终答复。</div>`;
+    }
+
+    el.innerHTML = `
+      <div class="book-agent-flow">
+        ${stepsHtml}
+      </div>
+      <div class="book-intuition-card" style="margin-top:20px;">
+        <strong>💡 ReAct 核心机制：为什么 Agent 需要反复执行 Thought ➔ Action ➔ Observation？</strong>
+        <p>1. <strong>行动与观察解耦</strong>：模型无法自己直接运行代码或调用外部 API。它必须生成一段结构化 Action（如 JSON 格式的函数名和参数），由运行宿主执行后，再把 Observation 回传给大模型。</p>
+        <p>2. <strong>防死循环机制</strong>：若工具返回报错或未查到结果，Agent 需要通过下一轮 Thought 决定是重试、更换参数，还是及时向用户如实报告失败，而非无限空转。</p>
+      </div>
+    `;
   }
   function tokens(s) { const txt = String(s).toLowerCase(); const cjk = (txt.match(/[\u3400-\u9fff]+/g) || []).flatMap(seg => seg.length < 2 ? [seg] : Array.from({ length: seg.length - 1 }, (_, i) => seg.slice(i, i + 2))); const en = txt.match(/[a-z0-9]+/g) || []; return [...cjk, ...en] }
   function retrieve(query, k) { const words = [...new Set(tokens(query))]; return docs.map(d => { const corpus = tokens(d.name + ' ' + d.text), count = {}; for (const w of corpus) count[w] = (count[w] || 0) + 1; const score = words.reduce((s, w) => s + Math.min(2, count[w] || 0), 0); return { ...d, score } }).filter(d => d.score > 0).sort((a, b) => b.score - a.score || a.id.localeCompare(b.id)).slice(0, k) }
   function retrievalView() { return `<div class="book-lab-form"><label for="bookQuery">输入查询</label><input type="text" id="bookQuery" value="${escape(retrievalQuery)}" maxlength="80" style="flex:1;min-width:140px"><label for="bookTop">Top-K</label><input type="number" id="bookTop" min="1" max="4" step="1" value="${retrievalTop}" style="width:70px"><button type="button" class="book-btn" data-book-retrieve>重新检索</button></div><div id="bookRetrievalOutput" class="book-lab-output"></div>` }
   function showRetrieval() { const el = $('#bookRetrievalOutput'); if (!el) return; const hits = retrieve(retrievalQuery, retrievalTop); el.textContent = !hits.length ? `资料库没有足够的词项命中依据。请明确表示“未查到可靠资料”，不要编造答案。\n\n尝试：图书续借、周一开放、电影票价。` : `匹配依据（按中文字符二元组与英文词项计分）：\n` + hits.map((h, i) => `${i + 1}. [${h.id}] ${h.name} · 匹配分 ${h.score}\n${h.text}`).join('\n\n') + `\n\n注意：词项匹配不等于语义理解、事实核验或答案生成。` }
-  function paintLab(lab) { const el = $('#bookLabBody'); if (!el) return; el.innerHTML = lab === 'gradient' ? gradientView() : lab === 'attention' ? attentionView() : retrievalView(); if (lab === 'gradient') showGradient(); else if(lab === 'attention') showAttention(); else showRetrieval() }
+  function paintLab(lab) {
+    const el = $('#bookLabBody');
+    if (!el) return;
+    if (lab === 'gradient') { el.innerHTML = gradientView(); showGradient(); }
+    else if (lab === 'attention') { el.innerHTML = attentionView(); showAttention(); }
+    else if (lab === 'tokenizer') { el.innerHTML = tokenizerView(); showTokenizer(); }
+    else if (lab === 'retrieval') { el.innerHTML = retrievalView(); showRetrieval(); }
+    else if (lab === 'agent') { el.innerHTML = agentView(); showAgent(); }
+  }
   function show() { if (!manifest) render(); else render() }
   document.addEventListener('click', async e => {
-    const b = e.target.closest('[data-book-open],[data-book-complete],[data-book-choice],[data-book-check],[data-book-retry],[data-book-reset-quiz],[data-book-gradient-step],[data-book-gradient-reset],[data-book-retrieve],[data-book-attention],[data-book-lab-export]');
+    const b = e.target.closest('[data-book-open],[data-book-complete],[data-book-choice],[data-book-check],[data-book-retry],[data-book-reset-quiz],[data-book-gradient-step],[data-book-gradient-reset],[data-book-retrieve],[data-book-attention],[data-book-lab-export],[data-book-attn-preset],[data-book-token-preset],[data-book-agent-preset],[data-book-agent-step],[data-book-agent-reset]');
     if (!b || (!b.closest('#dynamicArea') && !b.closest('#mainSidebar')) || !$('#mainContent')) return;
     if (!$('#dynamicArea .book-shell') && !b.hasAttribute('data-book-retry')) return;
     if (b.hasAttribute('data-book-open')) { navigate(b.dataset.bookOpen || null); return; }
@@ -168,6 +426,61 @@ const Textbook = (() => {
     if (b.hasAttribute('data-book-gradient-reset')) { step = 0; weight = 0; bias = 0; render(); return; }
     if (b.hasAttribute('data-book-gradient-step')) { showGradient(); if(!labEvidence)return; const d = affineStats(weight,bias,targetIntercept); const nw=weight-rate*d.dw,nb=bias-rate*d.db; if(!Number.isFinite(nw)||!Number.isFinite(nb)||Math.abs(nw)>1e8||Math.abs(nb)>1e8){labEvidence=null;lastError='下一步超出教学数值范围，请重置或降低学习率。'; $('#bookGradientOutput').textContent=lastError;return;} weight=nw;bias=nb;step++;$('#bookWeight').value=weight;$('#bookBias').value=bias; showGradient(); return; }
     if (b.hasAttribute('data-book-attention')) { showAttention(); return; }
+
+    if (b.hasAttribute('data-book-attn-preset')) {
+      const presetKey = b.dataset.bookAttnPreset;
+      if (ATTN_PRESETS[presetKey]) {
+        attentionPreset = presetKey;
+        attentionDraft.q = ATTN_PRESETS[presetKey].q;
+        attentionDraft.k = ATTN_PRESETS[presetKey].k;
+        attentionDraft.v = ATTN_PRESETS[presetKey].v;
+        const qEl = document.querySelector('textarea[data-book-matrix="q"]');
+        const kEl = document.querySelector('textarea[data-book-matrix="k"]');
+        const vEl = document.querySelector('textarea[data-book-matrix="v"]');
+        if (qEl) qEl.value = attentionDraft.q;
+        if (kEl) kEl.value = attentionDraft.k;
+        if (vEl) vEl.value = attentionDraft.v;
+        document.querySelectorAll('[data-book-attn-preset]').forEach(btn => btn.classList.toggle('active', btn.dataset.bookAttnPreset === presetKey));
+        showAttention();
+      }
+      return;
+    }
+    if (b.hasAttribute('data-book-token-preset')) {
+      const presetKey = b.dataset.bookTokenPreset;
+      if (TOKEN_PRESETS[presetKey]) {
+        tokenizerPreset = presetKey;
+        tokenizerText = TOKEN_PRESETS[presetKey].text;
+        const input = document.getElementById('bookTokenizerInput');
+        if (input) input.value = tokenizerText;
+        document.querySelectorAll('[data-book-token-preset]').forEach(btn => btn.classList.toggle('active', btn.dataset.bookTokenPreset === presetKey));
+        showTokenizer();
+      }
+      return;
+    }
+    if (b.hasAttribute('data-book-agent-preset')) {
+      const presetKey = b.dataset.bookAgentPreset;
+      if (AGENT_PRESETS[presetKey]) {
+        agentPreset = presetKey;
+        agentStep = 0;
+        document.querySelectorAll('[data-book-agent-preset]').forEach(btn => btn.classList.toggle('active', btn.dataset.bookAgentPreset === presetKey));
+        showAgent();
+      }
+      return;
+    }
+    if (b.hasAttribute('data-book-agent-step')) {
+      const maxSteps = AGENT_PRESETS[agentPreset].steps.length;
+      if (agentStep < maxSteps) {
+        agentStep++;
+        showAgent();
+      }
+      return;
+    }
+    if (b.hasAttribute('data-book-agent-reset')) {
+      agentStep = 0;
+      showAgent();
+      return;
+    }
+
     if (b.hasAttribute('data-book-lab-export')) {
       if(!labEvidence)return;
       const blob=new Blob([JSON.stringify({created:new Date().toISOString(),scope:'本机固定数值计算，不证明专业掌握',...labEvidence},null,2)],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='ai-'+labEvidence.lab+'-calculation.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);return;
@@ -177,6 +490,13 @@ const Textbook = (() => {
   document.addEventListener('input', e => {
     const t=e.target;
     if(t?.dataset.bookMatrix){attentionDraft[t.dataset.bookMatrix]=t.value;labEvidence=null;const out=$('#bookAttentionOutput');if(out)out.textContent='输入已修改，请重新计算；先预测权重与输出会怎样变化。';return;}
+
+    if (t?.id === 'bookTokenizerInput') {
+      tokenizerText = t.value;
+      showTokenizer();
+      return;
+    }
+
     if(t?.matches('[data-book-hidden],#bookWeight,#bookBias,#bookIntercept,#bookRate')) {
       if(t.value.trim()===''||!Number.isFinite(Number(t.value))||Number(t.value)<Number(t.min)||Number(t.value)>Number(t.max)){$('#bookGradientOutput').textContent='请输入各字段允许范围内的有限数值。';labEvidence=null;return;}
       const n=Number(t.value);
