@@ -1,24 +1,1195 @@
-/* Scoped adaptation of Lliftime current lab; platform tokens override the original theme. */
-.current-sim{--paper:#f6f7f3;--white:#fff;--ink:#253b34;--muted:#7a877f;--line:#e5e9e3;--green:#246957;--mint:#e9f3ec;--teal:#309b99;--orange:#d39a67;--gold:#cf9d54}.current-sim *{box-sizing:border-box}.current-sim{margin:0;background:var(--paper);font-family:Inter,-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);font-size:14px;line-height:1.6}.current-sim button,.current-sim input,.current-sim select{font:inherit}.current-sim button,.current-sim a,.current-sim input,.current-sim select,.current-sim summary{-webkit-tap-highlight-color:transparent}.current-sim button{cursor:pointer}.current-sim button{color:inherit}.current-sim a{color:var(--green);text-decoration:none}.current-sim button:focus-visible,.current-sim a:focus-visible,.current-sim summary:focus-visible,.current-sim select:focus-visible{outline:3px solid #63b2aa;outline-offset:3px}.current-sim button{transition:background .15s,border-color .15s,transform .15s}.current-sim button:hover{filter:brightness(.97)}.current-sim button:active{transform:translateY(1px)}.current-sim [hidden]{display:none!important}.current-sim .sidebar{width:222px;height:100vh;position:fixed;left:0;top:0;z-index:10;border-right:1px solid var(--line);background:#fafbf8;padding:32px 20px;display:flex;flex-direction:column}.current-sim .brand{display:flex;gap:11px;align-items:center;font-size:26px;letter-spacing:2px;font-weight:650;padding-left:9px}.current-sim .brand-icon{background:var(--green);color:#e4f5bc;width:38px;height:46px;border-radius:15px 5px;font-size:35px;line-height:44px;text-align:center;letter-spacing:0}.current-sim .brand-sub{display:block;font-size:8px;letter-spacing:2.1px;font-weight:600;line-height:1.2;color:#829088}.current-sim .nav-title{font-size:10px;letter-spacing:2px;color:#98a096;margin:55px 12px 16px}.current-sim nav{display:grid;gap:8px}.current-sim .nav{display:flex;align-items:center;gap:12px;width:100%;padding:13px 12px;border:0;border-radius:6px;background:none;font-size:13px;text-align:left;white-space:nowrap;color:#6f7c74}.current-sim .nav>span:first-child{font-size:20px;width:22px}.current-sim .nav.active{background:#e8f0e9;color:#235c49;font-weight:600}.current-sim .nav-no{margin-left:auto;font-size:9px;font-weight:400;opacity:.6}.current-sim .side-note{margin-top:auto;padding:30px 13px 14px;position:relative;overflow:hidden}.current-sim .small-kicker{font-size:10px;letter-spacing:1.6px;color:#859186}.current-sim .side-note p{font-size:19px;font-weight:500;line-height:1.9;margin:10px 0}.current-sim .tiny{font-size:10px;color:#95a096}.current-sim .side-note .tiny{font-size:10px}.current-sim .side-orbit{height:100px;margin-top:18px;position:relative;opacity:.65}.current-sim .side-orbit i{position:absolute;left:25px;top:27px;width:90px;height:38px;border:1px solid #b1c8b7;border-radius:50%}.current-sim .side-orbit i:nth-child(2){transform:rotate(60deg)}.current-sim .side-orbit i:nth-child(3){transform:rotate(-60deg)}.current-sim .side-orbit b{position:absolute;left:60px;top:33px;border-radius:50%;background:#6e9a82;color:white;width:22px;height:22px;text-align:center;line-height:21px}.current-sim .side-bottom{background:none;border:0;border-top:1px solid var(--line);padding-top:20px;font-size:10px;color:#849086}.current-sim .shell{margin-left:222px}.current-sim header{height:77px;border-bottom:1px solid var(--line);padding:0 42px;display:flex;align-items:center;justify-content:space-between;background:#fafbf8}.current-sim .breadcrumb{font-size:11px;color:#778579}.current-sim .breadcrumb span{margin:0 12px;color:#c4cbc2}.current-sim .header-right{display:flex;align-items:center;gap:8px;font-size:10px;color:#8d978e}.current-sim .status-dot{display:inline-block;width:6px;height:6px;background:#669a6b;border-radius:50%}.current-sim .text-button,.current-sim .icon-button{background:none;border:0;font-size:11px;color:#7c8a80}.current-sim .text-button{margin-left:18px}.current-sim .icon-button{font-size:21px;margin-left:12px}.current-sim main{max-width:1530px;padding:35px 42px 0;margin:auto}.current-sim .intro{display:flex;align-items:center;justify-content:space-between;margin:0 0 29px}.current-sim .eyebrow{font-size:9px;letter-spacing:2.1px;color:#799582;margin-bottom:8px}.current-sim h1{font-size:clamp(25px,2.4vw,36px);font-weight:550;letter-spacing:-1px;line-height:1.5;margin:0 0 7px}.current-sim .intro p{font-size:12px;color:#89948b;margin:0}.current-sim .intro-tag{font-size:10px;color:#8a978a;white-space:nowrap;align-self:flex-end;margin-bottom:4px}.current-sim .intro-tag span{font-size:22px;margin-left:15px}.current-sim .workspace{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:22px;align-items:start}.current-sim .stage-column,.current-sim .control-column{min-width:0}.current-sim .card{border:1px solid var(--line);background:var(--white);border-radius:10px;overflow:hidden;box-shadow:0 2px 3px #273f2e02}.current-sim .card-heading{display:flex;align-items:center;justify-content:space-between;padding:20px 23px;gap:10px}.current-sim h2{font-size:13px;font-weight:600;letter-spacing:.3px;margin:0}.current-sim .title-with-number{display:flex;gap:11px;align-items:center}.current-sim .section-index{font:10px ui-monospace,SFMono-Regular,monospace;color:#a9b3a9;border-right:1px solid var(--line);padding-right:11px}.current-sim .pill-button{background:#f1f5ef;border:1px solid #e5ecdf;border-radius:20px;font-size:10px;padding:5px 10px;color:#6b8867;white-space:nowrap}.current-sim .pill-button .status-dot{margin-right:5px}.current-sim .pill-button:not(.on){background:#fff5e8;color:#a27e4c;border-color:#eee1cb}.current-sim .macro-wrap{position:relative;margin:0 17px;background-color:#fcfdfb;background-image:radial-gradient(#dfe6db .75px,transparent .75px);background-size:16px 16px;border-radius:6px}.current-sim .macro-wrap canvas{width:100%;height:234px;display:block}.current-sim .macro-bottom{display:flex;align-items:center;gap:20px;padding:8px 14px 12px;font-size:9px;color:#8c998f}.current-sim .dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:5px;vertical-align:middle}.current-sim .dot.current{background:var(--gold)}.current-sim .dot.electron{background:var(--teal)}.current-sim .dot.ion{background:#d3aa83}.current-sim .diagram-note{margin-left:auto;font-size:8px}.current-sim .scale-connector{display:flex;align-items:center;justify-content:center;gap:9px;color:#9caaa0;font-size:9px;margin:11px 32px 0}.current-sim .scale-connector span{height:1px;background:#eaf0e8;flex:1}.current-sim .scale-connector b{font-size:18px;color:#7f9d89;font-weight:400}.current-sim .micro-heading{padding-top:12px;padding-bottom:13px}.current-sim .view-toggle{display:flex;padding:2px;background:#f3f6f1;border-radius:5px}.current-sim .view-toggle button{border:0;background:none;font-size:9px;color:#8a978b;padding:5px 8px;border-radius:4px}.current-sim .view-toggle .selected{background:white;box-shadow:0 1px 4px #2130210d;color:#487c66}.current-sim .micro-wrap{position:relative;background:#edf5f1;margin:0 17px;border:1px solid #dae9e0;border-radius:6px;overflow:hidden}.current-sim .micro-wrap canvas{display:block;width:100%;height:187px}.current-sim .micro-overlay{position:absolute;top:10px;left:14px;right:14px;display:flex;justify-content:space-between;pointer-events:none;font-size:9px;color:#90a393}.current-sim .micro-legend{display:flex;gap:18px;align-items:center;margin:11px 23px;font-size:9px;color:#8a988f}.current-sim .micro-legend button{margin-left:auto;background:none;border:0;font-size:9px;color:#658974}.current-sim .micro-legend button[aria-pressed=true]{color:#b37a39}.current-sim .stage-footer{padding:10px 22px 14px;color:#7e9385;font-size:10px;border-top:1px solid #f1f4ee;display:flex;justify-content:space-between;gap:10px}.current-sim .stage-footer .tiny{font-size:8px;white-space:nowrap;align-self:center}.current-sim .insight{display:flex;gap:14px;padding:18px 20px;margin-top:14px;background:#eaf0e5;border:1px solid #e2e9db;border-radius:7px}.current-sim .insight-icon{background:#dfe9d6;width:30px;height:30px;border-radius:50%;text-align:center;font-size:22px;line-height:29px;color:#6d8a56;flex-shrink:0}.current-sim .insight strong{font-size:11px;font-weight:600}.current-sim .insight p{font-size:10px;color:#819078;margin:3px 0 0}.current-sim .controls .card-heading{padding-bottom:15px}.current-sim .live-tag{font-size:8px;color:#86a28b;background:#f0f6ef;padding:3px 6px;border-radius:3px;white-space:nowrap}.current-sim .control-group{padding:16px 22px;border-top:1px solid #f0f3ed}.current-sim .control-label{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:11px;font-size:11px;color:#748278}.current-sim .control-label output{font:500 21px ui-monospace,SFMono-Regular,monospace;color:#365f4a}.current-sim .control-label output small{font-size:11px;color:#97a392}.current-sim .control-help{font-size:9px;color:#95a18f;margin:10px 0 0;line-height:1.7}.current-sim input[type=range]{display:block;width:100%;margin:9px 0;height:4px;border-radius:3px;accent-color:#3e7e60;cursor:pointer;background:#e7ece1}.current-sim input[type=range]:focus-visible{outline:3px solid #63b2aa;outline-offset:6px}.current-sim .range-labels{display:flex;justify-content:space-between;font:9px ui-monospace,SFMono-Regular,monospace;color:#a4ac9e;margin-top:9px}.current-sim .range-labels button{background:none;border:0;font-size:9px;color:#a1b09d;padding:0}.current-sim .reverse-button{background:#fafbf7;border:1px solid #e9ede2;font-size:10px;color:#7c8d75;padding:7px;width:100%;border-radius:4px;margin-top:12px}.current-sim .reading{background:#edf4e8;margin:6px 17px 0;padding:15px 16px;border-radius:6px}.current-sim .reading>div:first-child{display:flex;justify-content:space-between;font-size:10px;color:#7d9272}.current-sim .reading-symbol{color:#95b284}.current-sim .reading>output{display:block;font:500 39px ui-monospace,SFMono-Regular,monospace;letter-spacing:-2px;color:#3e714e;line-height:1.5}.current-sim .reading output small{font-size:18px;letter-spacing:0;color:#83a26f}.current-sim .reading p{font:8px ui-monospace,SFMono-Regular,monospace;color:#88a278;margin:10px 0 0;line-height:1.8;overflow-wrap:anywhere}.current-sim .reading-track{height:3px;background:#dfe9d7;border-radius:3px;margin-top:5px}.current-sim .reading-track span{height:100%;display:block;background:#82a969;width:35%;transition:width .15s}.current-sim .secondary-readings{padding:16px 23px;display:grid;gap:7px}.current-sim .secondary-readings>div{display:flex;justify-content:space-between;font-size:10px;color:#9ba593}.current-sim .secondary-readings strong{font:11px ui-monospace,SFMono-Regular,monospace;color:#6e8164}.current-sim .play-controls{margin:0 17px;padding:13px 0;border-top:1px solid #eef2e8;display:flex;align-items:center;justify-content:space-between;gap:8px}.current-sim .play-controls>button{padding:6px 9px;background:#fff;border:1px solid #e2e9d9;border-radius:4px;font-size:9px;color:#7a8a6b}.current-sim .play-controls label{display:flex;align-items:center;gap:6px;font-size:8px;color:#9ba78f}.current-sim .play-controls select{font-size:9px;padding:4px;border:1px solid #e6ebdf;border-radius:4px;color:#7f8e70;background:white}.current-sim .pause-note{padding:0 22px 16px;margin:0;font-size:8px}.current-sim .block-label{display:block;font-size:10px;color:#748278;margin-bottom:9px}.current-sim .control-group select{width:100%;background:#f8faf5;border:1px solid #e0e8d8;border-radius:5px;font-size:11px;padding:8px;color:#5d7955}.current-sim .segmented{display:flex;border:1px solid #e4ebdc;border-radius:5px;overflow:hidden}.current-sim .segmented button{background:#fff;border:0;flex:1;padding:7px;font-size:10px;color:#8b9a7d}.current-sim .segmented button.selected{background:#eaf2e3;color:#5b7e4c}.current-sim .analysis-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:22px;margin-top:24px}.current-sim .graph-card .card-heading{padding-bottom:4px}.current-sim .graph-card .small-kicker,.current-sim .takeaway .small-kicker{font-size:8px;letter-spacing:1px}.current-sim .graph-card h2{font-size:14px;margin-top:5px}.current-sim .graph-tag{font:9px ui-monospace,SFMono-Regular,monospace;color:#98a193;border:1px solid #e8ecdf;border-radius:4px;padding:3px 7px}.current-sim .graph-card canvas{display:block;height:180px;width:100%}.current-sim .graph-footer{display:flex;align-items:center;gap:11px;padding:0 23px;font-size:8px;color:#93a18c}.current-sim .graph-footer button{border:1px solid #e2e9d9;border-radius:4px;background:white;font-size:9px;padding:5px 7px;color:#819571}.current-sim .graph-footer button:first-of-type{margin-left:auto}.current-sim .record-list{padding:11px 23px 16px;font-size:8px;color:#9fa998;max-height:87px;overflow:auto}.current-sim .record-list .record-chip{display:inline-block;background:#f3f6ee;border-radius:4px;padding:4px 7px;margin:3px 5px 0 0}.current-sim .takeaway{padding:22px 25px;position:relative;background:#fafcf7}.current-sim .takeaway h2{font-size:17px;font-weight:500;margin-top:7px}.current-sim .formula{display:flex;align-items:center;gap:18px;font:italic 38px Georgia,serif;color:#497258;height:95px}.current-sim .formula b{font-size:23px;font-weight:400;color:#9db191}.current-sim .fraction{display:flex;flex-direction:column;text-align:center;font-size:27px;line-height:1.3;min-width:30px}.current-sim .fraction i:first-child{border-bottom:1px solid #90ab82;padding-bottom:3px}.current-sim .fraction i:last-child{padding-top:3px}.current-sim .takeaway>p{font-size:11px;color:#8c9b82;line-height:1.9;margin:0 0 14px}.current-sim .quick-presets{display:flex;gap:9px}.current-sim .quick-presets button{border:1px solid #e0e9d5;background:white;border-radius:5px;padding:6px 11px;font-size:9px;color:#7e966b}.current-sim .takeaway #presetNote{font-size:8px;margin:10px 0 0}.current-sim .learn-section{margin:38px 0 0}.current-sim .learn-heading h2{font-size:18px;font-weight:500;margin:6px 0 17px}.current-sim .learn-heading .small-kicker{font-size:9px}.current-sim .lesson-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}.current-sim .lesson{text-align:left;padding:20px;border:1px solid #e3e9de;background:#f9fbf6;border-radius:7px}.current-sim .lesson-no{font-size:8px;letter-spacing:1px;color:#9eab96}.current-sim .lesson h3{font-size:13px;font-weight:500;margin:12px 0 7px}.current-sim .lesson h3 b{float:right;color:#93a786;font-weight:400}.current-sim .lesson p{font-size:9px;color:#95a18c;margin:0;line-height:1.9}.current-sim .lesson:hover{border-color:#a4bf96;background:#f1f6eb}.current-sim .lesson-feedback{border-left:3px solid #78a45d;background:#edf4e7;padding:15px;font-size:12px;margin-top:15px;color:#6d8a59}.current-sim .advanced,.current-sim .assumptions{border-top:1px solid #e0e7d9;margin-top:28px;padding:19px 0}.current-sim .advanced summary,.current-sim .assumptions summary{font-size:11px;color:#819373;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}.current-sim .advanced summary span,.current-sim .assumptions summary span{font-size:17px;color:#a2b195}.current-sim .advanced-grid{display:grid;grid-template-columns:1.3fr 1fr 1.2fr;gap:25px;padding:22px 0}.current-sim .advanced h3,.current-sim .assumptions h3{font-size:12px;font-weight:500}.current-sim .advanced p,.current-sim .assumptions p{font-size:10px;color:#8d9c80;line-height:2}.current-sim .advanced-values{padding:10px 17px;border-radius:5px;background:#eef3e8;font-size:10px;color:#7d926c;align-self:start}.current-sim .advanced-values p{display:flex;justify-content:space-between;gap:10px}.current-sim .advanced-values strong{font-weight:500}.current-sim .assumptions{margin-top:2px}.current-sim .assumption-content{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;padding-top:20px}.current-sim .assumptions a{display:block;font-size:10px;margin:8px 0;color:#759569}.current-sim .assumptions p{font-size:10px}.current-sim .extra-panel{margin-top:22px}.current-sim .extra-panel>div:last-child{padding:0 23px 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.current-sim .branch-box{padding:14px;background:#f5f8f1;border-radius:5px;font-size:11px;color:#859977}.current-sim .branch-box strong{display:block;font:18px ui-monospace,SFMono-Regular,monospace;color:#557848;margin:7px 0}.current-sim .resource-intro{padding:20px 0 30px}.current-sim .resource-intro h2{font-size:24px;font-weight:500;margin-top:8px}.current-sim .resource-intro p{font-size:12px;color:#899781;max-width:680px}.current-sim .resource-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.current-sim .resource-card{padding:18px}.current-sim .resource-art{height:130px;border-radius:5px;background:#e7f1e3;display:flex;align-items:center;justify-content:center;font:italic 30px Georgia,serif;color:#72a266;letter-spacing:2px}.current-sim .wire-art{background:#f4eee2;color:#b19a72}.current-sim .circuit-art{background:#e4efed;color:#7da7a1;font-style:normal}.current-sim .resource-card h3{font-size:15px;margin:18px 0 7px}.current-sim .resource-card p{font-size:11px;color:#92a086;min-height:40px}.current-sim .resource-card button{background:#377354;color:white;font-size:11px;border:0;border-radius:5px;padding:9px 14px;display:block;width:100%}.current-sim .resource-card>a{display:block;text-align:center;font-size:10px;margin-top:10px;color:#8a9c7f}.current-sim #embedContainer{margin-top:25px}.current-sim iframe{width:100%;height:600px;display:block;border:0;background:#f4f6f0}.current-sim .embed-note,.current-sim .resource-credit{font-size:10px;color:#92a184;padding:0 22px}.current-sim .resource-credit{padding:20px 0}.current-sim footer{display:flex;justify-content:space-between;gap:15px;align-items:center;border-top:1px solid #e2e8da;font-size:8px;color:#a0ab95;padding:23px 0;margin-top:10px}.current-sim .footer-brand{font-size:10px;color:#8b9f7c}.current-sim body:fullscreen{overflow:auto}@media(min-width:1500px){.current-sim main{padding-top:42px}.current-sim .macro-wrap canvas{height:260px}.current-sim .micro-wrap canvas{height:200px}.current-sim .intro{margin-bottom:35px}}@media(max-width:1200px){.current-sim .sidebar{width:190px;padding:30px 14px}.current-sim .shell{margin-left:190px}.current-sim header{padding:0 26px}.current-sim main{padding:28px 26px 0}.current-sim .workspace{grid-template-columns:minmax(0,1fr) 270px;gap:17px}.current-sim .intro-tag{display:none}.current-sim .stage-footer .tiny{display:none}.current-sim .view-toggle button{font-size:8px;padding:5px}.current-sim .card-heading{padding:18px}.current-sim .micro-legend{gap:10px}.current-sim .diagram-note{display:none}.current-sim .control-group{padding:15px 18px}.current-sim .analysis-grid{gap:17px}.current-sim .micro-heading .title-with-number{gap:7px}.current-sim .micro-heading h2{font-size:11px}.current-sim .section-index{padding-right:7px}}@media(max-width:960px){.current-sim .sidebar{position:static;width:auto;height:auto;padding:16px 23px;border-right:0;border-bottom:1px solid var(--line);display:block}.current-sim .brand{font-size:22px;padding:0}.current-sim .brand-icon{width:30px;height:36px;font-size:29px;line-height:34px;border-radius:11px 4px}.current-sim .brand-sub{font-size:7px}.current-sim .nav-title,.current-sim .side-note,.current-sim .side-bottom{display:none}.current-sim nav{display:flex;gap:8px;margin-top:17px}.current-sim .nav{width:auto;flex:1;padding:10px;font-size:11px;justify-content:center}.current-sim .nav-no{display:none}.current-sim .nav>span:first-child{font-size:17px;width:18px}.current-sim .shell{margin-left:0}.current-sim header{height:53px}.current-sim .workspace{grid-template-columns:minmax(0,1fr) 270px}.current-sim main{padding-top:25px}.current-sim .advanced-grid{grid-template-columns:1fr 1fr}.current-sim .advanced-grid>div:last-child{grid-column:1/-1}.current-sim .assumption-content{grid-template-columns:1fr 1fr}.current-sim .assumption-content>div:last-child{grid-column:1/-1}.current-sim .micro-heading{flex-wrap:wrap}.current-sim .intro h1{font-size:29px}.current-sim .stage-footer{font-size:9px}.current-sim .card-heading{padding:16px}.current-sim .micro-overlay{font-size:8px}}@media(max-width:720px){.current-sim main{padding:24px 17px 0}.current-sim .sidebar{padding:16px 17px}.current-sim header{padding:0 19px}.current-sim .header-right{font-size:9px}.current-sim .text-button{margin-left:6px}.current-sim .breadcrumb{font-size:9px}.current-sim .nav{gap:5px;font-size:10px;padding:8px 5px}.current-sim .nav>span:first-child{font-size:15px;width:auto}.current-sim .intro h1{font-size:26px;letter-spacing:-.7px}.current-sim .intro p{font-size:11px}.current-sim .eyebrow{font-size:7px;letter-spacing:1.5px}.current-sim .workspace{grid-template-columns:1fr;gap:17px}.current-sim .control-column{grid-row:2}.current-sim .controls{display:grid;grid-template-columns:1fr 1fr}.current-sim .controls>.card-heading{grid-column:1/-1}.current-sim .controls>.control-group{min-width:0}.current-sim .controls>.reading{margin:12px 17px}.current-sim .controls>.secondary-readings{align-self:center}.current-sim .controls>.play-controls,.current-sim .controls>.pause-note{grid-column:1/-1}.current-sim .controls>#wireControls,.current-sim .controls>#networkControls{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr}.current-sim .controls>#wireControls[hidden],.current-sim .controls>#networkControls[hidden]{display:none}.current-sim .macro-wrap canvas{height:218px}.current-sim .micro-wrap canvas{height:180px}.current-sim .analysis-grid{grid-template-columns:1fr;gap:16px}.current-sim .graph-card canvas{height:190px}.current-sim .takeaway{min-height:260px}.current-sim .takeaway .formula{height:85px}.current-sim .lesson-grid{grid-template-columns:1fr}.current-sim .lesson{padding:17px}.current-sim .lesson h3{margin:8px 0}.current-sim .learn-section{margin-top:27px}.current-sim .advanced-grid,.current-sim .assumption-content{grid-template-columns:1fr;gap:8px}.current-sim .advanced-grid>div:last-child,.current-sim .assumption-content>div:last-child{grid-column:auto}.current-sim footer{flex-wrap:wrap;font-size:8px}.current-sim footer>span:nth-child(2){display:none}.current-sim .resource-grid{grid-template-columns:1fr}.current-sim .resource-card{display:flex;flex-direction:column}.current-sim .resource-art{height:100px}.current-sim .resource-card p{min-height:0}.current-sim .resource-intro h2{font-size:21px}.current-sim .resource-intro p{font-size:11px}.current-sim iframe{height:470px}.current-sim .extra-panel>div:last-child{grid-template-columns:1fr}.current-sim .micro-legend{font-size:8px}.current-sim .micro-legend button{font-size:8px}.current-sim .stage-footer{padding:10px 18px;font-size:9px}.current-sim .play-controls{gap:20px}.current-sim .play-controls>button{font-size:11px}.current-sim .play-controls label{font-size:10px}.current-sim .play-controls select{font-size:11px}.current-sim .graph-footer{gap:7px;padding:0 16px}.current-sim .graph-footer button{font-size:8px}.current-sim .graph-footer>span{font-size:7px}}@media(prefers-reduced-motion:reduce){.current-sim *{scroll-behavior:auto!important;transition:none!important}}.current-sim button:disabled{cursor:default;opacity:.45}.current-sim button[aria-pressed=true]#track{color:#a27b39}.current-sim .view-toggle button[aria-pressed=true]{background:white}.current-sim .stage-footer{color:#6d826f}.current-sim .intro p{color:#758374}.current-sim .control-help{color:#7e8c75}.current-sim .lesson p{color:#7e8e74}.current-sim .takeaway>p{color:#75886a}.current-sim .micro-legend{color:#718a7b}.current-sim .range-labels{color:#839179}.current-sim .resource-intro p{color:#75876d}.current-sim .resource-card p{color:#7f9273}@media(max-width:480px){.current-sim .sidebar nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.current-sim .nav{justify-content:flex-start;padding:9px 12px;font-size:12px}.current-sim .nav>span:first-child{font-size:17px}.current-sim .controls{grid-template-columns:minmax(0,1fr)}.current-sim .controls>.card-heading,.current-sim .controls>.play-controls,.current-sim .controls>.pause-note,.current-sim .controls>#wireControls,.current-sim .controls>#networkControls{grid-column:1}.current-sim .controls>#wireControls,.current-sim .controls>#networkControls{grid-template-columns:minmax(0,1fr)}.current-sim .reading>output{font-size:37px}.current-sim .macro-wrap{margin:0 10px}.current-sim .micro-wrap{margin:0 10px}.current-sim .card-heading{padding:15px}.current-sim .micro-heading{gap:10px}.current-sim .micro-heading h2{font-size:12px}.current-sim .micro-legend{margin:11px 15px;gap:9px}.current-sim .micro-legend button{font-size:9px}.current-sim .stage-footer{font-size:10px}.current-sim .intro h1{font-size:24px}.current-sim .intro p{font-size:12px;line-height:1.9}.current-sim .control-label{font-size:12px}.current-sim .control-help,.current-sim .range-labels{font-size:10px}.current-sim .lesson p{font-size:11px}.current-sim .lesson h3{font-size:14px}.current-sim .takeaway>p{font-size:12px}.current-sim .advanced p,.current-sim .assumptions p,.current-sim .assumptions a{font-size:11px}.current-sim .graph-footer{flex-wrap:wrap;gap:8px}.current-sim .graph-footer>span{font-size:9px}.current-sim .graph-footer button{font-size:10px}.current-sim .record-list{font-size:10px}.current-sim .header-right{gap:5px}.current-sim .breadcrumb span{margin:0 5px}.current-sim .text-button{font-size:10px}.current-sim .icon-button{margin-left:5px}}
+/* Scoped adaptation of Lliftime current lab; Scheme A tokens and responsive design. */
+.current-sim {
+  --paper: #f8fafc;
+  --white: #ffffff;
+  --ink: #0f172a;
+  --ink-sub: #334155;
+  --muted: #475569;
+  --line: #e2e8f0;
+  --green: #4f46e5;
+  --mint: #eef2ff;
+  --teal: #0891b2;
+  --orange: #ea580c;
+  --gold: #d97706;
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow: 0 2px 6px -1px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.03);
+  margin: 0;
+  background: transparent;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.6;
+  min-width: 0;
+}
 
+.current-sim * {
+  box-sizing: border-box;
+}
 
-.current-sim{--paper:#f8fafc;--ink:#0f172a;--muted:#475569;--line:#e2e8f0;--green:#4f46e5;--mint:#eef2ff;font:15px/1.65 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:transparent;min-width:0}
-.current-sim .workspace{grid-template-columns:minmax(0,1fr) 320px;gap:24px}.current-sim .stage-column,.current-sim .control-column{min-width:0}
-.current-sim .intro{margin:28px 0}.current-sim .intro h2{font-size:25px;line-height:1.4}.current-sim .intro p{font-size:15px;color:#475569}
-.current-sim .card{background:#fff;border-color:#e2e8f0}.current-sim .card-heading h2{font-size:17px;color:#0f172a}
-.current-sim .control-label,.current-sim .block-label{font-size:15px}.current-sim .control-help,.current-sim .tiny,.current-sim .stage-footer,.current-sim .range-labels,.current-sim .micro-legend,.current-sim .diagram-note,.current-sim .macro-bottom,.current-sim .graph-footer>span,.current-sim .graph-footer button,.current-sim .micro-legend button{font-size:12px;color:#475569}
-.current-sim .takeaway>p,.current-sim .advanced p,.current-sim .assumptions p,.current-sim .assumptions a,.current-sim .resource-card p{font-size:14px;line-height:1.8;color:#475569}
-.current-sim button,.current-sim select{min-height:36px}.current-sim .play-controls>button,.current-sim .play-controls label,.current-sim .play-controls select{font-size:14px}
-.current-sim .lesson p{font-size:14px;color:#475569}.current-sim .lesson h3{font-size:17px}.current-sim .micro-heading{flex-wrap:wrap;gap:12px}
-.current-sim .current-exploration-tabs{display:flex;flex-wrap:wrap;gap:8px;padding:16px 0}.current-sim .current-exploration-tabs button{padding:8px 14px;border:1px solid #e2e8f0;border-radius:8px;background:white;font-size:14px}.current-sim .current-exploration-tabs button.active{color:#4338ca;background:#eef2ff;border-color:#a5b4fc}
-.current-sim .macro-wrap{overflow-x:auto}.current-sim #macroCanvas{min-width:560px;height:260px}.current-sim #microCanvas{height:230px}.current-sim #graphCanvas{width:100%;height:240px}
-.current-sim .analysis-grid{grid-template-columns:minmax(0,1fr) minmax(260px,.6fr)}.current-sim .graph-footer{flex-wrap:wrap;gap:12px}
-.current-sim .assumptions{scroll-margin-top:90px}.current-sim .record-list{overflow-wrap:anywhere}.current-sim :focus-visible{outline:3px solid #4f46e5;outline-offset:3px}
-.current-sim .resource-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.current-sim .resource-card{min-width:0}.current-sim .resource-card a{overflow-wrap:anywhere}
-.current-sim:fullscreen{overflow:auto;background:#f8fafc;padding:24px}.current-sim .lesson-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-@media(min-width:2400px){.current-sim .workspace{grid-template-columns:minmax(0,1fr) 400px}.current-sim #macroCanvas{height:320px}.current-sim #microCanvas{height:280px}.current-sim #graphCanvas{height:320px}}
-@media(max-width:1400px){.current-sim .workspace{grid-template-columns:minmax(0,1fr) 280px}.current-sim .advanced-grid,.current-sim .assumption-content{grid-template-columns:1fr}}
-@media(max-width:1100px){.current-sim .workspace,.current-sim .analysis-grid{grid-template-columns:minmax(0,1fr)}.current-sim .controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.current-sim .controls>.card-heading,.current-sim .controls>.play-controls,.current-sim .controls>.pause-note{grid-column:1/-1}.current-sim .resource-grid{grid-template-columns:1fr}}
-@media(max-width:600px){.current-sim .workspace{gap:16px}.current-sim .controls,.current-sim .lesson-grid,.current-sim .advanced-grid{display:block}.current-sim .lesson{margin-bottom:12px}.current-sim .intro-tag{display:none}.current-sim .stage-footer,.current-sim .macro-bottom{flex-wrap:wrap;gap:8px}.current-sim .micro-legend{flex-wrap:wrap}.current-sim .card-heading{padding:14px}.current-sim .view-toggle{flex-wrap:wrap}.current-sim .micro-overlay{font-size:11px}}
+.current-sim button,
+.current-sim input,
+.current-sim select {
+  font: inherit;
+}
 
-.current-sim .reading>div,.current-sim .reading>p,.current-sim .secondary-readings,.current-sim .secondary-readings strong,.current-sim .view-toggle button,.current-sim .quick-presets button{font-size:13px;color:#334155}
+.current-sim button,
+.current-sim a,
+.current-sim input,
+.current-sim select,
+.current-sim summary {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.current-sim button {
+  cursor: pointer;
+  color: inherit;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+  min-height: 36px;
+}
+
+.current-sim button:hover {
+  filter: brightness(0.97);
+}
+
+.current-sim button:active {
+  transform: translateY(1px);
+}
+
+.current-sim a {
+  color: var(--green);
+  text-decoration: none;
+}
+
+.current-sim button:focus-visible,
+.current-sim a:focus-visible,
+.current-sim summary:focus-visible,
+.current-sim select:focus-visible,
+.current-sim input:focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: 3px;
+}
+
+.current-sim [hidden] {
+  display: none !important;
+}
+
+/* Tabs */
+.current-sim .current-exploration-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 14px 0 18px;
+}
+
+.current-sim .current-exploration-tabs button {
+  padding: 8px 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-sub);
+}
+
+.current-sim .current-exploration-tabs button.active {
+  color: var(--green);
+  background: var(--mint);
+  border-color: #a5b4fc;
+  font-weight: 600;
+}
+
+/* Intro */
+.current-sim .intro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 24px;
+  padding: 16px 20px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.current-sim .eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  color: var(--green);
+  margin-bottom: 4px;
+}
+
+.current-sim .intro h2 {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.35;
+  margin: 0 0 4px;
+  color: var(--ink);
+}
+
+.current-sim .intro p {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0;
+}
+
+.current-sim .intro-tag {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--green);
+  white-space: nowrap;
+}
+
+/* Main Workspace */
+.current-sim .workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 22px;
+  align-items: start;
+}
+
+.current-sim .stage-column,
+.current-sim .control-column {
+  min-width: 0;
+}
+
+.current-sim .card {
+  border: 1px solid var(--line);
+  background: var(--white);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.current-sim .card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  gap: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.current-sim h2 {
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  margin: 0;
+  color: var(--ink);
+}
+
+.current-sim .title-with-number {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.current-sim .section-index {
+  font: 600 11px ui-monospace, monospace;
+  color: var(--green);
+  border-right: 1px solid var(--line);
+  padding-right: 10px;
+}
+
+.current-sim .pill-button {
+  background: #f1f5f9;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 550;
+  padding: 5px 12px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.current-sim .pill-button.on {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+  color: #065f46;
+}
+
+.current-sim .pill-button .status-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  margin-right: 6px;
+}
+
+.current-sim .pill-button:not(.on) .status-dot {
+  background: #f59e0b;
+}
+
+/* Macro Stage */
+.current-sim .macro-wrap {
+  position: relative;
+  margin: 16px 20px;
+  background-color: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.current-sim #macroCanvas {
+  min-width: 560px;
+  height: 250px;
+  display: block;
+}
+
+.current-sim .macro-bottom {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 14px 10px;
+  font-size: 12px;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+}
+
+.current-sim .dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+.current-sim .dot.current {
+  background: var(--gold);
+}
+
+.current-sim .dot.electron {
+  background: var(--teal);
+}
+
+.current-sim .dot.ion {
+  background: #d97706;
+}
+
+.current-sim .diagram-note {
+  margin-left: auto;
+  font-size: 11px;
+}
+
+.current-sim .scale-connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 12px;
+  margin: 12px 20px;
+}
+
+.current-sim .scale-connector span {
+  height: 1px;
+  background: var(--line);
+  flex: 1;
+}
+
+.current-sim .scale-connector b {
+  font-size: 16px;
+  color: var(--green);
+}
+
+/* Micro Stage */
+.current-sim .micro-heading {
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+.current-sim .view-toggle {
+  display: flex;
+  padding: 2px;
+  background: #f1f5f9;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+}
+
+.current-sim .view-toggle button {
+  border: 0;
+  background: none;
+  font-size: 12px;
+  color: var(--muted);
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+.current-sim .view-toggle .selected {
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+  color: var(--green);
+  font-weight: 600;
+}
+
+.current-sim .micro-wrap {
+  position: relative;
+  background: #f8fafc;
+  margin: 0 20px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.current-sim #microCanvas {
+  display: block;
+  width: 100%;
+  height: 220px;
+}
+
+.current-sim .micro-overlay {
+  position: absolute;
+  top: 10px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.current-sim #leftPotential {
+  color: #b45309;
+  background: #fef3c7;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.current-sim #rightPotential {
+  color: #1e293b;
+  background: #e2e8f0;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.current-sim .micro-legend {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin: 12px 20px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.current-sim .micro-legend button {
+  margin-left: auto;
+  background: #f8fafc;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--ink-sub);
+  padding: 4px 10px;
+}
+
+.current-sim .micro-legend button[aria-pressed="true"] {
+  background: var(--mint);
+  border-color: var(--green);
+  color: var(--green);
+  font-weight: 600;
+}
+
+.current-sim .stage-footer {
+  padding: 12px 20px;
+  color: var(--muted);
+  font-size: 12px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.current-sim .insight {
+  display: flex;
+  gap: 14px;
+  padding: 16px 20px;
+  margin-top: 14px;
+  background: var(--mint);
+  border: 1px solid #c7d2fe;
+  border-radius: 10px;
+}
+
+.current-sim .insight-icon {
+  background: #e0e7ff;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  color: var(--green);
+  flex-shrink: 0;
+}
+
+.current-sim .insight strong {
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--ink);
+}
+
+.current-sim .insight p {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 3px 0 0;
+  line-height: 1.5;
+}
+
+/* Control Column */
+.current-sim .live-tag {
+  font-size: 11px;
+  font-weight: 600;
+  color: #065f46;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.current-sim .control-group {
+  padding: 14px 20px;
+  border-top: 1px solid var(--line);
+}
+
+.current-sim .control-label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 550;
+  color: var(--ink-sub);
+}
+
+.current-sim .param-tip {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: normal;
+}
+
+.current-sim .control-label output {
+  font: 600 20px ui-monospace, SFMono-Regular, monospace;
+  color: var(--green);
+}
+
+.current-sim .control-label output small {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.current-sim .control-help {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 6px 0 0;
+  line-height: 1.5;
+}
+
+.current-sim input[type="range"] {
+  display: block;
+  width: 100%;
+  margin: 8px 0;
+  height: 6px;
+  border-radius: 4px;
+  accent-color: var(--green);
+  cursor: pointer;
+  background: #cbd5e1;
+}
+
+.current-sim .range-labels {
+  display: flex;
+  justify-content: space-between;
+  font: 500 11px ui-monospace, monospace;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+.current-sim .range-labels button {
+  background: none;
+  border: 0;
+  font-size: 11px;
+  color: var(--green);
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.current-sim .reverse-button {
+  background: #f8fafc;
+  border: 1px solid var(--line);
+  font-size: 12px;
+  font-weight: 550;
+  color: var(--ink-sub);
+  padding: 7px;
+  width: 100%;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
+.current-sim .reading {
+  background: var(--mint);
+  margin: 8px 20px;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #c7d2fe;
+}
+
+.current-sim .reading > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--green);
+}
+
+.current-sim .reading > output {
+  display: block;
+  font: 700 36px ui-monospace, SFMono-Regular, monospace;
+  letter-spacing: -1px;
+  color: var(--green);
+  line-height: 1.3;
+  margin: 4px 0;
+}
+
+.current-sim .reading output small {
+  font-size: 16px;
+  letter-spacing: 0;
+  color: var(--ink-sub);
+}
+
+.current-sim .reading-track {
+  height: 4px;
+  background: #c7d2fe;
+  border-radius: 3px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+
+.current-sim .reading-track span {
+  height: 100%;
+  display: block;
+  background: var(--green);
+  width: 35%;
+  transition: width 0.15s;
+}
+
+.current-sim .reading p {
+  font: 12px ui-monospace, monospace;
+  color: #312e81;
+  margin: 8px 0 0;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.current-sim .reading-model-tag {
+  display: inline-block;
+  font-size: 11px;
+  color: var(--green);
+  background: #ffffff;
+  border: 1px solid #c7d2fe;
+  border-radius: 4px;
+  padding: 2px 8px;
+  margin-top: 8px;
+}
+
+.current-sim .secondary-readings {
+  padding: 14px 20px;
+  display: grid;
+  gap: 8px;
+  border-top: 1px solid var(--line);
+}
+
+.current-sim .secondary-readings > div {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.current-sim .secondary-readings strong {
+  font: 600 12px ui-monospace, monospace;
+  color: var(--ink);
+}
+
+.current-sim .play-controls {
+  margin: 0 20px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.current-sim .play-controls > button {
+  padding: 6px 12px;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--ink-sub);
+}
+
+.current-sim .play-controls label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.current-sim .play-controls select {
+  font-size: 12px;
+  padding: 4px 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+  background: white;
+}
+
+.current-sim .pause-note {
+  padding: 0 20px 14px;
+  margin: 0;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.current-sim .block-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 550;
+  color: var(--ink-sub);
+  margin-bottom: 8px;
+}
+
+.current-sim .control-group select {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 13px;
+  padding: 8px 10px;
+  color: var(--ink);
+}
+
+.current-sim .segmented {
+  display: flex;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.current-sim .segmented button {
+  background: #ffffff;
+  border: 0;
+  flex: 1;
+  padding: 7px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.current-sim .segmented button.selected {
+  background: var(--mint);
+  color: var(--green);
+  font-weight: 600;
+}
+
+/* Analysis Grid */
+.current-sim .analysis-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 22px;
+  margin-top: 24px;
+}
+
+.current-sim #graphCanvas {
+  display: block;
+  height: 220px;
+  width: 100%;
+}
+
+.current-sim .graph-tag {
+  font: 600 11px ui-monospace, monospace;
+  color: var(--green);
+  background: var(--mint);
+  border: 1px solid #c7d2fe;
+  border-radius: 4px;
+  padding: 3px 8px;
+}
+
+.current-sim .graph-footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  font-size: 12px;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+}
+
+.current-sim .graph-footer button {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #ffffff;
+  font-size: 12px;
+  padding: 5px 10px;
+  color: var(--ink-sub);
+}
+
+.current-sim .graph-footer button:first-of-type {
+  margin-left: auto;
+}
+
+.current-sim .record-list {
+  padding: 10px 20px 14px;
+  font-size: 12px;
+  color: var(--muted);
+  max-height: 90px;
+  overflow-y: auto;
+  border-top: 1px dashed var(--line);
+}
+
+.current-sim .record-list .record-chip {
+  display: inline-block;
+  background: #f1f5f9;
+  border-radius: 4px;
+  padding: 3px 8px;
+  margin: 3px 6px 3px 0;
+  font: 11px ui-monospace, monospace;
+  color: var(--ink-sub);
+}
+
+.current-sim .takeaway {
+  padding: 20px 24px;
+  background: #ffffff;
+}
+
+.current-sim .takeaway h2 {
+  font-size: 17px;
+  margin-top: 6px;
+}
+
+.current-sim .formula {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font: italic 34px Georgia, serif;
+  color: var(--green);
+  height: 80px;
+}
+
+.current-sim .formula b {
+  font-size: 20px;
+  font-weight: normal;
+  color: var(--muted);
+}
+
+.current-sim .fraction {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  font-size: 26px;
+  line-height: 1.25;
+}
+
+.current-sim .fraction i:first-child {
+  border-bottom: 2px solid var(--green);
+  padding-bottom: 2px;
+}
+
+.current-sim .fraction i:last-child {
+  padding-top: 2px;
+}
+
+.current-sim .takeaway > p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin: 0 0 14px;
+}
+
+.current-sim .quick-presets {
+  display: flex;
+  gap: 10px;
+}
+
+.current-sim .quick-presets button {
+  border: 1px solid var(--line);
+  background: #f8fafc;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 550;
+  color: var(--ink-sub);
+}
+
+.current-sim .takeaway #presetNote {
+  font-size: 11px;
+  color: var(--muted);
+  margin: 8px 0 0;
+}
+
+/* Learn Section & Secondary Panels */
+.current-sim .learn-section {
+  margin: 28px 0 0;
+}
+
+.current-sim .learn-heading h2 {
+  font-size: 18px;
+  margin: 4px 0 14px;
+}
+
+.current-sim .lesson-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.current-sim .lesson {
+  text-align: left;
+  padding: 18px;
+  border: 1px solid var(--line);
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: var(--shadow-sm);
+}
+
+.current-sim .lesson-no {
+  font: 600 11px ui-monospace, monospace;
+  color: var(--green);
+}
+
+.current-sim .lesson h3 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 8px 0 6px;
+  color: var(--ink);
+}
+
+.current-sim .lesson h3 b {
+  float: right;
+  color: var(--green);
+}
+
+.current-sim .lesson p {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.current-sim .lesson-feedback {
+  border-left: 4px solid var(--green);
+  background: var(--mint);
+  padding: 14px 18px;
+  font-size: 13px;
+  margin-top: 14px;
+  border-radius: 0 8px 8px 0;
+  color: #312e81;
+}
+
+.current-sim .advanced,
+.current-sim .assumptions {
+  border: 1px solid var(--line);
+  background: #ffffff;
+  border-radius: 10px;
+  margin-top: 20px;
+  padding: 14px 20px;
+}
+
+.current-sim .advanced summary,
+.current-sim .assumptions summary {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-sub);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.current-sim .advanced-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1.2fr;
+  gap: 20px;
+  padding: 16px 0 6px;
+}
+
+.current-sim .advanced h3,
+.current-sim .assumptions h3 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.current-sim .advanced p,
+.current-sim .assumptions p {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.current-sim .advanced-values {
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: #f8fafc;
+  border: 1px solid var(--line);
+  font-size: 12px;
+}
+
+.current-sim .advanced-values p {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 4px 0;
+}
+
+.current-sim .advanced-values strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.current-sim .assumption-content {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  padding-top: 14px;
+}
+
+.current-sim .assumptions a {
+  display: block;
+  font-size: 12px;
+  margin: 6px 0;
+  color: var(--green);
+}
+
+.current-sim .extra-panel {
+  margin-top: 20px;
+}
+
+.current-sim .extra-panel > div:last-child {
+  padding: 0 20px 18px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.current-sim .branch-box {
+  padding: 14px;
+  background: #f8fafc;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.current-sim .branch-box strong {
+  display: block;
+  font: 700 20px ui-monospace, SFMono-Regular, monospace;
+  color: var(--green);
+  margin: 6px 0;
+}
+
+/* External Resources Page */
+.current-sim .resource-intro {
+  padding: 16px 0 24px;
+}
+
+.current-sim .resource-intro h2 {
+  font-size: 22px;
+  margin-top: 6px;
+}
+
+.current-sim .resource-intro p {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.current-sim .resource-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.current-sim .resource-card {
+  padding: 18px;
+}
+
+.current-sim .resource-art {
+  height: 120px;
+  border-radius: 8px;
+  background: #f8fafc;
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: italic 26px Georgia, serif;
+  color: var(--green);
+}
+
+.current-sim .resource-card h3 {
+  font-size: 15px;
+  margin: 14px 0 6px;
+}
+
+.current-sim .resource-card p {
+  font-size: 12px;
+  color: var(--muted);
+  min-height: 40px;
+  margin: 0 0 14px;
+}
+
+.current-sim .resource-card button {
+  background: var(--green);
+  color: #ffffff;
+  font-size: 12px;
+  border: 0;
+  border-radius: 6px;
+  padding: 8px 14px;
+  width: 100%;
+}
+
+.current-sim .resource-card > a {
+  display: block;
+  text-align: center;
+  font-size: 11px;
+  margin-top: 8px;
+}
+
+.current-sim #embedContainer {
+  margin-top: 20px;
+}
+
+.current-sim iframe {
+  width: 100%;
+  height: 580px;
+  display: block;
+  border: 0;
+  background: #f8fafc;
+}
+
+.current-sim .embed-note,
+.current-sim .resource-credit {
+  font-size: 11px;
+  color: var(--muted);
+  padding: 8px 20px;
+}
+
+.current-sim footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  align-items: center;
+  border-top: 1px solid var(--line);
+  font-size: 11px;
+  color: var(--muted);
+  padding: 20px 0;
+  margin-top: 24px;
+}
+
+.current-sim .footer-brand {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--green);
+}
+
+.current-sim:fullscreen {
+  overflow: auto;
+  background: #f8fafc;
+  padding: 24px;
+}
+
+/* Multi-Resolution Responsive Adapters */
+@media (min-width: 2400px) {
+  .current-sim .workspace {
+    grid-template-columns: minmax(0, 1fr) 380px;
+  }
+  .current-sim #macroCanvas {
+    height: 300px;
+  }
+  .current-sim #microCanvas {
+    height: 260px;
+  }
+  .current-sim #graphCanvas {
+    height: 280px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .current-sim .workspace {
+    grid-template-columns: minmax(0, 1fr) 300px;
+  }
+  .current-sim .advanced-grid,
+  .current-sim .assumption-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 960px) {
+  .current-sim .workspace {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .current-sim .control-column {
+    grid-row: 2;
+  }
+  .current-sim .analysis-grid {
+    grid-template-columns: 1fr;
+  }
+  .current-sim .resource-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .current-sim .intro {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .current-sim .intro h2 {
+    font-size: 18px;
+  }
+  .current-sim .lesson-grid {
+    grid-template-columns: 1fr;
+  }
+  .current-sim .card-heading {
+    padding: 12px 14px;
+  }
+  .current-sim .macro-wrap,
+  .current-sim .micro-wrap {
+    margin: 10px 12px;
+  }
+  .current-sim .control-group {
+    padding: 12px 14px;
+  }
+  .current-sim .reading {
+    margin: 8px 12px;
+    padding: 12px;
+  }
+  .current-sim .reading > output {
+    font-size: 30px;
+  }
+  .current-sim .secondary-readings {
+    padding: 10px 14px;
+  }
+  .current-sim .play-controls {
+    margin: 0 12px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .current-sim .stage-footer,
+  .current-sim .macro-bottom,
+  .current-sim .micro-legend {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .current-sim * {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}

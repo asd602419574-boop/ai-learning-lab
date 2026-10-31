@@ -599,3 +599,14 @@ Git与停止状态：成果位于独立分支 `codex/v23-independent-change`，�
 本地体验：已有根目录静态服务 `http://127.0.0.1:8876/#home` 可访问；自行启动使用 `python3 -m http.server 8876 --bind 127.0.0.1`，同一端口/浏览器来源才会读回同一份记录。本轮没有改写该来源实际学习数据；自动化在临时随机端口/隔离浏览器上下文运行。
 
 首次初学者试学入口与任务见 [电流试学单](docs/learning-trial-current.md)，真人试学尚未执行，不声称教学效果。非阻断后续：结合真实试学调整提示与记录区布局；全站“我的成果”本轮仍以AI历史课程为主，物理从学科入口/首页续学与课程内版本查看。V3.0-B 的 AI 实验复用、跨学科统一成果和新版全站备份不在本轮实施范围。核心验收通过后停止。
+
+### 17.4 V3.0-A 体验优化与初学者试学准备（2026-10-31 增量）
+
+依据用户明确指令：“接手已完成并推送的 V3.0-A，重点提升初学者的教学体验、视觉布局和操作引导。这是一轮增量 UI/UX 优化，不是重新开发课程，也不是启动 V3.0-B。”
+
+- **阅读与实验衔接**：在 [current-content.js](learning/current-content.js) 中增加“学习导引四步”，清晰呈现背景微观→规律量纲→完整示范→显式实验流程；增加“★ 理想模拟计算值 vs 真实仪器测量”明确认知卡片；提供 U、R、I 三物理量卡片（单位、物理作用与公式）与串并联本质对比，并在示范中逐条拆解单变量记录范式。
+- **实验工作区与任务流**：在 [current-workspace.js](learning/current-workspace.js) 中增加任务导航状态胶囊（已就绪/进行中/未开始）、四步工作流指示条（审题→预测→调参→记录解释）、各任务实时条件核验清单（绿色自动勾选提示已收集的电压/电阻/并联读数）、结构化观测表格、对比解释自评核对卡片，以及格式化呈现的历史提交版本快照与原始 JSON 折叠。
+- **仿真层级与可读性**：在 [current-simulation.js](learning/current-simulation.js) 与 [current-simulation.css](learning/current-simulation.css) 中对齐方案 A 视觉规范；全面消除 8px/9px 等微小字号，提升宏观电路元件标号（S、A、V、电源极性）、微观离子与电子漂移箭头（11px–12px 高对比度）、I–U 曲线坐标系与当前工作点标签的清晰度；控制台增加“电势差”、“阻碍作用”等初学者概念注释，并在读数面板明确标明“★ 理想恒温模型计算读数”。
+- **原生多分辨率适配**：覆盖 1920×1080、2560×1440、3840×2160 以及 1024px 平板与 390px 手机视口，保证无全页横向滚动；支持全键盘聚焦轮廓（`outline: 3px solid #4f46e5`）与减少动效（prefers-reduced-motion）降级。
+- **试学观察任务单**：更新 [docs/learning-trial-current.md](docs/learning-trial-current.md)，补充针对初学者 7 个维度的观察清单（起点识别、概念辨析、模型认知、预测时序、证据清单、提交时机、保存恢复）；真实初学者试学尚未执行，不擅自宣称教学效果。
+- **验证**：`tests/test_current_core.cjs`（5 组全过）、`tests/test_current_browser.cjs`（E2E 流程与 32 组视口/页面组合全过）、`tests/test_first_visit_home.cjs`（9 组全过）、现有 15 组 Node 核心逻辑脚本全过、`scripts/check_generated.py` 与 `tests/test_generated.py` 全过、`git diff --check` 无空白与冲突。无新增 P0/P1。本轮不自动提交、推送或部署。
