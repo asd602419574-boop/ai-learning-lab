@@ -46,8 +46,8 @@ function renderTraining() {
     <div class="tr-lead">
       <div>
         <div class="eyebrow">AI TRAINING WORKSHOP · 16 阶段进阶工坊</div>
-        <h3>16 阶段实操通关进阶</h3>
-        <p>真实场景任务驱动 · 拒绝形式主义打卡 · 边做边验 · 达成阶段交付</p>
+        <h3>16 阶段实操与自检</h3>
+        <p>按场景实践与自检 · 单元完成由学员自确认 · 不等于自动验收</p>
       </div>
       <span aria-hidden="true">🛠️</span>
     </div>
@@ -55,7 +55,7 @@ function renderTraining() {
     <div class="tr-stats">
       <div>
         <b>${halfCount}<small> / 32</small></b>
-        <span>实操单元已通过</span>
+        <span>学员自确认单元</span>
       </div>
       <div>
         <b>${passDays}<small> / 16</small></b>
@@ -63,7 +63,7 @@ function renderTraining() {
       </div>
       <div>
         <b>${completedDays}<small> / 16</small></b>
-        <span>完整通关阶段</span>
+        <span>练习达标且自确认阶段</span>
       </div>
       <div>
         <b>${trPending().length}</b>
@@ -74,7 +74,7 @@ function renderTraining() {
     <div class="tr-toolbar">
       <button data-action="tr-lessons">📖 阶段实训</button>
       <button data-action="tr-wrong">📝 错题复练 (${trPending().length})</button>
-      <small>独立保存 · 刷新或换页后自动同步</small>
+      <small>保存在当前浏览器 · 跨标签作答需切换接管</small>
     </div>
 
     <div class="tr-days">
@@ -82,7 +82,7 @@ function renderTraining() {
         const isDone = trCompleted(x.day);
         const isPassed = Number(trSaved.best[x.day] || 0) >= 3;
         const statusClass = isDone ? 'status-done' : isPassed ? 'status-passed' : '';
-        const statusText = isDone ? '✓ 已通关' : isPassed ? '练习达标' : '待探索';
+        const statusText = isDone ? '✓ 已自确认且练习达标' : isPassed ? '练习达标' : '待探索';
         return `
           <button data-action="tr-day" data-day="${x.day}" class="${trState.day === x.day ? 'active' : ''}" aria-pressed="${trState.day === x.day}">
             <strong>${String(x.day).padStart(2, '0')}</strong>
@@ -103,9 +103,9 @@ function renderTraining() {
       <div>
         <small>STAGE ${String(d.day).padStart(2, '0')} / 16 · ${TR_STAGE_SHORT_NAMES[d.day - 1]}</small>
         <h3>第 ${d.day} 阶段 · ${trEsc(d.title)}</h3>
-        <p>每个实战单元：先理解核心设计与考量，再完成交互自检验证，最后进行 4 题阶段验收。</p>
+        <p>每个实战单元：先理解，再按成果要求实践与自检，最后完成四题练习。实操完成仅由学员自确认，不是平台自动验收。</p>
       </div>
-      <span class="${isDayDone ? 'completed' : ''}">${isDayDone ? '✓ 本阶段已通关' : '正在挑战中'}</span>
+      <span class="${isDayDone ? 'completed' : ''}">${isDayDone ? '✓ 已自确认且练习达标' : '正在挑战中'}</span>
     </div>
 
     <div class="tr-sessions">
@@ -144,9 +144,9 @@ function renderTraining() {
 
             <div class="tr-verify-box">
               <div class="tr-verify-status">
-                <span>实操验证状态：</span>
+                <span>学员自确认状态：</span>
                 <b style="color:${isDone ? 'var(--tr-success)' : 'var(--tr-muted)'}">
-                  ${isDone ? '✓ 场景验证通过 · 实操已达成' : '○ 待完成场景实操'}
+                  ${isDone ? '✓ 学员已自确认（未自动验收）' : '○ 待完成场景实操'}
                 </b>
               </div>
               <button class="tr-verify-btn ${isDone ? 'verified' : ''}" 
@@ -154,7 +154,7 @@ function renderTraining() {
                 data-day="${d.day}" 
                 data-half="${i}" 
                 aria-pressed="${isDone}">
-                ${isDone ? '✓ 重新验证或撤销' : '▶ 验证并确认本单元实操'}
+                ${isDone ? '✓ 已自确认 · 点击撤销' : '□ 我已完成本单元实操（自确认）'}
               </button>
             </div>
           </article>

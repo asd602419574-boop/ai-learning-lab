@@ -80,16 +80,16 @@ const Textbook = (() => {
   const labTitles = {
     gradient: '🧮 双参数与链式法则：真实计算',
     attention: '🧮 向量注意力：真实计算与热力图显微镜',
-    tokenizer: '🔬 Tokenizer 实时分词切片与计费显微镜',
+    tokenizer: '🔬 字符串切分示意（非模型 Tokenizer）',
     retrieval: '🔎 RAG 语义分块与相似度检索匹配',
-    agent: '🤖 ReAct 智能体循环与工具调用单步调试器'
+    agent: '🤖 ReAct 流程示例回放（无工具执行）'
   };
   const labNotes = {
     gradient: '修改目标截距、参数和学习率；观察同步更新与隐藏层梯度。实验参数只在本页会话内保留，可导出本次计算。',
     attention: '输入向量/矩阵或选择经典语境预设，直观观察点积得分、Softmax 归一化注意力权重热力图与最终上下文向量。',
-    tokenizer: '输入任意混合文本（中英双语、代码、特殊符号、数字），实时切分观察 Token 边界、Token 数量、压缩率及上下文开销。',
+    tokenizer: '用简单正则观察字符、单词和空白片段。不是模型词表，不生成 Token ID，不用于计费或上下文估算。',
     retrieval: '本地四条短资料演示词项匹配；进一步的长文、切块与证据缺失实验在“项目实践 → RAG”中进行。没有在线LLM。',
-    agent: '体验大模型智能体（Agent）的思考（Thought）与行动（Action）循环，单步观察 Tool Calling 参数生成与结果回填。'
+    agent: '逐步阅读预写的 Thought、Action、Observation 与结论示例。没有模型、天气查询、物流或催单接口执行。'
   };
   function lessonView(lesson) {
     const item = itemState(lesson.id);
@@ -247,11 +247,10 @@ const Textbook = (() => {
 
   function tokenize(text) {
     if (!text) return [];
-    const regex = /[\u4e00-\u9fa5]|[a-zA-Z]+|[0-9]+|\s+|[^\s\w\u4e00-\u9fa5]+/gu;
+    const regex = /[\u4e00-\u9fa5]|[a-zA-Z]+|[0-9]+|\s+|[^\sA-Za-z0-9\u4e00-\u9fa5]+/gu;
     const matches = text.match(regex) || [];
     return matches.map((tok, i) => {
-      let id = (Math.abs(tok.split('').reduce((acc, c) => (acc << 5) - acc + c.charCodeAt(0), 0)) % 89999) + 10000;
-      return { id, text: tok, len: tok.length, isSpace: /^\s+$/.test(tok), colorIdx: i % 6 };
+      return { text: tok, len: tok.length, isSpace: /^\s+$/.test(tok), colorIdx: i % 6 };
     });
   }
 
@@ -263,7 +262,7 @@ const Textbook = (() => {
         `).join('')}
       </div>
       <div class="book-lab-form" style="margin-top:12px;">
-        <label for="bookTokenizerInput" style="width:100%;">输入任意待分词文本 (实时切片)：</label>
+        <label for="bookTokenizerInput" style="width:100%;">输入文本（仅作规则切分示意）：</label>
         <textarea id="bookTokenizerInput" class="book-textarea" rows="3" style="width:100%;">${escape(tokenizerText)}</textarea>
       </div>
       <div id="bookTokenizerOutput"></div>
@@ -280,29 +279,29 @@ const Textbook = (() => {
 
     const tokenPills = toks.map(t => {
       const display = t.isSpace ? (t.text === '\n' ? '↵\\n' : '␣'.repeat(t.text.length)) : escape(t.text);
-      return `<span class="book-tok-pill tok-c${t.colorIdx}" title="Token ID: ${t.id} · 长度: ${t.len} 字符">${display}</span>`;
+      return `<span class="book-tok-pill tok-c${t.colorIdx}" title="片段长度: ${t.len} 个 UTF-16 代码单元">${display}</span>`;
     }).join('');
 
     el.innerHTML = `
       <div class="book-token-stats">
-        <div><span>总字符数 (Chars)</span><strong>${charsCount}</strong></div>
-        <div><span>Token 总数 (Tokens)</span><strong style="color:var(--accent,#4f46e5);">${tokCount}</strong></div>
-        <div><span>压缩比率 (Chars/Token)</span><strong>${ratio}</strong></div>
-        <div><span>上下文占用估算</span><strong>${Math.min(100, (tokCount / 128 * 100)).toFixed(1)}% / 128</strong></div>
+        <div><span>UTF-16 代码单元数</span><strong>${charsCount}</strong></div>
+        <div><span>规则片段数</span><strong style="color:var(--accent,#4f46e5);">${tokCount}</strong></div>
+        <div><span>每片段平均代码单元数</span><strong>${ratio}</strong></div>
+        <div><span>模型 Token / 计费</span><strong>未计算</strong></div>
       </div>
       <div class="book-token-stream-box">
         <div class="book-token-stream-head">
-          <span>分词切片预览 (每个色块代表一个独立的 Token)：</span>
-          <small>悬停可查看 Token ID 与字符长度</small>
+          <span>规则切分预览（色块不代表模型 Token）：</span>
+          <small>悬停可查看片段长度；本页没有模型词表</small>
         </div>
         <div class="book-token-stream">
           ${tokenPills || '<span style="color:#94a3b8;">请输入文本以查看切分效果</span>'}
         </div>
       </div>
       <div class="book-intuition-card">
-        <strong>💡 工程师视角：为什么 Tokenizer 决定了模型的行为边界？</strong>
-        <p>1. <strong>无法直视内部拼写</strong>：大模型并不直接读取字母或笔画，而是读取 Token ID 序列。例如单词 "strawberry"，若分词器将其切为单个 Token，模型内部便难以精确数出其中的字符 "r"。</p>
-        <p>2. <strong>空格与换行陷阱</strong>：在代码生成中，连续 4 空格若被编为一个单独的缩进 Token，而 3 空格拆成 3 个独立 Token，会导致模型在不同缩进风格下的连贯性大不相同。</p>
+        <strong>💡 从切分示意到真实 Tokenizer</strong>
+        <p>1. <strong>需要明确编码器</strong>：真实 Token 边界和 ID 由模型使用的词表及编码算法决定。本页的正则只帮助观察文本片段，不能解释特定模型的行为或能力。</p>
+        <p>2. <strong>费用与上下文需另行核算</strong>：请使用目标模型对应的官方编码器和计费规则。不能用这里的片段数量推算费用或上下文占用。</p>
       </div>
     `;
   }
@@ -317,7 +316,7 @@ const Textbook = (() => {
       steps: [
         { phase: 'thought', title: 'Step 1: 意图分析与规划 (Thought)', badge: '思考', badgeCls: 'badge-thought', content: '用户需要查询北京明天的天气，并获知是否需备伞。我自身不具备实时天气数据，必须调用注册工具 get_weather 进行数据检索。' },
         { phase: 'action', title: 'Step 2: 生成工具调用指令 (Action)', badge: '行动', badgeCls: 'badge-action', content: 'call_tool(name="get_weather", arguments={"city": "北京", "date": "tomorrow"})' },
-        { phase: 'observation', title: 'Step 3: 环境执行与结果回填 (Observation)', badge: '观察', badgeCls: 'badge-obs', content: '环境返回值：', isObs: true },
+        { phase: 'observation', title: 'Step 3: 环境执行与结果回填 (Observation)', badge: '观察', badgeCls: 'badge-obs', content: '预写工具响应示例：', isObs: true },
         { phase: 'final', title: 'Step 4: 综合事实生成最终答复 (Final Answer)', badge: '结论', badgeCls: 'badge-final', content: '根据气象工具查询结果，北京明天为**雷阵雨**，降水概率高达 **85%**，气温 18~24℃。**强烈建议您外出随身携带雨伞**，并注意防雷避雨与交通安全。' }
       ]
     },
@@ -327,8 +326,8 @@ const Textbook = (() => {
       steps: [
         { phase: 'thought', title: 'Step 1: 意图分析与规划 (Thought)', badge: '思考', badgeCls: 'badge-thought', content: '用户需要查询指定订单状态并执行催单。我需要先通过物流 API 查询最新流转状态，再决定是否触发催派接口。' },
         { phase: 'action', title: 'Step 2: 生成工具调用指令 (Action)', badge: '行动', badgeCls: 'badge-action', content: 'call_tool(name="query_logistics", arguments={"order_id": "892147"})' },
-        { phase: 'observation', title: 'Step 3: 环境执行与结果回填 (Observation)', badge: '观察', badgeCls: 'badge-obs', content: '环境返回值：', isObs: true },
-        { phase: 'final', title: 'Step 4: 综合事实生成最终答复 (Final Answer)', badge: '结论', badgeCls: 'badge-final', content: '您的订单 #892147 当前已到达**华北枢纽**，正在派送中，预计**今日 18:00 前送达**。我已为您在系统中同步提交了**优先配送催单**！' }
+        { phase: 'observation', title: 'Step 3: 环境执行与结果回填 (Observation)', badge: '观察', badgeCls: 'badge-obs', content: '预写工具响应示例：', isObs: true },
+        { phase: 'final', title: 'Step 4: 综合事实生成最终答复 (Final Answer)', badge: '结论', badgeCls: 'badge-final', content: '您的订单 #892147 当前已到达**华北枢纽**，正在派送中，预计**今日 18:00 前送达**。当前示例仅展示物流查询，没有执行催单；如需催单，应另行确认并调用相应工具，再核对响应。' }
       ]
     }
   };
@@ -342,7 +341,7 @@ const Textbook = (() => {
       </div>
       <div class="book-agent-toolbar" style="margin:16px 0;display:flex;gap:10px;align-items:center;">
         <button type="button" class="book-btn" data-book-agent-step>
-          <span>${agentStep < AGENT_PRESETS[agentPreset].steps.length ? '▶ 单步步进执行 (Step ' + (agentStep + 1) + ')' : '✓ 流程已全部完成'}</span>
+          <span>${agentStep < AGENT_PRESETS[agentPreset].steps.length ? '▶ 查看下一步示例 (Step ' + (agentStep + 1) + ')' : '✓ 示例已展示完毕'}</span>
         </button>
         <button type="button" class="book-btn secondary" data-book-agent-reset>重置流程</button>
         <span style="font-size:12px;color:var(--muted,#64748b);">当前进度：${agentStep} / ${AGENT_PRESETS[agentPreset].steps.length} 步</span>
@@ -385,7 +384,7 @@ const Textbook = (() => {
     }
 
     if (agentStep === 0) {
-      stepsHtml = `<div class="book-empty-hint" style="padding:24px;text-align:center;color:var(--muted,#64748b);background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;">点击上方“单步步进执行”按钮，观察 Agent 如何从自然语言规划出工具参数，并在拿到结果后给出最终答复。</div>`;
+      stepsHtml = `<div class="book-empty-hint" style="padding:24px;text-align:center;color:var(--muted,#64748b);background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;">点击上方“查看下一步示例”按钮，查看预写工具参数、响应与结论；本页不会向外部服务发送请求。</div>`;
     }
 
     el.innerHTML = `

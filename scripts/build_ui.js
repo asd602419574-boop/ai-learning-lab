@@ -533,13 +533,13 @@ const part1 = `<!DOCTYPE html>
 
 <script src="./learning/storage.js?v=20261031-v30a"></script>
 <script src="./feedback/feedback.js"></script>
-<script src="./content/reader.js"></script>
+<script src="./content/reader.js?v=20261031-review1"></script>
 <script src="./content/home.js"></script>
 <script src="./projects/logic.js"></script>
 <script src="./projects/guides.js"></script>
 <script src="./projects/app.js"></script>
 <script src="./training/training-data.js"></script>
-<script src="./training/training-ui.js"></script>
+<script src="./training/training-ui.js?v=20261031-review1"></script>
 <script src="./learning/content.js"></script>
 <script src="./learning/catalog.js"></script>
 <script src="./learning/system-core.js"></script>
@@ -547,7 +547,7 @@ const part1 = `<!DOCTYPE html>
 <script src="./learning/process-core.js?v=20261023"></script>
 <script src="./learning/process-content.js?v=20261024-v23-experience"></script>
 <script src="./learning/core.js"></script>
-<script src="./learning/workspace.js?v=20261031-v30a"></script>
+<script src="./learning/workspace.js?v=20261031-review1"></script>
 <script src="./learning/system-workspace.js?v=20261022-overview1"></script>
 <script src="./learning/process-workspace.js?v=20261023"></script>
 <script src="./learning/architecture-content.js?v=20261024-v23-experience"></script>
@@ -555,7 +555,7 @@ const part1 = `<!DOCTYPE html>
 <script src="./learning/change-content.js?v=20261024-v23-experience"></script>
 <script src="./learning/change-core.js?v=20261024-v23-experience"></script>
 <script src="./learning/change-workspace.js?v=20261024-v23-experience"></script>
-<script src="./learning/interactive-labs.js"></script>
+<script src="./learning/interactive-labs.js?v=20261031-review1"></script>
 
 <script src="./learning/overview.js?v=20261031-v30a"></script>
 <script src="./learning/home.js?v=20261031-v30a"></script>

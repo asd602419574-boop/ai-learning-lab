@@ -167,37 +167,21 @@
   }
 
   function computeCompetencies(total) {
-    let trDays = 0, prjDone = 0;
-    try {
-      const trRaw = storage().getItem('ai_training_16day_v1');
-      if (trRaw) {
-        const trData = JSON.parse(trRaw);
-        if (Array.isArray(trData.completedDays)) trDays = trData.completedDays.length;
-      }
-      const prjRaw = storage().getItem('ai_lab_projects_v1');
-      if (prjRaw) {
-        const prjData = JSON.parse(prjRaw);
-        prjDone = Object.values(prjData).filter(Boolean).length;
-      }
-    } catch (e) {}
-
-    const doneCount = total.completedCount;
-    const artCount = total.artifactCount;
-    const attCount = total.attemptCount;
-
-    const promptScore = Math.min(100, Math.max(15, 20 + (doneCount >= 1 ? 25 : 0) + (doneCount >= 2 ? 15 : 0) + Math.min(25, trDays * 6) + (prjDone >= 1 ? 15 : 0)));
-    const ragScore = Math.min(100, Math.max(15, 15 + (doneCount >= 3 ? 35 : 0) + Math.min(30, Math.max(0, trDays - 4) * 7) + (prjDone >= 2 ? 20 : 0)));
-    const agentScore = Math.min(100, Math.max(15, 15 + (artCount >= 2 ? 25 : 0) + Math.min(30, Math.max(0, trDays - 8) * 7) + (prjDone >= 3 ? 30 : 0)));
-    const evalScore = Math.min(100, Math.max(15, 15 + (doneCount >= 4 ? 35 : 0) + Math.min(25, Math.max(0, trDays - 12) * 8) + Math.min(25, attCount * 4)));
-    const safetyScore = Math.min(100, Math.max(15, 20 + Math.min(35, Math.max(0, trDays - 14) * 18) + (artCount >= 1 ? 25 : 0) + (prjDone >= 4 ? 20 : 0)));
-
+    let training = { completed: {}, best: {} };
+    try { training = JSON.parse(storage().getItem('ai_training_16day_v1') || 'null') || training; } catch {}
+    const stages = Array.from({length:16}, (_, i) => i + 1);
+    const confirmed = stages.reduce((n, day) => n + [0,1].filter(half => training.completed?.[day+'-'+half]).length, 0);
+    const passed = stages.filter(day => Number(training.best?.[day] || 0) >= 3).length;
+    const projectFlags = ProjectLab.getProgress();
+    const projectCount = Object.values(projectFlags).filter(Boolean).length;
+    const delivered = LearningSystemCore.createStore(storage()).read().releases.length > 0 ? 1 : 0;
     return [
-      { id: 'prompt', label: '提示工程', score: promptScore, desc: '结构化抽取 · Few-shot 约束 · 参数调优' },
-      { id: 'rag', label: '检索增强', score: ragScore, desc: '知识分块 · 向量相似度 · 幻觉规避' },
-      { id: 'agent', label: '智能体协同', score: agentScore, desc: 'ReAct 循环 · 工具调用 · 状态持久化' },
-      { id: 'eval', label: '评测治理', score: evalScore, desc: '黄金测试集 · 自动化评估 · 回归防护' },
-      { id: 'safety', label: '架构与安全', score: safetyScore, desc: '提示注入拦截 · 隔离沙箱 · 守则落地' }
-    ];
+      {label:'入门任务',count:total.completedCount,target:catalog().length,desc:'迁移规则通过且复盘、自评齐全的课程'},
+      {label:'培训练习',count:passed,target:16,desc:'四题练习至少答对三题的阶段'},
+      {label:'单元自确认',count:confirmed,target:32,desc:'学员自行标记的实操单元，非自动验收'},
+      {label:'算法项目',count:projectCount,target:4,desc:'满足各项目已有基础条件的项目'},
+      {label:'贯穿交付',count:delivered,target:1,desc:'已保存通知整理器交付版本的记录'}
+    ].map(item => ({...item,score:Math.round(100*item.count/item.target)}));
   }
 
   function renderRadarSvg(competencies) {
@@ -213,7 +197,7 @@
       spokesHtml += `<line x1="${cx}" y1="${cy}" x2="${(cx + R * Math.cos(a)).toFixed(1)}" y2="${(cy + R * Math.sin(a)).toFixed(1)}" stroke="rgba(226, 232, 240, 0.9)" stroke-width="1" />`;
     });
     const dataPoints = competencies.map((c, i) => {
-      const r = R * Math.max(0.18, c.score / 100);
+      const r = R * (c.score / 100);
       return { x: cx + r * Math.cos(angles[i]), y: cy + r * Math.sin(angles[i]) };
     });
     const polyPoints = dataPoints.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
@@ -229,7 +213,7 @@
       labelsHtml += `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="${anchor}" dominant-baseline="middle" font-size="11" font-weight="600" fill="#475569">${esc(c.label)}</text>`;
     });
 
-    return '<svg class="learn-radar-chart" viewBox="0 0 300 270" width="100%" height="270" aria-label="AI实战能力全景雷达图">' +
+    return '<svg class="learn-radar-chart" viewBox="0 0 300 270" width="100%" height="270" aria-label="学习记录完成比例图">' +
       '<defs><radialGradient id="radarGlow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#4f46e5" stop-opacity="0.35" /><stop offset="100%" stop-color="#818cf8" stop-opacity="0.08" /></radialGradient></defs>' +
       ringsHtml + spokesHtml +
       '<polygon points="' + polyPoints + '" fill="url(#radarGlow)" stroke="#4f46e5" stroke-width="2.5" />' +
@@ -238,26 +222,25 @@
   }
 
   function renderShareCard(total, competencies) {
-    const avgScore = Math.round(competencies.reduce((sum, c) => sum + c.score, 0) / competencies.length);
     const dateStr = new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
     return '<div class="learn-modal-backdrop" data-action="toggle-share-card">' +
-      '<div class="learn-share-card" onclick="event.stopPropagation()">' +
+      '<div class="learn-share-card">' +
         '<div class="learn-share-header">' +
-          '<div class="learn-share-brand"><span class="learn-brand-badge">AI LEARNING STUDIO</span><h3>个人 AI 工程实战能力档案</h3></div>' +
+          '<div class="learn-share-brand"><span class="learn-brand-badge">AI LEARNING STUDIO</span><h3>个人学习记录卡</h3></div>' +
           '<button class="btn btn-secondary btn-sm" data-action="toggle-share-card">✕ 关闭</button>' +
         '</div>' +
-        '<p class="learn-share-subtitle">基于端侧实操验证、黄金测试集核验与工程落地演练所生成的完整实操评级快照。</p>' +
+        '<p class="learn-share-subtitle">各栏目按实际学习记录独立统计；完成比例不代表知识掌握或能力认证。</p>' +
         '<div class="learn-share-stats">' +
-          '<div><span>综合能力指数</span><strong>' + avgScore + ' 分</strong></div>' +
+          '<div><span>已记录检查</span><strong>' + total.attemptCount + ' 次</strong></div>' +
           '<div><span>达标课程</span><strong>' + total.completedCount + ' / ' + catalog().length + '</strong></div>' +
           '<div><span>产出作品版本</span><strong>' + total.artifactCount + ' 份</strong></div>' +
           '<div><span>实操检查通过</span><strong>' + total.passedCount + ' 次</strong></div>' +
         '</div>' +
         '<div class="learn-share-skills">' +
-          competencies.map(c => '<div class="learn-share-skill-row"><span class="learn-share-skill-name">' + esc(c.label) + '</span><div class="learn-share-skill-bar"><div style="width:' + c.score + '%;"></div></div><span class="learn-share-skill-val">' + c.score + '%</span></div>').join('') +
+          competencies.map(c => '<div class="learn-share-skill-row"><span class="learn-share-skill-name">' + esc(c.label) + '</span><div class="learn-share-skill-bar"><div style="width:' + c.score + '%;"></div></div><span class="learn-share-skill-val">' + c.count + ' / ' + c.target + '</span></div>').join('') +
         '</div>' +
         '<div class="learn-share-footer">' +
-          '<span>评测生成时间：' + esc(dateStr) + ' · 验证指纹 ' + Math.abs((total.artifactCount * 7919) ^ (total.attemptCount * 104729)).toString(16).toUpperCase() + '</span>' +
+          '<span>记录生成时间：' + esc(dateStr) + '</span>' +
           '<button class="btn btn-sm" data-action="print-card">🖨️ 打印 / 保存 PDF</button>' +
         '</div>' +
       '</div>' +
@@ -277,7 +260,7 @@
       '<div><span class="learn-eyebrow">个人实战全景看板</span><h1>我的学习成果</h1><p>全景呈现你在提示工程、RAG 检索、智能体开发、模型评测及系统安全五大核心维度的真实动手实战进展。</p></div>' +
       '<div class="learn-portfolio-cta">' +
         '<a class="btn" href="#lesson?id=' + esc(total.nextLessonId || catalog()[0].id) + '">' + (total.nextLessonId ? '继续下一步学习' : '回到课程复习') + ' →</a>' +
-        '<button class="btn btn-secondary" data-action="toggle-share-card">📇 生成能力成果卡</button>' +
+        '<button class="btn btn-secondary" data-action="toggle-share-card">📇 生成学习记录卡</button>' +
       '</div>' +
     '</header>' +
     '<p class="learn-save-status" data-save-status role="status" aria-live="polite"></p>' +
@@ -289,17 +272,17 @@
     '</div>' +
     '<section class="learn-radar-section">' +
       '<div class="learn-radar-box">' +
-        '<h3>AI 核心实战能力雷达</h3>' +
+        '<h3>学习记录完成比例</h3>' +
         renderRadarSvg(competencies) +
-        '<p class="learn-radar-caption">综合评价依据：涵盖基础四课迁移验收、16天实战工作坊通关阶段、工程贯穿项目交付及自主检查通过率。</p>' +
+        '<p class="learn-radar-caption">各轴分别显示记录数 / 对应总数；单元完成为学员自确认，其余按现有规则统计，不推断能力等级。</p>' +
       '</div>' +
       '<div class="learn-skill-cards">' +
         competencies.map(c => {
-          const rank = c.score >= 85 ? '精通卓越' : c.score >= 60 ? '深度掌握' : c.score >= 35 ? '实践进阶' : '起步探索';
+          const rank = c.count ? '已记录 '+c.count+' / '+c.target : '尚无记录';
           return '<div class="learn-skill-card">' +
             '<div class="learn-skill-card-top"><strong>' + esc(c.label) + '</strong><span class="learn-rank-badge">' + rank + '</span></div>' +
             '<div class="learn-skill-card-bar"><div class="learn-skill-card-fill" style="width:' + c.score + '%;"></div></div>' +
-            '<div class="learn-skill-card-bottom"><span>' + esc(c.desc) + '</span><span class="learn-skill-pct">' + c.score + '%</span></div>' +
+            '<div class="learn-skill-card-bottom"><span>' + esc(c.desc) + '</span><span class="learn-skill-pct">' + c.count + ' / ' + c.target + '</span></div>' +
           '</div>';
         }).join('') +
       '</div>' +
@@ -426,7 +409,8 @@
   }
 
   function click(event) {
-    const el = event.target.closest('button');
+    const el = event.target.closest('button,[data-action="toggle-share-card"]');
+    if (el?.classList.contains('learn-modal-backdrop') && event.target !== el) return;
     if (!el || !host.contains(el)) return;
     if (el.hasAttribute('data-reading-anchor')) {
       const section = host.querySelector('#' + el.dataset.readingAnchor);
@@ -503,6 +487,7 @@
     } else if (action === 'toggle-share-card') {
       showShareCard = !showShareCard;
       paint();
+      host.querySelector(showShareCard ? '.learn-share-header button' : '[data-action="toggle-share-card"]')?.focus();
     } else if (action === 'print-card') {
       window.print();
     }
