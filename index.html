@@ -1120,8 +1120,6 @@ function updateHashRoute(){
   let hash='#home';
   if(ui.tab==='home')hash='#home';
   else if(ui.tab==='pathways')hash='#pathways';
-  else if(ui.tab==='physics')hash='#physics';
-  else if(ui.tab==='current')hash='#current'+(ui.currentView==='practice'?'?view=practice':'');
   else if(ui.tab==='lesson')hash='#lesson?id='+encodeURIComponent(ui.lessonId)+(ui.lessonView==='practice'?'&view=practice':'');
   else if(ui.tab==='portfolio')hash='#my-learning';
   else if(ui.tab==='change')hash='#change?chapter='+(ui.changeChapter||1)+(ui.changeView==='practice'?'&view=practice':'');
@@ -1416,7 +1414,7 @@ function updateMainSidebar(){
   }else{
     // Home or Feedback
     if(ui.tab==='home'&&!LearningWorkspace.summary().started&&!homeMeta().hasLegacyProgress){
-      panel.innerHTML='<div class="learning-side-catalog">'+learningSideGroup('选择学科',learningSideLink('#pathways','人工智能','AI','从入门到实践')+learningSideLink('#physics','物理','物','电流探索实验课'))+'<p class="learning-side-note">先读资料与示范，再进入练习。</p></div>';
+      panel.innerHTML='<div class="learning-side-catalog">'+learningSideGroup('核心学习路径',learningSideLink('#pathways','AI 入门与进阶体系','AI','从零构建可靠系统')+learningSideLink('#labs','交互式 AI 实验室','研','直观滑块与算法沙盒'))+'<p class="learning-side-note">随时可在左侧导航切换不同实战模块。</p></div>';
       return;
     }
     const tbDone=HOME_LESSONS.filter(l=>Textbook.getState()[l.id]?.completed).length;
@@ -1495,9 +1493,9 @@ function updateMobileSubbar(){
 let lastRenderedPage='';
 function render(){
   if(typeof LearningStorage!=='undefined'&&LearningStorage.role==='starting'){LearningStorage.ready.then(()=>render());return;}
-  const pageKey=ui.tab==='current'?'current:'+ui.currentView:ui.tab==='change'?'change:'+ui.changeChapter+':'+ui.changeView:ui.tab==='architecture'?'architecture:'+ui.archChapter+':'+ui.archView:ui.tab==='process'?'process:'+ui.processChapter+':'+ui.processView+':'+ui.processTask:ui.tab==='lesson'?'lesson:'+ui.lessonId+':'+ui.lessonView:ui.tab==='system'?'system:'+ui.systemStage+':'+ui.systemView:ui.tab;
+  const pageKey=ui.tab==='change'?'change:'+ui.changeChapter+':'+ui.changeView:ui.tab==='architecture'?'architecture:'+ui.archChapter+':'+ui.archView:ui.tab==='process'?'process:'+ui.processChapter+':'+ui.processView+':'+ui.processTask:ui.tab==='lesson'?'lesson:'+ui.lessonId+':'+ui.lessonView:ui.tab==='system'?'system:'+ui.systemStage+':'+ui.systemView:ui.tab;
   const routeAnchor=new URLSearchParams(window.location.hash.split('?')[1]||'').get('anchor');
-  if(['pathways','physics','current','lesson','portfolio','system','process','architecture','change'].includes(ui.tab)&&pageKey!==lastRenderedPage&&!routeAnchor){
+  if(['pathways','lesson','portfolio','system','process','architecture','change'].includes(ui.tab)&&pageKey!==lastRenderedPage&&!routeAnchor){
     requestAnimationFrame(()=>{if(lastRenderedPage===pageKey)window.scrollTo({top:0,left:0,behavior:'instant'});});
   }
   lastRenderedPage=pageKey;

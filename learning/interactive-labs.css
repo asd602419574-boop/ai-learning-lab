@@ -448,3 +448,65 @@
   height: 100%;
   display: block;
 }
+
+
+/* Lab 4: Prompt Injection & Defense Styles */
+.lab-switch-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--lab-bg-sunk);
+  border: 1px solid var(--lab-border);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.lab-switch-wrap:hover {
+  background: #f1f5f9;
+}
+.lab-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--lab-accent);
+  cursor: pointer;
+}
+.lab-prompt-inspector {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 14px 16px;
+  border-radius: 8px;
+  max-height: 240px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.lab-safety-result {
+  border-width: 1px;
+  border-style: solid;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.safety-status-defended {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+  color: #065f46;
+}
+.safety-status-exploited {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #991b1b;
+}
+.safety-status-filtered {
+  background: #fffbeb;
+  border-color: #fde68a;
+  color: #92400e;
+}
+.safety-status-benign {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #166534;
+}

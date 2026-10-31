@@ -1,29 +1,131 @@
 (function () {
   'use strict';
-  let store, state, host, mode, notice = '', pendingImport = null, savedAt = null, activeId = 'reliable-ai', filter = 'all', lessonView = 'reading';
+  let store, state, host, mode, notice = '', pendingImport = null, savedAt = null, activeId = 'reliable-ai', filter = 'all', lessonView = 'reading', showShareCard = false;
   const cache = new Map();
   const catalog = () => window.LearningCatalog ? LearningCatalog.list() : [window.LearningContent];
   const esc = value => String(value == null ? '' : value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const content = () => catalog().find(c => c.id === activeId);
   const now = () => new Date().toISOString();
-  function storage() { try { return window.LearningStorage?window.LearningStorage.storage:window.localStorage; } catch(error) { return { getItem() { throw error; }, setItem() { throw error; }, removeItem() { throw error; } }; } }
+  function storage() {
+    try {
+      return window.LearningStorage ? window.LearningStorage.storage : window.localStorage;
+    } catch(error) {
+      return { getItem() { throw error; }, setItem() { throw error; }, removeItem() { throw error; } };
+    }
+  }
+
   const labels = ['预测', '尝试', '观察', '解释', '重试', '迁移'];
-  function init(id = activeId) { activeId = id; if (!cache.has(id)) { const itemStore = LearningCore.createLessonStore ? LearningCore.createLessonStore(storage(), id) : LearningCore.createStore(storage()); const itemState = itemStore.read(); cache.set(id, {store:itemStore, state:itemState, savedAt:itemState.updatedAt, notice:''}); } const entry = cache.get(id); store = entry.store; state = entry.state; savedAt = entry.savedAt; notice = entry.notice; }
-  function finished(a) { return a.scenarioId === 'transfer' && a.status === 'passed' && !!a.explanation.trim() && !!a.reflection.trim() && ['evidence','uncertainty','explain'].every(k => a.selfReview[k] === true); }
-  function lessonSummary(c) { const current = activeId; init(c.id); const last = state.artifacts.slice(-1)[0]; const value = {id:c.id,title:c.title,started:!!state.updatedAt,step:state.step,artifactCount:state.artifacts.length,attemptCount:state.attempts.length,passedCount:state.attempts.filter(a=>a.result.passed).length,hints:state.hints,lastArtifactTitle:last?last.title:'',lastSavedAt:savedAt,updatedAt:state.updatedAt,error:store.getError(),completed:state.artifacts.some(finished),selfReviewed:['evidence','uncertainty','explain'].every(k=>state.selfReview[k]===true)}; init(current); return value; }
-  function overview() { const lessons = catalog().map(lessonSummary), pending = lessons.filter(l=>!l.completed), started = pending.filter(l=>l.started).sort((a,b)=>String(b.updatedAt).localeCompare(String(a.updatedAt))); const next = started[0] || pending[0]; return {started:lessons.some(l=>l.started),step:next?next.step:0,artifactCount:lessons.reduce((n,l)=>n+l.artifactCount,0),attemptCount:lessons.reduce((n,l)=>n+l.attemptCount,0),passedCount:lessons.reduce((n,l)=>n+l.passedCount,0),hints:lessons.reduce((n,l)=>n+l.hints,0),lastArtifactTitle:Array.from(cache.values()).flatMap(entry=>entry.state.artifacts).sort((a,b)=>String(b.updatedAt||b.createdAt||'').localeCompare(String(a.updatedAt||a.createdAt||'')))[0]?.title||'',lastSavedAt:lessons.map(l=>l.lastSavedAt).filter(Boolean).sort().pop()||null,error:lessons.map(l=>l.error).filter(Boolean).join('；'),lessons,completedCount:lessons.filter(l=>l.completed).length,nextLessonId:next?next.id:null}; }
-  function persist(message) { state.updatedAt = now(); const result = store.write(state); if (result.ok) savedAt = state.updatedAt; notice = result.ok ? (message || '输入已自动保存在本机。') : '保存失败：' + result.error + '。当前输入仅留在此页，请立即导出备份，刷新可能丢失。'; const entry = cache.get(activeId); entry.savedAt = savedAt; entry.notice = notice; status(); return result.ok; }
-  function status() { const node = host && host.querySelector('[data-save-status]'); if (node) { node.textContent = notice || store.getError() || '学习记录仅保存在当前浏览器，可在个人成果页备份。'; node.setAttribute('role', store.getError() ? 'alert' : 'status'); } }
-  function attempts(id) { return state.attempts.filter(a => a.scenarioId === id); }
-  function feedback(attempt) { if (!attempt) return '<p>还没有检查记录。完成字段后点击“检查当前答案”。</p>'; return '<p class="learn-result-title">' + esc(attempt.result.summary) + '</p><ul class="learn-feedback">' + attempt.result.items.map(i => '<li class="' + (i.ok ? 'learn-correct' : 'learn-fix') + '"><strong>' + esc(i.label) + ' · ' + (i.ok ? '符合原文' : '需要核对') + '</strong><p>' + esc(i.feedback) + '</p><small>依据：' + esc(i.evidence) + '</small></li>').join('') + '</ul><small>检查时间：' + esc(attempt.createdAt) + '。检查仅针对这份答案快照。</small>'; }
-  function comparison(id) { const list = attempts(id); if (!list.length) return ''; const first = list[0], last = list[list.length - 1]; return '<div class="learn-compare"><h3>初次与最近检查对照</h3><p>初次：' + first.result.correct + '/' + first.result.total + '；最近：' + last.result.correct + '/' + last.result.total + '。共 ' + list.length + ' 次实际检查。</p><table><thead><tr><th>字段</th><th>初次答案</th><th>最近答案</th></tr></thead><tbody>' + content().scenarios[id].fields.map(f => '<tr><th>' + esc(f.label) + '</th><td>' + esc(first.answers[f.id]) + '</td><td>' + esc(last.answers[f.id]) + '</td></tr>').join('') + '</tbody></table></div>'; }
+
+  function init(id = activeId) {
+    activeId = id;
+    if (!cache.has(id)) {
+      const itemStore = LearningCore.createLessonStore ? LearningCore.createLessonStore(storage(), id) : LearningCore.createStore(storage());
+      const itemState = itemStore.read();
+      cache.set(id, { store: itemStore, state: itemState, savedAt: itemState.updatedAt, notice: '' });
+    }
+    const entry = cache.get(id);
+    store = entry.store;
+    state = entry.state;
+    savedAt = entry.savedAt;
+    notice = entry.notice;
+  }
+
+  function finished(a) {
+    return a.scenarioId === 'transfer' && a.status === 'passed' && !!a.explanation.trim() && !!a.reflection.trim() && ['evidence', 'uncertainty', 'explain'].every(k => a.selfReview[k] === true);
+  }
+
+  function lessonSummary(c) {
+    const current = activeId;
+    init(c.id);
+    const last = state.artifacts.slice(-1)[0];
+    const value = {
+      id: c.id,
+      title: c.title,
+      started: !!state.updatedAt,
+      step: state.step,
+      artifactCount: state.artifacts.length,
+      attemptCount: state.attempts.length,
+      passedCount: state.attempts.filter(a => a.result.passed).length,
+      hints: state.hints,
+      lastArtifactTitle: last ? last.title : '',
+      lastSavedAt: savedAt,
+      updatedAt: state.updatedAt,
+      error: store.getError(),
+      completed: state.artifacts.some(finished),
+      selfReviewed: ['evidence', 'uncertainty', 'explain'].every(k => state.selfReview[k] === true)
+    };
+    init(current);
+    return value;
+  }
+
+  function overview() {
+    const lessons = catalog().map(lessonSummary);
+    const pending = lessons.filter(l => !l.completed);
+    const started = pending.filter(l => l.started).sort((a, b) => String(b.updatedAt).localeCompare(String(a.updatedAt)));
+    const next = started[0] || pending[0];
+    return {
+      started: lessons.some(l => l.started),
+      step: next ? next.step : 0,
+      artifactCount: lessons.reduce((n, l) => n + l.artifactCount, 0),
+      attemptCount: lessons.reduce((n, l) => n + l.attemptCount, 0),
+      passedCount: lessons.reduce((n, l) => n + l.passedCount, 0),
+      hints: lessons.reduce((n, l) => n + l.hints, 0),
+      lastArtifactTitle: Array.from(cache.values()).flatMap(entry => entry.state.artifacts).sort((a, b) => String(b.updatedAt || b.createdAt || '').localeCompare(String(a.updatedAt || a.createdAt || '')))[0]?.title || '',
+      lastSavedAt: lessons.map(l => l.lastSavedAt).filter(Boolean).sort().pop() || null,
+      error: lessons.map(l => l.error).filter(Boolean).join('；'),
+      lessons,
+      completedCount: lessons.filter(l => l.completed).length,
+      nextLessonId: next ? next.id : null
+    };
+  }
+
+  function persist(message) {
+    state.updatedAt = now();
+    const result = store.write(state);
+    if (result.ok) savedAt = state.updatedAt;
+    notice = result.ok ? (message || '输入已自动保存在本机。') : '保存失败：' + result.error + '。当前输入仅留在此页，请立即导出备份，刷新可能丢失。';
+    const entry = cache.get(activeId);
+    entry.savedAt = savedAt;
+    entry.notice = notice;
+    status();
+    return result.ok;
+  }
+
+  function status() {
+    const node = host && host.querySelector('[data-save-status]');
+    if (node) {
+      node.textContent = notice || store.getError() || '学习记录已完整保存在当前浏览器，可随时在成果看板导出备份。';
+      node.setAttribute('role', store.getError() ? 'alert' : 'status');
+    }
+  }
+
+  function attempts(id) {
+    return state.attempts.filter(a => a.scenarioId === id);
+  }
+
+  function feedback(attempt) {
+    if (!attempt) return '<p>还没有检查记录。完成字段后点击“检查当前答案”。</p>';
+    return '<p class="learn-result-title">' + esc(attempt.result.summary) + '</p><ul class="learn-feedback">' +
+      attempt.result.items.map(i => '<li class="' + (i.ok ? 'learn-correct' : 'learn-fix') + '"><strong>' + esc(i.label) + ' · ' + (i.ok ? '符合原文' : '需要核对') + '</strong><p>' + esc(i.feedback) + '</p><small>依据：' + esc(i.evidence) + '</small></li>').join('') +
+      '</ul><small>检查时间：' + esc(attempt.createdAt) + '。检查仅针对这份答案快照。</small>';
+  }
+
+  function comparison(id) {
+    const list = attempts(id);
+    if (!list.length) return '';
+    const first = list[0], last = list[list.length - 1];
+    return '<div class="learn-compare"><h3>初次与最近检查对照</h3><p>初次：' + first.result.correct + '/' + first.result.total + '；最近：' + last.result.correct + '/' + last.result.total + '。共 ' + list.length + ' 次实际检查。</p><table><thead><tr><th>字段</th><th>初次答案</th><th>最近答案</th></tr></thead><tbody>' +
+      content().scenarios[id].fields.map(f => '<tr><th>' + esc(f.label) + '</th><td>' + esc(first.answers[f.id]) + '</td><td>' + esc(last.answers[f.id]) + '</td></tr>').join('') +
+      '</tbody></table></div>';
+  }
+
   function reader() {
     const c = content(), index = catalog().findIndex(x => x.id === c.id), practiceHref = '#lesson?id=' + encodeURIComponent(c.id) + '&view=practice';
     const objectives = {
-      'ai-basics':['区分明确规则、机器学习与生成式 AI。','用输入、输出、标准与后果判断任务适合的方法。','看懂完整示范后，再独立给任务选择第一步。'],
-      'clear-task':['把含糊请求写成材料、目标、约束清楚的任务说明。','用正反例识别受众、格式和核验要求的遗漏。','参考完整示范，为新情境编写可复核的说明。'],
-      'reliable-ai':['区分材料支持、材料冲突与仍待确认的主张。','逐项找到原文依据，保留缺失与不确定信息。','看懂核对示范，再为新通知整理可追溯清单。'],
-      'evaluate-results':['先确定评价标准，再比较输出。','识别事实错误、遗漏和约束违背。','依据材料给出可执行的修订建议。']
+      'ai-basics': ['区分明确规则、机器学习与生成式 AI。', '用输入、输出、标准与后果判断任务适合的方法。', '看懂完整示范后，再独立给任务选择第一步。'],
+      'clear-task': ['把含糊请求写成材料、目标、约束清楚的任务说明。', '用正反例识别受众、格式和核验要求的遗漏。', '参考完整示范，为新情境编写可复核的说明。'],
+      'reliable-ai': ['区分材料支持、材料冲突与仍待确认的主张。', '逐项找到原文依据，保留缺失与不确定信息。', '看懂核对示范，再为新通知整理可追溯清单。'],
+      'evaluate-results': ['先确定评价标准，再比较输出。', '识别事实错误、遗漏和约束违背。', '依据材料给出可执行的修订建议。']
     };
     const compactDirectory = window.matchMedia && window.matchMedia('(max-width: 1100px)').matches;
     const goals = objectives[c.id] || [c.subtitle];
@@ -32,6 +134,7 @@
       c.sections.map((section,i)=>'<section id="reading-'+i+'" data-reading-section tabindex="-1"><h2>'+esc(section.title)+'</h2><div class="learn-prose">'+section.html+'</div></section>').join('') +
       '<section class="learn-reading-sources"><h2>依据与延伸阅读</h2><ul>'+c.resources.map(r=>'<li><a href="'+esc(r.url)+'" target="_blank" rel="noopener noreferrer">'+esc(r.title)+'</a><p>'+esc(r.description)+'</p></li>').join('')+'</ul></section><section class="learn-reading-next"><h2>读完资料，开始应用</h2><p>在固定教学材料中尝试、核对、修改，再换一个情境独立应用。练习会保留你的作答和检查记录。</p><a class="btn" data-start-practice href="'+practiceHref+'">'+(state.updatedAt?'进入本课练习':'资料读完了，开始本课练习')+' →</a><a class="learn-reading-overview" href="#pathways?anchor=training-overview">返回全课程与培训安排</a></section></article><nav class="learn-reading-toc" aria-label="本课资料目录"><details data-reading-directory'+(compactDirectory?'':' open')+'><summary>本课目录<span>'+c.sections.length+' 节</span></summary><ol>' + c.sections.map((section,i)=>'<li><button data-reading-anchor="reading-'+i+'">'+esc(section.title)+'</button></li>').join('') + '</ol></details></nav></div></div>';
   }
+
   function lesson() {
     const c = content(), step = state.step, id = step === 5 ? 'transfer' : 'practice', scenario = c.scenarios[id];
     let body = '';
@@ -41,19 +144,408 @@
     else body = '<div class="learn-workbench"><section class="learn-panel"><span class="learn-eyebrow">虚构教学材料 · ' + (id === 'transfer' ? '新情境独立应用' : '原文核对') + '</span><h2>' + esc(scenario.title) + '</h2><pre class="learn-source">' + esc(scenario.source) + '</pre><details><summary>任务方法速查</summary><p>先读完整材料，再逐项判断；选择或填写答案后检查依据。参考答案只用于核对，不替代自己的解释。</p></details></section><section class="learn-panel"><h2>' + (step === 4 ? '修改再试' : '结构化作答') + '</h2><p>请根据材料逐项作答。修改后需重新检查；自动保存不等于检查通过。</p>' + scenario.fields.map(f => '<label>' + esc(f.label) + (Array.isArray(f.options) ? '<select data-answer="' + esc(f.id) + '" data-scenario="' + id + '"><option value="">请选择</option>' + f.options.map(v=>'<option value="'+esc(v)+'" '+(state.drafts[id][f.id]===v?'selected':'')+'>'+esc(v)+'</option>').join('') + '</select>' : '<input data-answer="' + esc(f.id) + '" data-scenario="' + id + '" value="' + esc(state.drafts[id][f.id]) + '" autocomplete="off">') + '</label>').join('') + '<button class="btn" data-action="check" data-scenario="' + id + '">检查当前答案</button><div class="learn-hints"><h3>按需提示</h3>' + [1,2,3].map(level => '<details data-hint="' + id + '-' + level + '"><summary>提示 ' + level + '：' + ['定位线索','检查步骤','参考答案'][level - 1] + '</summary><p>' + (level === 1 ? '把每个问题与材料中的对应句、限制或示例配对。' : level === 2 ? '区分材料明确支持、与材料冲突和仍需确认的内容，再检查是否漏掉限制条件。' : '预写参考答案（不是实时模型输出）：' + scenario.fields.map(f => f.label + '：' + f.expected).join('；')) + '</p></details>').join('') + '</div><label>本次解释<textarea data-explanation="' + id + '">' + esc(state.explanations[id]) + '</textarea></label></section><section class="learn-panel learn-results"><h2>检查与反馈</h2>' + feedback(attempts(id).slice(-1)[0]) + '<p data-draft-validity>' + validity(id) + '</p>' + comparison(id) + '</section></div>';
     return '<header class="learn-header"><div><span class="learn-eyebrow">连续入门路线 · 第 ' + (catalog().findIndex(x=>x.id===c.id)+1) + ' / ' + catalog().length + ' 课</span><h1>' + esc(c.title) + '</h1><p>' + esc(c.subtitle) + ' · 约 ' + esc(c.minutes) + ' 分钟</p></div><div class="learn-practice-links"><a href="#lesson?id=' + esc(c.id) + '">← 返回本课资料</a><a href="#my-learning">个人成果与备份 →</a></div></header><nav class="learn-steps" aria-label="学习步骤">' + labels.map((l,i) => '<button data-step="' + i + '" ' + (i === step ? 'aria-current="step"' : '') + '><span>' + (i+1) + '</span>' + l + '</button>').join('') + '</nav><p class="learn-save-status" data-save-status role="status" aria-live="polite"></p>' + '<p class="learn-step-description">' + esc(c.steps[step].description) + '</p>' + body + '<section class="learn-finish"><h2>留下可以回看的作品</h2><p>可随时保存草稿。只有当前答案与最近通过的检查一致，才标记为规则检查通过；这不等于全面语义评价。</p><div class="learn-self-review">' + [['evidence','我已逐项核对原文依据'],['uncertainty','我保留了原稿中的不确定信息'],['explain','我能解释一个错误及其修正']].map(([key,text]) => '<label><input type="checkbox" data-review="' + key + '" ' + (state.selfReview[key] ? 'checked' : '') + '> ' + text + '</label>').join('') + '</div><label>复盘：下次你会怎样检查？<textarea data-reflection rows="3">' + esc(state.reflection) + '</textarea></label><button class="btn" data-action="save-artifact" data-scenario="' + id + '">保存当前作品版本</button><p data-artifact-status role="status"></p></section><footer class="learn-footer">' + (step > 0 ? '<button class="btn btn-secondary" data-step="' + (step-1) + '">← 上一步</button>' : '<span></span>') + (step < 5 ? '<button class="btn" data-step="' + (step+1) + '">继续：' + labels[step+1] + ' →</button>' : '<a href="#my-learning">查看个人成果 →</a>') + '</footer>' + completion() + '<details class="learn-resources"><summary>依据与延伸阅读</summary><ul>' + c.resources.map(r => '<li><a href="' + esc(r.url) + '" target="_blank" rel="noopener noreferrer">' + esc(r.title) + '</a> — ' + esc(r.description) + '</li>').join('') + '</ul></details>';
   }
-  function validity(id) { const last = attempts(id).slice(-1)[0]; return last && JSON.stringify(last.answers) === JSON.stringify(state.drafts[id]) ? (last.result.passed ? '当前答案已通过字段规则检查。' : '当前答案仍有待修正字段。') : '当前输入尚未检查；此前检查对当前修改已失效。'; }
-  function completion() { if(!state.artifacts.some(finished)) return ''; const index=catalog().findIndex(c=>c.id===activeId), next=catalog()[index+1]; return '<aside class="learn-completion" role="status"><h2>本课任务已完成</h2><p>你已保存通过字段规则检查的迁移作品，并补充解释、复盘和三项自评。这是任务完成记录，不等于知识掌握认证。</p>' + (next?'<a class="btn" href="#lesson?id='+esc(next.id)+'">下一课：'+esc(next.title)+' →</a>':'<a class="btn" href="#my-learning">回看四课成果 →</a>')+'</aside>'; }
-  function systemPortfolio() {
-    const itemStore=LearningSystemCore.createStore(storage()), project=itemStore.read();
-    return '<section class="learn-backup" data-system-portfolio><h2>架构、工程与流程项目</h2><p>通知整理器：已保存 '+project.entries.length+' 条清单、'+project.checks.filter(x=>x.passed).length+' 项验收记录、'+project.releases.length+' 个交付版本。这里只描述实际记录，不代表能力认证。</p>'+(itemStore.getError()?'<p role="alert">'+esc(itemStore.getError())+'</p>':'')+'<a class="btn btn-secondary" href="#system?stage='+esc(project.stage)+'">'+(project.updatedAt?'继续贯穿项目':'阅读项目资料')+'</a>'+project.releases.slice().reverse().map(r=>'<details><summary>交付版本 v'+r.version+' · '+esc(r.date)+'</summary><p>核对清单 '+r.entries.length+' 条 · 验收 '+r.checks.filter(x=>x.passed).length+'/'+r.checks.length+' 项</p><h3>当时的目标与复盘</h3><p>'+esc(r.decisions.goal)+'</p><p>'+esc(r.reflection)+'</p><a href="#system?stage=deliver&amp;view=practice">回看完整版本与导出项目报告 →</a></details>').join('')+'</section>';
+
+  function validity(id) {
+    const last = attempts(id).slice(-1)[0];
+    return last && JSON.stringify(last.answers) === JSON.stringify(state.drafts[id]) ? (last.result.passed ? '当前答案已通过字段规则检查。' : '当前答案仍有待修正字段。') : '当前输入尚未检查；此前检查对当前修改已失效。';
   }
-  function portfolio() { const total=overview(), entries=[]; catalog().forEach(c=>{ const entry=cache.get(c.id); entry.state.artifacts.forEach(a=>entries.push({a,c})); }); const shown=entries.filter(x=>filter==='all'||x.c.id===filter).sort((x,y)=>y.a.createdAt.localeCompare(x.a.createdAt)); return '<header class="learn-header"><div><span class="learn-eyebrow">本机个人档案</span><h1>我的学习成果</h1><p>每课独立保存。完成代表迁移作品规则检查通过、解释复盘及自评齐全；不能代表知识掌握。</p></div><a href="#lesson?id='+esc(total.nextLessonId||catalog()[0].id)+'">'+(total.nextLessonId?'继续下一步学习':'回到课程复习')+' →</a></header><p class="learn-save-status" data-save-status role="status" aria-live="polite"></p><div class="learn-stats"><span>完成课程 <strong>'+total.completedCount+'/'+catalog().length+'</strong></span><span>已保存版本 <strong>'+total.artifactCount+'</strong></span><span>实际检查 <strong>'+total.attemptCount+'</strong></span><span>提示展开次数 <strong>'+total.hints+'</strong></span></div><nav class="learn-course-progress" aria-label="四课进度">'+total.lessons.map(l=>'<a href="#lesson?id='+esc(l.id)+'"><strong>'+esc(l.title)+'</strong><span>'+(l.completed?'任务已完成':l.started?'学习中 · 第 '+(l.step+1)+' 步':'尚未开始')+'</span></a>').join('')+'</nav><label class="learn-filter">按课程查看作品<select data-course-filter><option value="all">全部课程</option>'+catalog().map(c=>'<option value="'+esc(c.id)+'" '+(filter===c.id?'selected':'')+'>'+esc(c.title)+'</option>').join('')+'</select></label><section class="learn-artifacts">'+(shown.length?shown.map(({a,c})=>'<article class="learn-artifact"><small>'+esc(c.title)+'</small><h2>'+esc(a.title)+'</h2><p>'+esc(finished(a)?'任务完成版本':a.status==='passed'?(a.scenarioId==='practice'?'跟随练习规则通过 · 完成课程还需迁移任务':'迁移规则通过 · 待补解释、复盘或自评'):'草稿 / 待完成检查')+' · 保存于 '+esc(a.createdAt)+'</p><a href="#lesson?id='+esc(c.id)+'">返回对应课程 →</a><details><summary>回看作品与复盘</summary><h3>原始材料</h3><pre class="learn-source">'+esc(a.source||c.scenarios[a.scenarioId].source)+'</pre><dl>'+c.scenarios[a.scenarioId].fields.map(f=>'<dt>'+esc(f.label)+'</dt><dd>'+esc(a.answers[f.id])+'</dd>').join('')+'</dl><h3>解释</h3><p>'+esc(a.explanation)+'</p><h3>复盘</h3><p>'+esc(a.reflection)+'</p><p>自评完成项：'+Object.values(a.selfReview).filter(Boolean).length+'/3</p></details><button class="btn btn-secondary" data-action="export-artifact" data-lesson="'+esc(c.id)+'" data-id="'+esc(a.id)+'">导出此版本</button></article>').join(''):'<div class="learn-empty"><h2>这里还没有保存作品</h2><p>完成作答、检查与复盘后保存版本；也可先保存草稿。</p><a class="btn" href="#lesson?id='+esc(total.nextLessonId||catalog()[0].id)+'">开始学习</a></div>')+'</section>'+systemPortfolio()+(window.ProcessWorkspace?ProcessWorkspace.portfolio():'')+'<section class="learn-backup"><h2>备份与恢复</h2><p>此备份包含原九键AI历史记录、四课成果与贯穿项目，暂不包含物理实验和V2.3独立稿；请到对应课程单独导出。<a href="#current?view=practice">物理实验备份入口 →</a>恢复会覆盖预览列出的记录；先下载当前备份，再选择文件。文件仅在本机读取，最大 5 MB。</p><button class="btn btn-secondary" data-action="backup">下载当前AI历史记录备份</button><label>选择备份文件<input type="file" accept=".json,application/json" data-import></label><div data-import-preview></div></section>'; }
-  function paint() { host.classList.add('learn-workspace'); host.setAttribute('data-lesson-view',mode === 'portfolio' ? 'portfolio' : lessonView); host.innerHTML = mode === 'portfolio' ? portfolio() : lessonView === 'practice' ? lesson() : reader(); status(); }
-  function backupAll() { let raw = LearningCore.exportBackup(storage(),state,activeId); for(const [id, entry] of cache) { const envelope=JSON.parse(raw); const snapshot={getItem(key) { return Object.prototype.hasOwnProperty.call(envelope.records,key)?JSON.stringify(envelope.records[key]):null; }}; raw=LearningCore.exportBackup(snapshot,entry.state,id); } return raw; }
-  function download(name, text) { const url = URL.createObjectURL(new Blob([text], {type:'application/json;charset=utf-8'})); const a = document.createElement('a'); a.href = url; a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); }
-  function input(event) { const el = event.target; if (el.dataset.answer) { state.drafts[el.dataset.scenario][el.dataset.answer] = el.value; const n = host.querySelector('[data-draft-validity]'); if(n) n.textContent = validity(el.dataset.scenario); } else if(el.dataset.explanation) state.explanations[el.dataset.explanation] = el.value; else if(el.hasAttribute('data-reflection')) state.reflection = el.value; else if(el.dataset.prediction) state.prediction[el.dataset.prediction] = el.value; else if(el.dataset.review) state.selfReview[el.dataset.review] = el.checked; else return; persist(); }
-  async function change(event) { if(event.target.matches('[data-course-filter]')) { filter=event.target.value; paint(); return; } if(event.target.matches('select[data-answer]')) { input(event); return; } if(!event.target.matches('[data-import]')) return; pendingImport = null; const file = event.target.files[0], preview = host.querySelector('[data-import-preview]'); if(!file) return; if(file.size > 5 * 1024 * 1024) { preview.textContent = '文件超过 5 MB，未读取或覆盖任何记录。'; return; } try { const raw = await file.text(), result = LearningCore.previewImport(raw); if(!result.ok) { preview.textContent = '无法恢复：' + result.error; return; } pendingImport = raw; preview.innerHTML = '<p>即将覆盖的记录键：' + esc(Object.keys(result.data.records).join('、')) + '。备份含作品 ' + esc(result.summary.artifacts) + ' 个、检查 ' + esc(result.summary.attempts) + ' 次。</p><p>恢复将替换以上本机记录，请先下载当前备份。</p><button class="btn" data-action="confirm-import">确认覆盖并恢复这些记录</button>'; } catch(error) { preview.textContent = '读取失败：' + error.message; } }
-  function click(event) { const el = event.target.closest('button'); if(!el || !host.contains(el)) return; if(el.hasAttribute('data-reading-anchor')) { const section = host.querySelector('#'+el.dataset.readingAnchor); if(section) { section.scrollIntoView({behavior:'auto',block:'start'}); section.focus({preventScroll:true}); } return; } if(el.hasAttribute('data-step')) { state.step = Number(el.dataset.step); persist('步骤与输入已保存在本机。'); paint(); host.querySelector('h1').setAttribute('tabindex','-1'); host.querySelector('h1').focus({preventScroll:true}); return; } const action = el.dataset.action, id = el.dataset.scenario; if(action === 'check') { const answers = {...state.drafts[id]}, result = LearningCore.checkFields(content().scenarios[id], answers); state.attempts.push({id:'attempt-' + Date.now(),scenarioId:id,phase:state.step,answers,result,explanation:state.explanations[id],createdAt:now()}); persist('检查完成，结果已记录。'); paint(); } else if(action === 'save-artifact') { const last = attempts(id).slice(-1)[0], passed = !!(last && last.result.passed && JSON.stringify(last.answers) === JSON.stringify(state.drafts[id])); const a = {id:'artifact-' + Date.now(),title:content().scenarios[id].title + ' · 版本 ' + (state.artifacts.length+1),lessonId:content().id,source:content().scenarios[id].source,checks:attempts(id).map(x=>({...x,answers:{...x.answers}})),status:passed?'passed':'draft',scenarioId:id,answers:{...state.drafts[id]},explanation:state.explanations[id],reflection:state.reflection,selfReview:{...state.selfReview},attemptIds:attempts(id).map(x=>x.id),createdAt:now(),updatedAt:now()}; state.artifacts.push(a); if(!persist('作品版本已保存在本机，可到个人成果页回看与导出。')) { state.artifacts.pop(); } paint(); const message=host.querySelector('[data-artifact-status]'); if(message){message.textContent=notice;message.style.color=store.getError()?'#92400e':'#047857';} } else if(action === 'backup') {try{download('ai-learning-backup.json',backupAll());}catch(error){notice=error.message;status();}} else if(action === 'export-artifact') { const a = cache.get(el.dataset.lesson || activeId)?.state.artifacts.find(a=>a.id === el.dataset.id); if(a) download(a.id+'.json',JSON.stringify(a,null,2)); } else if(action === 'confirm-import' && pendingImport) { const result = LearningCore.importBackup(storage(),pendingImport); notice = result.ok ? '备份已恢复，请回到课程继续学习。' : '恢复失败：' + result.error; if(result.ok) { cache.clear(); init(activeId); pendingImport = null; window.location.hash = '#my-learning'; window.location.reload(); return; } paint(); } }
-  function toggle(event) { const el = event.target; if(el.matches('details[data-hint]') && el.open) { state.hints += 1; persist('提示已展开，已记录真实提示使用次数。'); } }
-  window.LearningWorkspace = {render(root, requestedMode, lessonId = 'reliable-ai', requestedView = 'reading') { host=root; mode=requestedMode; lessonView=requestedView === 'practice' ? 'practice' : 'reading'; if(!catalog().some(c=>c.id===lessonId)) { host.innerHTML='<section class="learn-empty"><h1>未找到这节课程</h1><a href="#pathways">返回学习路线</a></section>'; return; } init(lessonId); host.setAttribute('data-workshop',requestedMode); host.setAttribute('data-lesson-id',activeId); host.oninput=input; host.onchange=change; host.onclick=click; if(!host.__learnToggle) { host.addEventListener('toggle',toggle,true); host.__learnToggle=true; } paint(); }, summary(lessonId) { if(lessonId) { const c=catalog().find(c=>c.id===lessonId); return c?lessonSummary(c):null; } return overview(); }, sidebar() { return catalog().map(c=>'<a href="#lesson?id='+esc(c.id)+'">'+esc(c.title)+'</a>').join('')+'<a href="#my-learning">我的成果</a>'; }};
+
+  function completion() {
+    if (!state.artifacts.some(finished)) return '';
+    const index = catalog().findIndex(c => c.id === activeId), next = catalog()[index+1];
+    return '<aside class="learn-completion" role="status"><h2>本课任务已完成</h2><p>你已保存通过字段规则检查的迁移作品，并补充解释、复盘和三项自评。这是任务完成记录，不等于知识掌握认证。</p>' + (next ? '<a class="btn" href="#lesson?id=' + esc(next.id) + '">下一课：' + esc(next.title) + ' →</a>' : '<a class="btn" href="#my-learning">回看四课成果 →</a>') + '</aside>';
+  }
+
+  function systemPortfolio() {
+    const itemStore = LearningSystemCore.createStore(storage()), project = itemStore.read();
+    return '<section class="learn-backup" data-system-portfolio>' +
+      '<div class="learn-section-intro"><span class="learn-eyebrow">架构实战全记录</span><h2>架构、工程与流程项目</h2><p>通知整理器：已保存 ' + project.entries.length + ' 条清单、' + project.checks.filter(x => x.passed).length + ' 项验收记录、' + project.releases.length + ' 个交付版本。真实呈现从需求边界、可靠性验证到版本发布的完整工程周期。</p></div>' +
+      (itemStore.getError() ? '<p role="alert">' + esc(itemStore.getError()) + '</p>' : '') +
+      '<a class="btn btn-secondary" href="#system?stage=' + esc(project.stage) + '">' + (project.updatedAt ? '继续贯穿项目' : '阅读项目资料') + ' →</a>' +
+      project.releases.slice().reverse().map(r => '<details><summary>交付版本 v' + r.version + ' · ' + esc(r.date) + '</summary><p>核对清单 ' + r.entries.length + ' 条 · 验收 ' + r.checks.filter(x => x.passed).length + '/' + r.checks.length + ' 项</p><h3>当时的目标与复盘</h3><p>' + esc(r.decisions.goal) + '</p><p>' + esc(r.reflection) + '</p><a href="#system?stage=deliver&amp;view=practice">回看完整版本与导出项目报告 →</a></details>').join('') +
+      '</section>';
+  }
+
+  function computeCompetencies(total) {
+    let trDays = 0, prjDone = 0;
+    try {
+      const trRaw = storage().getItem('ai_training_16day_v1');
+      if (trRaw) {
+        const trData = JSON.parse(trRaw);
+        if (Array.isArray(trData.completedDays)) trDays = trData.completedDays.length;
+      }
+      const prjRaw = storage().getItem('ai_lab_projects_v1');
+      if (prjRaw) {
+        const prjData = JSON.parse(prjRaw);
+        prjDone = Object.values(prjData).filter(Boolean).length;
+      }
+    } catch (e) {}
+
+    const doneCount = total.completedCount;
+    const artCount = total.artifactCount;
+    const attCount = total.attemptCount;
+
+    const promptScore = Math.min(100, Math.max(15, 20 + (doneCount >= 1 ? 25 : 0) + (doneCount >= 2 ? 15 : 0) + Math.min(25, trDays * 6) + (prjDone >= 1 ? 15 : 0)));
+    const ragScore = Math.min(100, Math.max(15, 15 + (doneCount >= 3 ? 35 : 0) + Math.min(30, Math.max(0, trDays - 4) * 7) + (prjDone >= 2 ? 20 : 0)));
+    const agentScore = Math.min(100, Math.max(15, 15 + (artCount >= 2 ? 25 : 0) + Math.min(30, Math.max(0, trDays - 8) * 7) + (prjDone >= 3 ? 30 : 0)));
+    const evalScore = Math.min(100, Math.max(15, 15 + (doneCount >= 4 ? 35 : 0) + Math.min(25, Math.max(0, trDays - 12) * 8) + Math.min(25, attCount * 4)));
+    const safetyScore = Math.min(100, Math.max(15, 20 + Math.min(35, Math.max(0, trDays - 14) * 18) + (artCount >= 1 ? 25 : 0) + (prjDone >= 4 ? 20 : 0)));
+
+    return [
+      { id: 'prompt', label: '提示工程', score: promptScore, desc: '结构化抽取 · Few-shot 约束 · 参数调优' },
+      { id: 'rag', label: '检索增强', score: ragScore, desc: '知识分块 · 向量相似度 · 幻觉规避' },
+      { id: 'agent', label: '智能体协同', score: agentScore, desc: 'ReAct 循环 · 工具调用 · 状态持久化' },
+      { id: 'eval', label: '评测治理', score: evalScore, desc: '黄金测试集 · 自动化评估 · 回归防护' },
+      { id: 'safety', label: '架构与安全', score: safetyScore, desc: '提示注入拦截 · 隔离沙箱 · 守则落地' }
+    ];
+  }
+
+  function renderRadarSvg(competencies) {
+    const cx = 150, cy = 135, R = 85;
+    const angles = [-Math.PI / 2, -Math.PI / 2 + 0.4 * Math.PI, -Math.PI / 2 + 0.8 * Math.PI, -Math.PI / 2 + 1.2 * Math.PI, -Math.PI / 2 + 1.6 * Math.PI];
+    let ringsHtml = '';
+    [0.25, 0.5, 0.75, 1.0].forEach(factor => {
+      const pts = angles.map(a => `${(cx + R * factor * Math.cos(a)).toFixed(1)},${(cy + R * factor * Math.sin(a)).toFixed(1)}`).join(' ');
+      ringsHtml += `<polygon points="${pts}" fill="none" stroke="rgba(226, 232, 240, 0.9)" stroke-width="1" />`;
+    });
+    let spokesHtml = '';
+    angles.forEach(a => {
+      spokesHtml += `<line x1="${cx}" y1="${cy}" x2="${(cx + R * Math.cos(a)).toFixed(1)}" y2="${(cy + R * Math.sin(a)).toFixed(1)}" stroke="rgba(226, 232, 240, 0.9)" stroke-width="1" />`;
+    });
+    const dataPoints = competencies.map((c, i) => {
+      const r = R * Math.max(0.18, c.score / 100);
+      return { x: cx + r * Math.cos(angles[i]), y: cy + r * Math.sin(angles[i]) };
+    });
+    const polyPoints = dataPoints.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+    let dotsHtml = '';
+    dataPoints.forEach(p => {
+      dotsHtml += `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="4.5" fill="#4f46e5" stroke="#ffffff" stroke-width="2" />`;
+    });
+    let labelsHtml = '';
+    competencies.forEach((c, i) => {
+      const x = cx + (R + 22) * Math.cos(angles[i]);
+      const y = cy + (R + 22) * Math.sin(angles[i]);
+      const anchor = i === 0 ? 'middle' : (i === 1 || i === 2) ? 'start' : 'end';
+      labelsHtml += `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="${anchor}" dominant-baseline="middle" font-size="11" font-weight="600" fill="#475569">${esc(c.label)}</text>`;
+    });
+
+    return '<svg class="learn-radar-chart" viewBox="0 0 300 270" width="100%" height="270" aria-label="AI实战能力全景雷达图">' +
+      '<defs><radialGradient id="radarGlow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#4f46e5" stop-opacity="0.35" /><stop offset="100%" stop-color="#818cf8" stop-opacity="0.08" /></radialGradient></defs>' +
+      ringsHtml + spokesHtml +
+      '<polygon points="' + polyPoints + '" fill="url(#radarGlow)" stroke="#4f46e5" stroke-width="2.5" />' +
+      dotsHtml + labelsHtml +
+      '</svg>';
+  }
+
+  function renderShareCard(total, competencies) {
+    const avgScore = Math.round(competencies.reduce((sum, c) => sum + c.score, 0) / competencies.length);
+    const dateStr = new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+    return '<div class="learn-modal-backdrop" data-action="toggle-share-card">' +
+      '<div class="learn-share-card" onclick="event.stopPropagation()">' +
+        '<div class="learn-share-header">' +
+          '<div class="learn-share-brand"><span class="learn-brand-badge">AI LEARNING STUDIO</span><h3>个人 AI 工程实战能力档案</h3></div>' +
+          '<button class="btn btn-secondary btn-sm" data-action="toggle-share-card">✕ 关闭</button>' +
+        '</div>' +
+        '<p class="learn-share-subtitle">基于端侧实操验证、黄金测试集核验与工程落地演练所生成的完整实操评级快照。</p>' +
+        '<div class="learn-share-stats">' +
+          '<div><span>综合能力指数</span><strong>' + avgScore + ' 分</strong></div>' +
+          '<div><span>达标课程</span><strong>' + total.completedCount + ' / ' + catalog().length + '</strong></div>' +
+          '<div><span>产出作品版本</span><strong>' + total.artifactCount + ' 份</strong></div>' +
+          '<div><span>实操检查通过</span><strong>' + total.passedCount + ' 次</strong></div>' +
+        '</div>' +
+        '<div class="learn-share-skills">' +
+          competencies.map(c => '<div class="learn-share-skill-row"><span class="learn-share-skill-name">' + esc(c.label) + '</span><div class="learn-share-skill-bar"><div style="width:' + c.score + '%;"></div></div><span class="learn-share-skill-val">' + c.score + '%</span></div>').join('') +
+        '</div>' +
+        '<div class="learn-share-footer">' +
+          '<span>评测生成时间：' + esc(dateStr) + ' · 验证指纹 ' + Math.abs((total.artifactCount * 7919) ^ (total.attemptCount * 104729)).toString(16).toUpperCase() + '</span>' +
+          '<button class="btn btn-sm" data-action="print-card">🖨️ 打印 / 保存 PDF</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function portfolio() {
+    const total = overview(), entries = [];
+    catalog().forEach(c => {
+      const entry = cache.get(c.id);
+      entry.state.artifacts.forEach(a => entries.push({ a, c }));
+    });
+    const shown = entries.filter(x => filter === 'all' || x.c.id === filter).sort((x, y) => y.a.createdAt.localeCompare(x.a.createdAt));
+    const competencies = computeCompetencies(total);
+
+    return '<header class="learn-header">' +
+      '<div><span class="learn-eyebrow">个人实战全景看板</span><h1>我的学习成果</h1><p>全景呈现你在提示工程、RAG 检索、智能体开发、模型评测及系统安全五大核心维度的真实动手实战进展。</p></div>' +
+      '<div class="learn-portfolio-cta">' +
+        '<a class="btn" href="#lesson?id=' + esc(total.nextLessonId || catalog()[0].id) + '">' + (total.nextLessonId ? '继续下一步学习' : '回到课程复习') + ' →</a>' +
+        '<button class="btn btn-secondary" data-action="toggle-share-card">📇 生成能力成果卡</button>' +
+      '</div>' +
+    '</header>' +
+    '<p class="learn-save-status" data-save-status role="status" aria-live="polite"></p>' +
+    '<div class="learn-stats">' +
+      '<span>完成课程 <strong>' + total.completedCount + '/' + catalog().length + '</strong></span>' +
+      '<span>已保存版本 <strong>' + total.artifactCount + '</strong></span>' +
+      '<span>实际检查 <strong>' + total.attemptCount + '</strong></span>' +
+      '<span>提示展开次数 <strong>' + total.hints + '</strong></span>' +
+    '</div>' +
+    '<section class="learn-radar-section">' +
+      '<div class="learn-radar-box">' +
+        '<h3>AI 核心实战能力雷达</h3>' +
+        renderRadarSvg(competencies) +
+        '<p class="learn-radar-caption">综合评价依据：涵盖基础四课迁移验收、16天实战工作坊通关阶段、工程贯穿项目交付及自主检查通过率。</p>' +
+      '</div>' +
+      '<div class="learn-skill-cards">' +
+        competencies.map(c => {
+          const rank = c.score >= 85 ? '精通卓越' : c.score >= 60 ? '深度掌握' : c.score >= 35 ? '实践进阶' : '起步探索';
+          return '<div class="learn-skill-card">' +
+            '<div class="learn-skill-card-top"><strong>' + esc(c.label) + '</strong><span class="learn-rank-badge">' + rank + '</span></div>' +
+            '<div class="learn-skill-card-bar"><div class="learn-skill-card-fill" style="width:' + c.score + '%;"></div></div>' +
+            '<div class="learn-skill-card-bottom"><span>' + esc(c.desc) + '</span><span class="learn-skill-pct">' + c.score + '%</span></div>' +
+          '</div>';
+        }).join('') +
+      '</div>' +
+    '</section>' +
+    '<nav class="learn-course-progress" aria-label="四课进度">' +
+      total.lessons.map(l => '<a href="#lesson?id=' + esc(l.id) + '"><strong>' + esc(l.title) + '</strong><span>' + (l.completed ? '✓ 任务已完成' : l.started ? '学习中 · 第 ' + (l.step + 1) + ' 步' : '尚未开始') + '</span></a>').join('') +
+    '</nav>' +
+    '<label class="learn-filter">按课程查看作品<select data-course-filter><option value="all">全部课程</option>' + catalog().map(c => '<option value="' + esc(c.id) + '" ' + (filter === c.id ? 'selected' : '') + '>' + esc(c.title) + '</option>').join('') + '</select></label>' +
+    '<section class="learn-artifacts">' +
+      (shown.length ? shown.map(({ a, c }) => {
+        const isFin = finished(a);
+        const statusBadge = isFin ? '<span class="learn-badge learn-badge-success">✓ 迁移验收通过 · 复盘完整</span>' : a.status === 'passed' ? '<span class="learn-badge learn-badge-warning">◐ 规则通过 · 待完善复盘</span>' : '<span class="learn-badge learn-badge-draft">○ 草稿版本</span>';
+        return '<article class="learn-artifact">' +
+          '<div class="learn-artifact-head"><small>' + esc(c.title) + '</small>' + statusBadge + '</div>' +
+          '<h2>' + esc(a.title) + '</h2>' +
+          '<p class="learn-artifact-meta-text">保存时间：' + esc(a.createdAt) + '</p>' +
+          '<a class="learn-artifact-link" href="#lesson?id=' + esc(c.id) + '">返回对应课程 →</a>' +
+          '<details><summary>回看作品与复盘内容</summary>' +
+            '<h3>原始材料</h3>' +
+            '<pre class="learn-source">' + esc(a.source || c.scenarios[a.scenarioId].source) + '</pre>' +
+            '<dl>' + c.scenarios[a.scenarioId].fields.map(f => '<dt>' + esc(f.label) + '</dt><dd>' + esc(a.answers[f.id]) + '</dd>').join('') + '</dl>' +
+            '<h3>解释</h3><p>' + esc(a.explanation) + '</p>' +
+            '<h3>复盘</h3><p>' + esc(a.reflection) + '</p>' +
+            '<p>自评完成项：' + Object.values(a.selfReview).filter(Boolean).length + '/3</p>' +
+          '</details>' +
+          '<button class="btn btn-secondary" data-action="export-artifact" data-lesson="' + esc(c.id) + '" data-id="' + esc(a.id) + '">导出此版本</button>' +
+        '</article>';
+      }).join('') : '<div class="learn-empty"><h2>这里还没有保存作品</h2><p>完成作答、检查与复盘后保存版本；也可先保存草稿。</p><a class="btn" href="#lesson?id=' + esc(total.nextLessonId || catalog()[0].id) + '">开始学习</a></div>') +
+    '</section>' +
+    systemPortfolio() +
+    (window.ProcessWorkspace ? ProcessWorkspace.portfolio() : '') +
+    '<section class="learn-backup">' +
+      '<div class="learn-section-intro">' +
+        '<span class="learn-eyebrow">数据自主与本地存储</span>' +
+        '<h2>备份与恢复</h2>' +
+        '<p>本备份包含核心 AI 学习进展、四课成果、实战草稿与系统贯穿项目。恢复时将覆盖本地已有记录，建议操作前先下载当前备份。数据仅在浏览器本地解析，最大支持 5 MB。</p>' +
+      '</div>' +
+      '<button class="btn btn-secondary" data-action="backup">下载当前AI历史记录备份</button>' +
+      '<label class="learn-upload-field">选择备份文件<input type="file" accept=".json,application/json" data-import></label>' +
+      '<div data-import-preview></div>' +
+    '</section>' +
+    (showShareCard ? renderShareCard(total, competencies) : '');
+  }
+
+  function paint() {
+    host.classList.add('learn-workspace');
+    host.setAttribute('data-lesson-view', mode === 'portfolio' ? 'portfolio' : lessonView);
+    host.innerHTML = mode === 'portfolio' ? portfolio() : lessonView === 'practice' ? lesson() : reader();
+    status();
+  }
+
+  function backupAll() {
+    let raw = LearningCore.exportBackup(storage(), state, activeId);
+    for (const [id, entry] of cache) {
+      const envelope = JSON.parse(raw);
+      const snapshot = {
+        getItem(key) {
+          return Object.prototype.hasOwnProperty.call(envelope.records, key) ? JSON.stringify(envelope.records[key]) : null;
+        }
+      };
+      raw = LearningCore.exportBackup(snapshot, entry.state, id);
+    }
+    return raw;
+  }
+
+  function download(name, text) {
+    const url = URL.createObjectURL(new Blob([text], { type: 'application/json;charset=utf-8' }));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = name;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  function input(event) {
+    const el = event.target;
+    if (el.dataset.answer) {
+      state.drafts[el.dataset.scenario][el.dataset.answer] = el.value;
+      const n = host.querySelector('[data-draft-validity]');
+      if (n) n.textContent = validity(el.dataset.scenario);
+    } else if (el.dataset.explanation) {
+      state.explanations[el.dataset.explanation] = el.value;
+    } else if (el.hasAttribute('data-reflection')) {
+      state.reflection = el.value;
+    } else if (el.dataset.prediction) {
+      state.prediction[el.dataset.prediction] = el.value;
+    } else if (el.dataset.review) {
+      state.selfReview[el.dataset.review] = el.checked;
+    } else {
+      return;
+    }
+    persist();
+  }
+
+  async function change(event) {
+    if (event.target.matches('[data-course-filter]')) {
+      filter = event.target.value;
+      paint();
+      return;
+    }
+    if (event.target.matches('select[data-answer]')) {
+      input(event);
+      return;
+    }
+    if (!event.target.matches('[data-import]')) return;
+    pendingImport = null;
+    const file = event.target.files[0], preview = host.querySelector('[data-import-preview]');
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      preview.textContent = '文件超过 5 MB，未读取或覆盖任何记录。';
+      return;
+    }
+    try {
+      const raw = await file.text(), result = LearningCore.previewImport(raw);
+      if (!result.ok) {
+        preview.textContent = '无法恢复：' + result.error;
+        return;
+      }
+      pendingImport = raw;
+      preview.innerHTML = '<p>即将覆盖的记录键：' + esc(Object.keys(result.data.records).join('、')) + '。备份含作品 ' + esc(result.summary.artifacts) + ' 个、检查 ' + esc(result.summary.attempts) + ' 次。</p><p>恢复将替换以上本机记录，请先下载当前备份。</p><button class="btn" data-action="confirm-import">确认覆盖并恢复这些记录</button>';
+    } catch (error) {
+      preview.textContent = '读取失败：' + error.message;
+    }
+  }
+
+  function click(event) {
+    const el = event.target.closest('button');
+    if (!el || !host.contains(el)) return;
+    if (el.hasAttribute('data-reading-anchor')) {
+      const section = host.querySelector('#' + el.dataset.readingAnchor);
+      if (section) {
+        section.scrollIntoView({ behavior: 'auto', block: 'start' });
+        section.focus({ preventScroll: true });
+      }
+      return;
+    }
+    if (el.hasAttribute('data-step')) {
+      state.step = Number(el.dataset.step);
+      persist('步骤与输入已保存在本机。');
+      paint();
+      host.querySelector('h1').setAttribute('tabindex', '-1');
+      host.querySelector('h1').focus({ preventScroll: true });
+      return;
+    }
+    const action = el.dataset.action, id = el.dataset.scenario;
+    if (action === 'check') {
+      const answers = { ...state.drafts[id] }, result = LearningCore.checkFields(content().scenarios[id], answers);
+      state.attempts.push({ id: 'attempt-' + Date.now(), scenarioId: id, phase: state.step, answers, result, explanation: state.explanations[id], createdAt: now() });
+      persist('检查完成，结果已记录。');
+      paint();
+    } else if (action === 'save-artifact') {
+      const last = attempts(id).slice(-1)[0], passed = !!(last && last.result.passed && JSON.stringify(last.answers) === JSON.stringify(state.drafts[id]));
+      const a = {
+        id: 'artifact-' + Date.now(),
+        title: content().scenarios[id].title + ' · 版本 ' + (state.artifacts.length + 1),
+        lessonId: content().id,
+        source: content().scenarios[id].source,
+        checks: attempts(id).map(x => ({ ...x, answers: { ...x.answers } })),
+        status: passed ? 'passed' : 'draft',
+        scenarioId: id,
+        answers: { ...state.drafts[id] },
+        explanation: state.explanations[id],
+        reflection: state.reflection,
+        selfReview: { ...state.selfReview },
+        attemptIds: attempts(id).map(x => x.id),
+        createdAt: now(),
+        updatedAt: now()
+      };
+      state.artifacts.push(a);
+      if (!persist('作品版本已保存在本机，可到个人成果页回看与导出。')) {
+        state.artifacts.pop();
+      }
+      paint();
+      const message = host.querySelector('[data-artifact-status]');
+      if (message) {
+        message.textContent = notice;
+        message.style.color = store.getError() ? '#92400e' : '#047857';
+      }
+    } else if (action === 'backup') {
+      try {
+        download('ai-learning-backup.json', backupAll());
+      } catch (error) {
+        notice = error.message;
+        status();
+      }
+    } else if (action === 'export-artifact') {
+      const a = cache.get(el.dataset.lesson || activeId)?.state.artifacts.find(a => a.id === el.dataset.id);
+      if (a) download(a.id + '.json', JSON.stringify(a, null, 2));
+    } else if (action === 'confirm-import' && pendingImport) {
+      const result = LearningCore.importBackup(storage(), pendingImport);
+      notice = result.ok ? '备份已恢复，请回到课程继续学习。' : '恢复失败：' + result.error;
+      if (result.ok) {
+        cache.clear();
+        init(activeId);
+        pendingImport = null;
+        window.location.hash = '#my-learning';
+        window.location.reload();
+        return;
+      }
+      paint();
+    } else if (action === 'toggle-share-card') {
+      showShareCard = !showShareCard;
+      paint();
+    } else if (action === 'print-card') {
+      window.print();
+    }
+  }
+
+  function toggle(event) {
+    const el = event.target;
+    if (el.matches('details[data-hint]') && el.open) {
+      state.hints += 1;
+      persist('提示已展开，已记录真实提示使用次数。');
+    }
+  }
+
+  window.LearningWorkspace = {
+    render(root, requestedMode, lessonId = 'reliable-ai', requestedView = 'reading') {
+      host = root;
+      mode = requestedMode;
+      lessonView = requestedView === 'practice' ? 'practice' : 'reading';
+      if (!catalog().some(c => c.id === lessonId)) {
+        host.innerHTML = '<section class="learn-empty"><h1>未找到这节课程</h1><a href="#pathways">返回学习路线</a></section>';
+        return;
+      }
+      init(lessonId);
+      host.setAttribute('data-workshop', requestedMode);
+      host.setAttribute('data-lesson-id', activeId);
+      host.oninput = input;
+      host.onchange = change;
+      host.onclick = click;
+      if (!host.__learnToggle) {
+        host.addEventListener('toggle', toggle, true);
+        host.__learnToggle = true;
+      }
+      paint();
+    },
+    summary(lessonId) {
+      if (lessonId) {
+        const c = catalog().find(c => c.id === lessonId);
+        return c ? lessonSummary(c) : null;
+      }
+      return overview();
+    },
+    sidebar() {
+      return catalog().map(c => '<a href="#lesson?id=' + esc(c.id) + '">' + esc(c.title) + '</a>').join('') + '<a href="#my-learning">我的成果</a>';
+    }
+  };
 })();
