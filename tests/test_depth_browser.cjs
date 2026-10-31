@@ -3,6 +3,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http'),os=require('node:os');
 const {chromium}=require('playwright');
 const root=path.resolve(__dirname,'..');
+const manifest=JSON.parse(fs.readFileSync(path.join(root,'content/manifest.json'),'utf8'));
 const server=http.createServer((req,res)=>{
   const file=path.resolve(root,'.'+(new URL(req.url,'http://local').pathname==='/'?'/index.html':decodeURIComponent(new URL(req.url,'http://local').pathname)));
   if(!file.startsWith(root+path.sep)){res.writeHead(403);res.end();return;}
@@ -43,7 +44,8 @@ const server=http.createServer((req,res)=>{
     assert((await page.locator('#bookHiddenOutput').innerText()).includes('dw₁=0'));
     const input=page.locator('#bookIntercept');await input.fill('-1');await page.locator('[data-book-gradient-reset]').click();
     assert((await page.locator('#bookGradientOutput').innerText()).includes('dw=-14.666667'));
-    await page.locator('.book-answer[data-book-choice="0:0"]').click();await page.locator('[data-book-check="0"]').click();
+    const neuroAnswer=manifest.lessons.find(l=>l.id==='neural-training').quiz[0].answer;
+    await page.locator(`.book-answer[data-book-choice="0:${neuroAnswer}"]`).click();await page.locator('[data-book-check="0"]').click();
     const book=await page.evaluate(()=>JSON.parse(localStorage.getItem('ai_lab_textbook_v1')));
     assert.deepEqual(book['neural-training'].quiz,{0:true,1:false});assert.equal(book['neural-training'].completed,true);
     assert.equal(book['neural-training'].checks['2026-10-depth-1'][0],true);

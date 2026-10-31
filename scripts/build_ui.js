@@ -12,8 +12,8 @@ const part1 = `<!DOCTYPE html>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="color-scheme" content="light">
-  <meta name="description" content="面向不同学习者的多学科自主学习平台：人工智能课程、物理交互实验、完整示范、个人记录与成果备份。">
-  <title>自主探索学习 · 从理解到实践</title>
+  <meta name="description" content="沉浸式人工智能学习与实战工作台：直观认知、交互实验、系统教材、场景贯穿项目与个人成果。">
+  <title>AI Learning Lab · 人工智能实战工作台</title>
   <style>
     :root{
       --bg:#faf9f6;
@@ -417,8 +417,7 @@ const part1 = `<!DOCTYPE html>
   <link rel="stylesheet" href="./learning/process.css?v=20261023">
   <link rel="stylesheet" href="./learning/architecture.css?v=20261023-v22">
   <link rel="stylesheet" href="./learning/overview.css?v=20261031-v30a">
-  <link rel="stylesheet" href="./learning/current-simulation.css?v=20261031-v30a">
-  <link rel="stylesheet" href="./learning/current.css?v=20261031-v30a">
+  <link rel="stylesheet" href="./learning/interactive-labs.css">
 </head>
 <body>
 <header class="topbar">
@@ -469,7 +468,8 @@ const part1 = `<!DOCTYPE html>
 
       <nav class="main-nav" aria-label="全站主要模块">
         <button type="button" class="nav-item active" data-action="nav-home" data-main-nav="home">⌂ 学习首页</button>
-        <button type="button" class="nav-item" data-action="nav-pathways" data-main-nav="pathways">▤ 基础学习</button>
+        <button type="button" class="nav-item" data-action="nav-pathways" data-main-nav="pathways">▤ 学习路线</button>
+        <button type="button" class="nav-item" data-action="nav-labs" data-main-nav="labs">🔬 交互实验台</button>
         <button type="button" class="nav-item" data-action="nav-projects" data-main-nav="projects">◇ 实战项目</button>
         <button type="button" class="nav-item" data-action="nav-practice" data-main-nav="practice">↻ 练习复习</button>
         <button type="button" class="nav-item" data-action="nav-portfolio" data-main-nav="portfolio">▧ 我的成果</button>
@@ -555,11 +555,7 @@ const part1 = `<!DOCTYPE html>
 <script src="./learning/change-content.js?v=20261024-v23-experience"></script>
 <script src="./learning/change-core.js?v=20261024-v23-experience"></script>
 <script src="./learning/change-workspace.js?v=20261024-v23-experience"></script>
-<script src="./learning/current-physics.js?v=20261031-v30a"></script>
-<script src="./learning/current-core.js?v=20261031-v30a"></script>
-<script src="./learning/current-content.js?v=20261031-v30a"></script>
-<script src="./learning/current-simulation.js?v=20261031-v30a"></script>
-<script src="./learning/current-workspace.js?v=20261031-v30a"></script>
+<script src="./learning/interactive-labs.js"></script>
 
 <script src="./learning/overview.js?v=20261031-v30a"></script>
 <script src="./learning/home.js?v=20261031-v30a"></script>
@@ -738,7 +734,8 @@ function finishQuiz(){
 /* Primary Section / Nav mapping */
 function currentMainNav(){
   if(ui.tab==='home')return 'home';
-  if(['pathways','physics','current','lesson','process','architecture','change','learn','flash','quiz','textbook','training'].includes(ui.tab))return 'pathways';
+  if(ui.tab==='labs')return 'labs';
+  if(['pathways','lesson','process','architecture','change','learn','flash','quiz','textbook','training'].includes(ui.tab))return 'pathways';
   if(ui.tab==='portfolio')return 'portfolio';
   if(ui.tab==='projects'||ui.tab==='system')return 'projects';
   if(['review','lab','mission','wrong'].includes(ui.tab))return 'practice';
@@ -796,8 +793,8 @@ function syncRouteFromHash(){
   const [route,queryStr]=hash.split('?');
   const params=new URLSearchParams(queryStr||'');
 
-  if(route==='physics'||route==='current'){
-    ui.tab=route;ui.currentView=params.get('view')==='practice'?'practice':'reading';render();
+  if(route==='labs'){
+    ui.tab='labs';render();
   }else if(route==='change'){
     ui.tab='change';ui.changeChapter=Math.min(5,Math.max(1,Math.floor(Number(params.get('chapter'))||1)));ui.changeView=params.get('view')==='practice'?'practice':'reading';render();
   }else if(route==='architecture'){
@@ -890,9 +887,9 @@ function learningSidebar(){
     return learningSideLink('#lesson?id='+encodeURIComponent(course.id),title,String(index+1).padStart(2,'0'),description.join('：'),ui.tab==='lesson'&&ui.lessonId===course.id);
   }).join('');
   return '<div class="learning-side-catalog">'+
-    learningSideGroup('学科与课程',learningSideLink('#home','选择学科','选','人工智能 / 物理')+learningSideLink('#pathways','人工智能课程','AI','按目标自主学习',isOverview)+learningSideLink('#physics','物理课程','物','电流交互实验'))+
-    learningSideGroup('入门资料',courses)+
-    learningSideGroup('继续深入',learningSideLink('#change','独立需求变更','变','紧急程度：分析、代码与验证')+learningSideLink('#architecture','从流程到真实系统','构','连续架构课程与HTTP/SQLite实验')+learningSideLink('#process','业务流程深度课','流','六章资料、流程编辑与迁移作品')+learningSideLink('#system','架构、工程与流程','进','从通知到完整交付')+learningSideLink('#courses?mode=foundations&ch=0&tab=learn','六章系统基础','基')+learningSideLink('#courses?mode=textbook','专题教材','读'))+
+    learningSideGroup('学习中心',learningSideLink('#home','工作台首页','⌂','探索概览')+learningSideLink('#pathways','学习路线','🧭','认知路线与大纲',isOverview)+learningSideLink('#labs','交互实验台','🔬','即时可视化实验',ui.tab==='labs'))+
+    learningSideGroup('4 步认知入门',courses)+
+    learningSideGroup('核心与工程',learningSideLink('#courses?mode=foundations&ch=0&tab=learn','六章系统基础','基','深度概念与自测')+learningSideLink('#courses?mode=textbook','系统教材','读','13篇技术长文')+learningSideLink('#system','通知整理小系统','系','架构、工程与流程'))+
     '<p class="learning-side-note">先读资料与示范，再进入练习。</p></div>';
 }
 /* Context-Aware Main Sidebar */
@@ -901,8 +898,8 @@ function updateMainSidebar(){
   if(!panel)return;
   const mastered=score(),wrong=activeWrongIds().length,due=dueIds().length;
 
-  if(ui.tab==='current'||ui.tab==='physics'){
-    panel.innerHTML='<div class="learning-side-catalog">'+learningSideGroup('物理 · 电学',learningSideLink('#physics','物理课程','物','按兴趣自由进入',ui.tab==='physics')+learningSideLink('#current','电流原理与示范','读','先理解，再实验',ui.tab==='current'&&ui.currentView!=='practice')+learningSideLink('#current?view=practice','电流实验与记录','做','预测、观察、解释与迁移',ui.tab==='current'&&ui.currentView==='practice'))+learningSideGroup('其他学科',learningSideLink('#pathways','人工智能','AI','教材、题目与实践')+learningSideLink('#home','选择学科','选'))+'</div>';
+  if(ui.tab==='labs'){
+    panel.innerHTML='<div class="learning-side-catalog">'+learningSideGroup('交互式 AI 实验室',learningSideLink('#labs','Prompt 与温度采样','01','随机度与确定性平衡',true)+learningSideLink('#labs','RAG 语义切块检索','02','切块大小与召回对齐')+learningSideLink('#labs','神经元决策超平面','03','2D 分类与损失变化'))+learningSideGroup('核心延伸',learningSideLink('#pathways','学习路线','🧭','认知路线与大纲')+learningSideLink('#system','通知整理小系统','🛠️','端到端真实实践'))+'</div>';
     return;
   }
   if(ui.tab==='change'){
@@ -1079,8 +1076,8 @@ function updateMobileSubbar(){
   if(!titleEl)return;
   if(ui.tab==='home'){
     titleEl.textContent='学习首页';if(metaEl)metaEl.textContent='概览与推荐';
-  }else if(ui.tab==='physics'||ui.tab==='current'){
-    titleEl.textContent=ui.tab==='physics'?'物理课程':'电流探索实验课';if(metaEl)metaEl.textContent=ui.currentView==='practice'?'实验与记录':'原理与示范';
+  }else if(ui.tab==='labs'){
+    titleEl.textContent='交互式 AI 实验室';if(metaEl)metaEl.textContent='Prompt · RAG · 神经元';
   }else if(ui.tab==='change'){
     titleEl.textContent='独立需求变更';if(metaEl)metaEl.textContent='第'+(ui.changeChapter||1)+'阶段 · '+(ui.changeView==='practice'?'成果工作区':'学习与操作');
   }else if(ui.tab==='architecture'){
@@ -1132,7 +1129,7 @@ function render(){
     requestAnimationFrame(()=>{if(lastRenderedPage===pageKey)window.scrollTo({top:0,left:0,behavior:'instant'});});
   }
   lastRenderedPage=pageKey;
-  CurrentWorkspace.destroy();
+
   const isHome=ui.tab==='home';
   const heroBox=$('homeHeroArea');
   if(heroBox)heroBox.style.display='none';
@@ -1156,7 +1153,7 @@ function render(){
   });
 
   const mastered=score(),pct=Math.round(100*mastered/COURSES.length),wrong=activeWrongIds().length,due=dueIds().length;
-  if($('headerProgress'))$('headerProgress').textContent=['home','physics','current'].includes(ui.tab)?'按自己的节奏学习':\`练习达标 \${mastered} / 6 章\`;
+  if($('headerProgress'))$('headerProgress').textContent=['home','labs'].includes(ui.tab)?'AI 沉浸式自主实战':\`练习达标 \${mastered} / 6 章\`;
   if($('conceptTotal'))$('conceptTotal').textContent=totalConcepts();
   if($('questionTotal'))$('questionTotal').textContent=ALL_QUESTIONS.size;
   if($('progressText'))$('progressText').textContent=mastered===6?'六章练习全部达标 · 可以继续挑战':\`练习达标 \${mastered} / 6 章 · 请结合实验与复习巩固\`;
@@ -1183,11 +1180,9 @@ function render(){
   $('dynamicArea').oninput=null;
   $('dynamicArea').onchange=null;
   $('dynamicArea').onclick=null;
-  if(ui.tab==='physics'){
-    $('dynamicArea').innerHTML=CurrentWorkspace.physics();return;
-  }
-  if(ui.tab==='current'){
-    CurrentWorkspace.render($('dynamicArea'),ui.currentView);return;
+  if(ui.tab==='labs'){
+    if(typeof InteractiveLabs!=='undefined')InteractiveLabs.render($('dynamicArea'));
+    return;
   }
   if(ui.tab==='change'){
     ChangeWorkspace.render($('dynamicArea'),ui.changeChapter||1,ui.changeView||'reading');
@@ -1330,6 +1325,7 @@ document.addEventListener('click',event=>{
     case 'tab':if(el.dataset.tab==='quiz'){ui.quizItems=[];ui.finished=false;}changeTab(el.dataset.tab);break;
     case 'nav-home':case 'review-home':ui.tab='home';updateHashRoute();render();break;
     case 'nav-pathways':ui.tab='pathways';updateHashRoute();render();break;
+    case 'nav-labs':ui.tab='labs';updateHashRoute();render();break;
     case 'nav-portfolio':ui.tab='portfolio';updateHashRoute();render();break;
     case 'nav-courses':resetChapter(ui.chapter,'learn');break;
     case 'nav-foundations':resetChapter(ui.chapter,'learn');break;

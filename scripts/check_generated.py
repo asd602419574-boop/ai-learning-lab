@@ -11,7 +11,8 @@ import sys
 import tempfile
 
 INPUT_FILES = ('scripts/build_textbook.py', 'scripts/build_ui.js',
-               'content/extra-lessons.json', 'content/foundations.js')
+               'content/extra-lessons.json', 'content/foundations.js',
+               'content/lesson-quizzes.json')
 
 
 def copy_inputs(root, target):

@@ -1,11 +1,13 @@
-// Controlled compatibility data extracted from the historical commit recorded in
-// foundations-questions-v1.json. Verification must not depend on Git history or HEAD.
+// Controlled compatibility data. v2 is the 2026-10-31 question-quality revision:
+// IDs c0-q0…c5-q23 and chapter mapping are unchanged so existing per-question
+// progress still resolves, while prompts, choices, answers and explanations were
+// deliberately rewritten. v1 remains on disk as provenance for the old wording.
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const crypto = require('node:crypto');
-const baseline = require('./foundations-questions-v1.json');
+const baseline = require('./foundations-questions-v2.json');
 
 function questionData(html) {
   const script = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].at(-1);
@@ -18,13 +20,13 @@ function questionData(html) {
 }
 
 function assertQuestionBaseline(questions) {
-  assert.equal(baseline.schemaVersion, 1);
+  assert.equal(baseline.schemaVersion, 2);
   assert.equal(baseline.questions.length, 144);
   assert.equal(crypto.createHash('sha256').update(JSON.stringify(baseline.questions)).digest('hex'),
     baseline.source.questionsSha256, 'The controlled fixture and its provenance checksum must agree');
   assert.equal(questions.length, 144);
   assert.deepEqual(questions, baseline.questions,
-    'All old question IDs, chapters, prompts, choices, answers and explanations must survive');
+    'All revised question IDs, chapters, prompts, choices, answers and explanations must match the v2 baseline');
 }
 
 module.exports = { questionData, assertQuestionBaseline };
@@ -43,5 +45,5 @@ if (require.main === module) {
     assert.throws(() => assertQuestionBaseline(changed), assert.AssertionError,
       `Changes to ${field} must fail compatibility verification`);
   }
-  console.log('PASS: 144 historical questions match; mutations to all six protected fields are rejected.');
+  console.log('PASS: 144 revised questions match the v2 baseline; mutations to all six protected fields are rejected.');
 }

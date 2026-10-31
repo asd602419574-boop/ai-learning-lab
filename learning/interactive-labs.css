@@ -1,0 +1,450 @@
+/* Apple & Award-Grade Interactive AI Labs CSS */
+:root {
+  --lab-accent: #0f766e;
+  --lab-accent-light: #f0fdfa;
+  --lab-accent-border: #99f6e4;
+  --lab-border: rgba(0, 0, 0, 0.08);
+  --lab-surface: #ffffff;
+  --lab-bg-sunk: #f8fafc;
+  --lab-ink: #0f172a;
+  --lab-muted: #64748b;
+  --lab-radius: 12px;
+  --lab-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02);
+  --lab-shadow-hover: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.lab-shell {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  animation: labFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes labFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Header */
+.lab-header {
+  background: var(--lab-surface);
+  border: 1px solid var(--lab-border);
+  border-radius: var(--lab-radius);
+  padding: 24px 28px;
+  box-shadow: var(--lab-shadow);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.lab-header-main h1 {
+  margin: 0 0 6px;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--lab-ink);
+  letter-spacing: -0.3px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lab-header-main p {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--lab-muted);
+  line-height: 1.5;
+}
+
+.lab-tabs {
+  display: flex;
+  background: var(--lab-bg-sunk);
+  padding: 4px;
+  border-radius: 10px;
+  gap: 4px;
+  border: 1px solid var(--lab-border);
+}
+
+.lab-tab-btn {
+  border: 0;
+  background: transparent;
+  padding: 8px 16px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--lab-muted);
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lab-tab-btn:hover {
+  color: var(--lab-ink);
+}
+
+.lab-tab-btn.active {
+  background: var(--lab-surface);
+  color: var(--lab-accent);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+/* Main Sandbox Card */
+.lab-card {
+  background: var(--lab-surface);
+  border: 1px solid var(--lab-border);
+  border-radius: var(--lab-radius);
+  box-shadow: var(--lab-shadow);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.lab-stage-intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  border-bottom: 1px solid var(--lab-border);
+  padding-bottom: 16px;
+}
+
+.lab-stage-intro h2 {
+  margin: 0 0 4px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--lab-ink);
+}
+
+.lab-stage-intro p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--lab-muted);
+}
+
+.lab-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  background: var(--lab-accent-light);
+  color: var(--lab-accent);
+  border-radius: 999px;
+  border: 1px solid var(--lab-accent-border);
+  white-space: nowrap;
+}
+
+/* 2-Column Split: Controls vs Playground */
+.lab-split {
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr);
+  gap: 28px;
+}
+
+@media (max-width: 860px) {
+  .lab-split {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Control Panel */
+.lab-controls {
+  background: var(--lab-bg-sunk);
+  border: 1px solid var(--lab-border);
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.lab-control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lab-control-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.lab-control-header label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--lab-ink);
+}
+
+.lab-control-header span {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--lab-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.lab-slider {
+  width: 100%;
+  accent-color: var(--lab-accent);
+  cursor: pointer;
+}
+
+.lab-select {
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--lab-surface);
+  border: 1px solid var(--lab-border);
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--lab-ink);
+  outline: none;
+}
+
+.lab-input {
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--lab-surface);
+  border: 1px solid var(--lab-border);
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--lab-ink);
+  box-sizing: border-box;
+}
+
+.lab-textarea {
+  width: 100%;
+  height: 80px;
+  padding: 8px 12px;
+  background: var(--lab-surface);
+  border: 1px solid var(--lab-border);
+  border-radius: 6px;
+  font-size: 12.5px;
+  color: var(--lab-ink);
+  box-sizing: border-box;
+  resize: vertical;
+  line-height: 1.4;
+}
+
+.lab-btn-action {
+  background: var(--lab-accent);
+  color: #ffffff;
+  border: 0;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lab-btn-action:hover {
+  background: #0d655f;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(15, 118, 110, 0.25);
+}
+
+/* Visualization Panel */
+.lab-viewport {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.lab-view-box {
+  background: var(--lab-surface);
+  border: 1px solid var(--lab-border);
+  border-radius: 10px;
+  padding: 20px;
+  position: relative;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Scientific Loop (Predict -> Experiment -> Observe -> Reflect) */
+.lab-loop {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  background: var(--lab-bg-sunk);
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid var(--lab-border);
+}
+
+@media (max-width: 768px) {
+  .lab-loop {
+    grid-template-columns: 1fr;
+  }
+}
+
+.lab-loop-step {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lab-loop-step b {
+  font-size: 11.5px;
+  color: var(--lab-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.lab-loop-step p {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--lab-ink);
+  line-height: 1.4;
+}
+
+/* Token / Generation Stream */
+.lab-samples-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+@media (max-width: 768px) {
+  .lab-samples-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.lab-sample-card {
+  background: var(--lab-bg-sunk);
+  border: 1px solid var(--lab-border);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lab-sample-title {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--lab-muted);
+}
+
+.lab-sample-content {
+  font-size: 12.5px;
+  color: var(--lab-ink);
+  line-height: 1.5;
+  min-height: 60px;
+  word-break: break-all;
+}
+
+.lab-variance-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  color: var(--lab-muted);
+}
+
+.lab-bar-track {
+  flex: 1;
+  height: 6px;
+  background: rgba(0,0,0,0.06);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.lab-bar-fill {
+  height: 100%;
+  background: var(--lab-accent);
+  border-radius: inherit;
+  transition: width 0.3s ease;
+}
+
+/* RAG Chunk Visualizer */
+.rag-chunks-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.rag-chunk {
+  background: var(--lab-bg-sunk);
+  border: 1px solid var(--lab-border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--lab-ink);
+  position: relative;
+  transition: all 0.15s ease;
+  max-width: 100%;
+}
+
+.rag-chunk.hit {
+  background: #ecfdf5;
+  border-color: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+}
+
+.rag-chunk-num {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--lab-accent);
+  margin-bottom: 2px;
+  display: block;
+}
+
+.rag-overlap-mark {
+  background: rgba(245, 158, 11, 0.15);
+  border-radius: 2px;
+  padding: 1px 2px;
+  color: #b45309;
+}
+
+.rag-scores-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.rag-score-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--lab-ink);
+}
+
+.rag-score-badge {
+  font-weight: 700;
+  color: var(--lab-accent);
+  width: 48px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Neural Canvas */
+.neuron-canvas-wrap {
+  width: 100%;
+  height: 280px;
+  position: relative;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid var(--lab-border);
+  overflow: hidden;
+}
+
+.neuron-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
